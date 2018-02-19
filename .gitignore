@@ -1,4 +1,5 @@
 node_modules
 functions/lib
+serviceAccountKey*
 *.log
 *.js.map
