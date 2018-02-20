@@ -1,12 +1,19 @@
 import * as admin from 'firebase-admin';
+import { Document } from './../document/document';
 
-export class User {
+
+export class User extends Document {
     constructor( public db: admin.firestore.Firestore, public request ) {
-
+        super( db, request );
     }
     async create() {
-        await this.db.collection('x-users').doc().set( this.request.body );
-        return true;
+        const re = super.create({
+            email: this.request.body.email,
+            name: this.request.body.name,
+            password: this.request.body.password
+        });
+
+        return re;
     }
     read() {
         return;
