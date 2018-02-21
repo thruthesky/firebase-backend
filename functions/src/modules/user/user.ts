@@ -2,17 +2,30 @@ import * as admin from 'firebase-admin';
 import { Document } from './../document/document';
 
 
-export class User extends Document {
-    constructor( public db: admin.firestore.Firestore, public request ) {
-        super( db, request );
-    }
-    async create() {
-        const re = await super.create({
-            email: this.request.body.email,
-            name: this.request.body.name,
-            password: this.request.body.password
-        });
+interface USER_CREATE {
+    uid: string;
+    name: string;
+    birthday?: string;
+    gender?: string;
+    mobile?: string;
+    landline?: string;
+};
 
+
+/**
+ * @Attention All the validity, permission check must be done before this class.
+ */
+export class User extends Document {
+    constructor( public db: admin.firestore.Firestore, public request, public response ) {
+        super( db, request, response );
+    }
+
+
+    /**
+     * @attention all the permission and data validity must be checked before this method. 
+     */
+    async create(obj: USER_CREATE) {
+        const re = await super.create(obj);
         return re;
     }
     async getUserList() {

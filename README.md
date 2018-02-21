@@ -4,9 +4,22 @@ Firebase backend to build CMS
 
 # Developer
 
+## Run
+
+* Run `tsc`, Unit Test, deploy to functions-emulator.
+````
+$ tsc --watch
+$ ./node_modules/.bin/mocha lib/test/test.js --watch -t 100000 // Unit Testing...
+$ ./node_modules/.bin/functions-emulator deploy api --trigger-http
+````
+
+* Get Resource URL from functions-emulator after deploy and put it in `test.ts`
+
 ## Documents & References
 
 * [Official Developer's Programming Guide](https://docs.google.com/document/d/1ncYWftCEXJBJkATExfGM2S4dzerrI_7PA_DjWjNdEmQ/edit#)
+
+
 
 ## How To Install For Developers.
 
@@ -31,4 +44,5 @@ $ ./node_modules/.bin/functions deploy Api --trigger-http ; deploy a http functi
 ````
 
 * [Using Firebase Functions Emulator](https://docs.google.com/document/d/1ncYWftCEXJBJkATExfGM2S4dzerrI_7PA_DjWjNdEmQ/edit#heading=h.anlypegtz2yg)
+
 

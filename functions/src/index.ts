@@ -4,6 +4,9 @@ import * as admin from 'firebase-admin';
 import { serviceAccount } from './settings/serviceAccountKey';
 
 import { Router } from './modules/router/router';
+import { Library as lib } from './modules/library/library';
+
+
 
 
 const cors = corsOptions({ origin: true });
@@ -19,9 +22,16 @@ admin.initializeApp({ // Enable on development.
 const db = admin.firestore();
 
 
+
+// db.collection('x-users').doc().set({"uid":"abc","name":"nameabc","created":"2018-02-21T17:19:15.212Z"}).then (x => x);
+        
+
+
 export const api = functions.https.onRequest( (request, response ) => {
     cors(request, response, async  () => {
         const res = await  (new Router(db, request, response)).run();
-        response.send( { route: request.body['route'], data: res } );
+        
+        
+        response.send( res );
     });
 });
