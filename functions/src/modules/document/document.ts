@@ -14,8 +14,19 @@ export class Document {
 
         return true;
     }
-    read() {
-        return;
+    async read( collection ) {
+        let data = [];
+        let obj = {};
+        await this.db.collection(collection).get()
+        
+            .then(function(querySnapshot) {
+                querySnapshot.forEach(function(doc) {                
+                data.push(  obj[doc.id] = doc.data()  );
+            });
+        
+        });
+        // return data;
+        return JSON.stringify(data);
     }
     update() {
         return;
@@ -24,5 +35,4 @@ export class Document {
         return;
     }
 
-    
 }

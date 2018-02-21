@@ -13,8 +13,12 @@ export class UserRouter extends User {
         return 10;
     }
 
-    register() {
-        return this.create();
+    async register() {
+        return await this.create();
+    }
+
+    async list(){
+        return await this.getUserList();
     }
 
 }

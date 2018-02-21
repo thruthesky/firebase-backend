@@ -7,16 +7,18 @@ export class User extends Document {
         super( db, request );
     }
     async create() {
-        const re = super.create({
+        const re = await super.create({
             email: this.request.body.email,
             name: this.request.body.name,
             password: this.request.body.password
         });
 
-        return re;
+        return true;
     }
-    read() {
-        return;
+    async getUserList() {
+        const userList = await super.read(this.request.body.collection);
+        return userList;
+        // return userList;
     }
     update() {
         return;
