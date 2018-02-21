@@ -12,7 +12,7 @@ export class Document {
 
         await this.db.collect('x-users').doc().set( obj );
 
-        return true;
+        return { status : 'ok' };
     }
     async read( collection ) {
         let data = [];
