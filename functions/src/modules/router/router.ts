@@ -12,7 +12,7 @@ export class Router {
         const re = this.request.body.route.split('.');
         return re[1];
     }
-    run(): any {
+    async run() {
         let route$;
         if ( this.className === 'user' ) {
          route$ = new UserRouter( this.db, this.request );       
@@ -20,6 +20,6 @@ export class Router {
 
         if ( route$[ this.methodName ] === void 0 ) return { code: -1, message: this.methodName + ' - method does not exists' };
         
-        return route$[ this.methodName ]( this.request );
+        return await route$[ this.methodName ]();
     }
 }

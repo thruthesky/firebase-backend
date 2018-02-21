@@ -28,8 +28,8 @@ const db = admin.firestore();
 
 
 export const api = functions.https.onRequest( (request, response ) => {
-    cors(request, response, () => {
-        const res = (new Router(db, request, response)).run();
+    cors(request, response, async  () => {
+        const res = await  (new Router(db, request, response)).run();
         response.send( { route: request.body['route'], data: res } );
     });
 });
