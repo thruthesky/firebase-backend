@@ -13,7 +13,7 @@ export class User extends Document {
             password: this.request.body.password
         });
 
-        return true;
+        return re;
     }
     async getUserList() {
         const userList = await super.read(this.request.body.collection);
