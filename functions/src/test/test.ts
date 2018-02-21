@@ -26,10 +26,10 @@ describe('Get all users', () => {
 
 describe('Registration', () => {
     it('get response', async ( ) => {
-        const url = 'http://localhost:8010/test-ec3e3/us-central1/updateDoc';
+        const url = 'http://localhost:8010/fire-db123-3cc28/us-central1/api';
         const re = await rpn.get( url );
-        re.should.be.a('string');
-        expect(re).to.include('10');
+        re.should.be.a('object');
+        // expect(re).to.include('10');
     });
 
 });
