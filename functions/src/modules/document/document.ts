@@ -9,9 +9,13 @@ export class Document {
     }
 
     /**
-     * Sometimes, you cannot set 'Object' data into firestore. It needs to be `JSON.stringify` and `JSON.parse` again.
+     * 
+     * Sometimes, somehow, you cannot set an Object into firestore `document`.
+     * In that case, It needs to be `JSON.stringify` and `JSON.parse` again.
+     * 
+     * @param obj Object to be set into `firestore`.
      */
-    trimData( obj ) {
+    sanitizeData( obj ) {
         if ( ! obj ) return undefined;
         try {
             const str = JSON.stringify( obj );
@@ -36,7 +40,7 @@ export class Document {
         if ( doc ) document = collection.doc ( doc );
         else document = collection.doc();
 
-        const re = await document.set( this.trimData( data ) );
+        const re = await document.set( this.sanitizeData( data ) );
     }
 
     /**

@@ -17,7 +17,7 @@ $ ./node_modules/.bin/functions-emulator deploy api --trigger-http
 
 ## Documents & References
 
-* [Official Developer's Programming Guide](https://docs.google.com/document/d/1ncYWftCEXJBJkATExfGM2S4dzerrI_7PA_DjWjNdEmQ/edit#)
+* [Developer's Programming Guide](https://docs.google.com/document/d/1ncYWftCEXJBJkATExfGM2S4dzerrI_7PA_DjWjNdEmQ/edit#)
 
 
 
