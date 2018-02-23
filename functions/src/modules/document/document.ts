@@ -7,7 +7,7 @@ import { Base } from './../core/base';
 export class Document extends Base {
 
 
-    constructor( collectionName: string ) {
+    constructor(collectionName: string) {
 
         super(collectionName);
 
@@ -23,13 +23,9 @@ export class Document extends Base {
      */
     sanitizeData(obj) {
         if (!obj) return null;
-        try {
-            const str = JSON.stringify(obj);
-            return JSON.parse(str);
-        }
-        catch (e) {
-            return null;
-        }
+        if (typeof obj !== 'object') return null;
+        Object.keys(obj).forEach(key => obj[key] === undefined && delete obj[key]);
+        return obj;
     }
 
     /**
@@ -55,6 +51,61 @@ export class Document extends Base {
     //     });
 
     // }
+
+
+    /**
+     * 
+     * 
+     * @param documentID - Document ID. If not set, automatically generated.
+     * 
+     * 
+     * @code
+     *      const re = await this.set( { a: 'b' }, 'doc-1' ); // Set { a: 'b' } into 'doc-1' Docuemnt.
+     *        
+     *  const data = {
+            uid: p.uid,
+            name: p.name,
+            gender: p.gender,
+            birthday: p.birthday
+        };
+        return await this.set(data);
+
+
+
+     * @return
+     *  
+     *          - A Promise<ErrorObject> if there is error. note: it is a promise that is being returned.
+
+     */
+    async set(data, documentID?) {
+        if (!data) return null;
+        data['created'] = this.serverTime();
+
+        let documentRef;
+        if (documentID === void 0) documentRef = this.collection.doc();
+        else documentRef = this.collection.doc(documentID);
+        return await documentRef.set(this.sanitizeData(data))
+            .catch(e => this.error(e));
+    }
+
+
+    /**
+     * 
+     * @return A Promise of
+     *          - Document data
+     *          - null if docuemnt doe not exsits.
+     *          - ErrorObject. note: it is a promise that is being returned.
+     */
+    async get(documentID) {
+        return this.collection.doc(documentID).get()
+            .then(doc => {
+                if (doc.exists) {
+                    return doc.data();
+                }
+                else return null;
+            })
+            .catch(e => this.error(e));
+    }
 
     /**
      * It creates a Document.

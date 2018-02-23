@@ -1,31 +1,37 @@
 import { Request, Response } from 'express';
 import { UserRouter } from './../user/user.router';
 import { Base } from './../core/base';
+import * as E from './../core/error';
+import { RouterResponse } from './../core/defines';
+
+
 
 
 export class Router extends Base {
-    constructor( params ) {
-        super( null );
+    constructor(params) {
+        super(null);
         Base.params = params;
         // console.log("[ params ] ", params );
     }
 
-    async run() {
-        if (!this.routeClassName) return { code: -1, message: 'No route was specified.' };
+    async run(): Promise<RouterResponse> {
+        if (!this.param('route')) {
+            return this.error(E.EMPTY_ROUTE);
+        }
 
         let $router = null;
         if (this.routeClassName === 'user') {
             $router = new UserRouter();
         }
-        else return { code: -20, message: 'Router does exists.' };
+        else return this.error(E.WRONG_ROUTE);
 
-        
+
 
         // console.log($router);
 
-        if ( $router[this.routeMethodName] === void 0) return { code: -1, message: this.routeMethodName + ' - method does not exists.' };
+        if ($router[this.routeMethodName] === void 0) return this.error(E.WRONG_METHOD);;
 
-        const ret = { route: this.param('route') };
+        const ret = { route: this.param('route'), code: 0 };
 
         const res = await $router[this.routeMethodName]();
 
@@ -34,7 +40,6 @@ export class Router extends Base {
             ret['message'] = res['message'];
         }
         else {
-            ret['code'] = 0;
             ret['data'] = res;
         }
 

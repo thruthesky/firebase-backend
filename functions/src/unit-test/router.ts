@@ -9,7 +9,9 @@ import { Request } from 'express';
 import * as request from 'request';
 import * as rpn from 'request-promise-native';
 import { Library as lib } from './../modules/library/library';
-import * as e from './../modules/core/error';
+import * as E from './../modules/core/error';
+import { Base } from './../modules/core/base';
+
 
 import { Router } from './../modules/router/router';
 
@@ -23,7 +25,14 @@ admin.initializeApp({ // Enable on development.
     databaseURL: "https://pwa-cms.firebaseio.com"
 });
 
+
+
 const db = admin.firestore();
+Base.db = db;
+
+
+
+
 
 
 // const apiUrl = 'http://localhost:8010/test-ec3e3/us-central1/api';
@@ -43,16 +52,27 @@ const db = admin.firestore();
 // }
 
 
+console.log("========= [ Unit Test begins ] =========== .: " + new Date());
 
-
-console.log("========= [ Unit Test begins ] =========== " + new Date());
+async function route(data) {
+    return await (new Router(data)).run()
+}
 
 describe('Router TEST', () => {
-    it('Create a router.', () => {
-        const re = (new Router({ route: 'wrong router', a: 'ab' })).run();
-        console.log(re);
+    it('Empty route', async () => {
+        const re = await route({ route: '', a: 'ab' });
+        expect(re).to.be.a('object');
+        expect(re.code).to.be.equal(E.EMPTY_ROUTE);
+    });
+    it('Wrong route', async () => {
+        const re = await route({ route: 'wrong router', a: 'ab' });
+        expect(re).to.be.a('object');
+        expect(re.code).to.be.equal(E.WRONG_ROUTE);
     });
 });
+
+
+
 
 
 // describe('User Register', () => {

@@ -1,6 +1,6 @@
 // import * as admin from 'firebase-admin';
 // import { Request, Response } from 'express';
-import * as error from '../core/error';
+import * as E from '../core/error';
 import { User, USER_REGISTER } from './user';
 
 export class UserRouter extends User {
@@ -26,23 +26,30 @@ export class UserRouter extends User {
      * @note no email. no password.
      */
     async register() {
-        const p: USER_REGISTER = <USER_REGISTER> this.params;
-        if (p.uid === void 0) return error.obj(error.NO_UID);
-        if (p.name === void 0) return error.obj(error.NO_NAME);
+        const p: USER_REGISTER = <USER_REGISTER>this.params;
+        if (p.id === void 0) return this.error(E.NO_UID);
+        if (p.name === void 0) return this.error(E.NO_NAME);
         const data = {
-            uid: p.uid,
+            id: p.id,
             name: p.name,
             gender: p.gender,
             birthday: p.birthday,
             mobile: p.mobile,
             landline: p.landline
         };
-        return await this.collection.doc(p.uid).set( data )
-            .catch( e => error.obj( e['code'], e['message'] ) );
+        return await this.set(data, data.id );
     }
 
-    async list() {
-        return await this.getUserList();
+
+    async get() {
+        const id = this.param('id');
+        if ( ! id ) return this.error( E.NO_USER_DOCUMENT_ID );
+        return super.get( this.param('id') );
     }
+
+
+    // async list() {
+    //     return await this.getUserList();
+    // }
 
 }
