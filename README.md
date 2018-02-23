@@ -2,6 +2,23 @@
 Firebase backend to build CMS
 
 
+# TODO List
+
+* Do not nest too much methods. It is extreamly difficult to debug.
+
+* User Management
+With IDTokens https://firebase.google.com/docs/auth/admin/verify-id-tokens
+
+* Post Management
+Based on Post Management Module
+Forum Plugin
+Task( TODO LIST ) Management Plugin
+Blog Plugin
+Shopping Mall Plugin
+
+
+
+
 # Developer
 
 ## Run

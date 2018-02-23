@@ -7,6 +7,8 @@ export class Router {
         this.query = Object.assign( request.query, request.body );
         return;
     }
+
+
     get className() {
         if ( this.query.route === void 0 ) return false;
         const re = this.query.route.split('.');

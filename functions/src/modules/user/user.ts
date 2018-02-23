@@ -1,5 +1,7 @@
 import * as admin from 'firebase-admin';
 import { Document } from './../document/document';
+import { COLLECTIONS } from './../core/defines';
+
 
 
 interface USER_CREATE {
@@ -17,16 +19,16 @@ interface USER_CREATE {
  */
 export class User extends Document {
     constructor( public db: admin.firestore.Firestore, public request, public response ) {
-        super( db, request, response );
-    }
 
+        super( COLLECTIONS.USERS, db, request, response );
+
+    }
 
     /**
      * @attention all the permission and data validity must be checked before this method. 
      */
-    async create(obj: USER_CREATE) {
-        const re = await super.create(obj);
-        return re;
+    async create(data: USER_CREATE) {
+        return await super.create(data);
     }
     async getUserList() {
         const userList = await super.read(this.request.body.collection);

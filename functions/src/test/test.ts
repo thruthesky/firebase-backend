@@ -49,7 +49,7 @@ describe('User Register', () => {
     });
 
     it('Expect: register success.', async () => {
-        const data = req({ route: 'user.register', uid: 'uid-a', name: 'my-name', gender: 'M' }, true);
+        const data = req({ route: 'user.register', uid: 'uid-c', name: 'my-name', gender: 'M' }, true);
         const re = await rpn(data);
         console.log('re: ', re);
         expect(re).to.be.an('object');

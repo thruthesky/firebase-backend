@@ -1,12 +1,22 @@
 import { Response } from 'express';
 import * as admin from 'firebase-admin';
+import { Base } from './../core/base';
 
-export class Document {
 
 
-    constructor(public db: admin.firestore.Firestore, public query, public response: Response ) {
+export class Document extends Base {
+
+
+    constructor(
+        private __collection_name__: string,
+        public db: admin.firestore.Firestore,
+        public query,
+        public response: Response) {
+
+        super(__collection_name__, db, query, response);
 
     }
+
 
     /**
      * 
@@ -15,43 +25,51 @@ export class Document {
      * 
      * @param obj Object to be set into `firestore`.
      */
-    sanitizeData( obj ) {
-        if ( ! obj ) return undefined;
+    sanitizeData(obj) {
+        if (!obj) return null;
         try {
-            const str = JSON.stringify( obj );
-            return JSON.parse( str );
+            const str = JSON.stringify(obj);
+            return JSON.parse(str);
         }
-        catch ( e ) {
-            return undefined;
+        catch (e) {
+            return null;
         }
     }
 
     /**
      * Sets a data to a document.
+     *
      * @attention Must use this when you set a document. You cannot use any other method to set data into firestore.
-     * @param data Data to set
-     * @param col Collection
-     * @param doc Document ID
+     * @param data Data to set.
+     * @desc `Collection name` comes from the taxonomy.
+     * @desc  Document ID is made of `data.uid`. If `data.uid` is not set, Document ID will be automatically generated.
      */
-    async set( data, col, doc? ) {
-        
-        const collection = this.db.collection( col );
-        let document;
-        if ( doc ) document = collection.doc ( doc );
-        else document = collection.doc();
+    async set(data) {
+        if (!data) return null;
+        const collectionRef = this.db.collection(this.collection);
+        let documentRef;
+        if (data.uid === void 0) documentRef = collectionRef.doc();
+        else documentRef = collectionRef.doc(data.uid);
 
-        const re = await document.set( this.sanitizeData( data ) );
+        const obj = this.sanitizeData(data);
+        obj['created'] = this.serverTime();
+
+        const re = await documentRef.set(obj).catch(e => {
+            return { code: e['code'], message: e['message'] }
+        });
+
     }
 
     /**
-     * It creates a doc.
-     * @param obj Object to set to Firestore
+     * It creates a Document.
+     * @param data Object to set to Firestore
+     * 
+     * @desc If `data.uid` is set, then it is considered as `uinique id` and used for the document ID.
+     * 
+     * @return If there is an error, it returns `Error Object` or it returns a Promise.
      */
-    async create(obj) {
-        obj['created'] = new Date();
-        const re = await this.set( obj, 'x-users' );
-        // @todo error check.
-        return 0;
+    async create(data) {
+        return await this.set(data).catch(e => e);
     }
 
 
