@@ -17,7 +17,7 @@
     "firebase-functions": "^0.8.1"
   },
   "devDependencies": {
-    "@google-cloud/functions-emulator": "^1.0.0-alpha.29",
+    "@google-cloud/functions-emulator": "^1.0.0-beta.2",
     "@types/chai": "^4.1.2",
     "@types/cors": "^2.8.3",
     "@types/mocha": "^2.2.48",
