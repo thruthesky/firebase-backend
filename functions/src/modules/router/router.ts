@@ -1,44 +1,35 @@
 import { Request, Response } from 'express';
 import { UserRouter } from './../user/user.router';
-
-export class Router {
-    query;
-    constructor( public db, public request: Request, public response: Response ) {
-        this.query = Object.assign( request.query, request.body );
-        return;
-    }
+import { Base } from './../core/base';
 
 
-    get className() {
-        if ( this.query.route === void 0 ) return false;
-        const re = this.query.route.split('.');
-        return re[0];
+export class Router extends Base {
+    constructor( params ) {
+        super( null );
+        Base.params = params;
+        // console.log("[ params ] ", params );
     }
-    get methodName() {
-        const re = this.query.route.split('.');
-        return re[1];
-    }
-    param( name ) {
-        if ( this.query[name] === void 0 ) return false;
-        else return this.query[name];
-    }
+
     async run() {
-        if ( ! this.className ) return { code: -1, message: 'No route was specified.' };
-        let route$;
-        if ( this.className === 'user' ) {
+        if (!this.routeClassName) return { code: -1, message: 'No route was specified.' };
 
-         route$ = new UserRouter( this.db, this.query, this.response );
+        let $router = null;
+        if (this.routeClassName === 'user') {
+            $router = new UserRouter();
         }
+        else return { code: -20, message: 'Router does exists.' };
 
-        if ( route$[ this.methodName ] === void 0 ) return { code: -1, message: this.methodName + ' - method does not exists.' };
         
+
+        // console.log($router);
+
+        if ( $router[this.routeMethodName] === void 0) return { code: -1, message: this.routeMethodName + ' - method does not exists.' };
 
         const ret = { route: this.param('route') };
-        const res = await route$[ this.methodName ]();
 
-        
+        const res = await $router[this.routeMethodName]();
 
-        if ( res && res['code'] !== void 0 && res['code'] < 0 ) { // This is error
+        if (res && res['code'] !== void 0 && res['code'] < 0) { // This is error
             ret['code'] = res['code'];
             ret['message'] = res['message'];
         }

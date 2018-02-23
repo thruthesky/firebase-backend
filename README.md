@@ -26,7 +26,7 @@ Shopping Mall Plugin
 * Run `tsc`, Unit Test, deploy to functions-emulator.
 ````
 $ tsc --watch
-$ ./node_modules/.bin/mocha lib/test/test.js --watch -t 100000 // Unit Testing...
+$ ./node_modules/.bin/mocha lib/unit-test/start.js --watch -t 100000 // Unit Testing...
 $ ./node_modules/.bin/functions-emulator deploy api --trigger-http
 ````
 
@@ -63,3 +63,6 @@ $ ./node_modules/.bin/functions deploy Api --trigger-http ; deploy a http functi
 * [Using Firebase Functions Emulator](https://docs.google.com/document/d/1ncYWftCEXJBJkATExfGM2S4dzerrI_7PA_DjWjNdEmQ/edit#heading=h.anlypegtz2yg)
 
 
+## Unit Testing
+
+* [Unit Testing](https://docs.google.com/document/d/1ncYWftCEXJBJkATExfGM2S4dzerrI_7PA_DjWjNdEmQ/edit#heading=h.tdpnuuowlpnt)

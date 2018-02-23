@@ -1,10 +1,11 @@
-import * as e from '../core/error';
-import { User } from './user';
+// import * as admin from 'firebase-admin';
+// import { Request, Response } from 'express';
+import * as error from '../core/error';
+import { User, USER_REGISTER } from './user';
 
 export class UserRouter extends User {
-    constructor( db, public query, public response ) {
-        
-        super( db, query, response );
+    constructor() {
+        super();
         return;
     }
     version() {
@@ -25,19 +26,22 @@ export class UserRouter extends User {
      * @note no email. no password.
      */
     async register() {
-        if ( this.query.uid === void 0 ) return e.obj( e.NO_UID );
-        if ( this.query.name === void 0 ) return e.obj( e.NO_NAME );
-        return await this.create({
-            uid: this.query.uid,
-            name: this.query.name,
-            gender: this.query.gender,
-            birthday: this.query.birthday,
-            mobile: this.query.mobile,
-            landline: this.query.landline
-        });
+        const p: USER_REGISTER = <USER_REGISTER> this.params;
+        if (p.uid === void 0) return error.obj(error.NO_UID);
+        if (p.name === void 0) return error.obj(error.NO_NAME);
+        const data = {
+            uid: p.uid,
+            name: p.name,
+            gender: p.gender,
+            birthday: p.birthday,
+            mobile: p.mobile,
+            landline: p.landline
+        };
+        return await this.collection.doc(p.uid).set( data )
+            .catch( e => error.obj( e['code'], e['message'] ) );
     }
 
-    async list(){
+    async list() {
         return await this.getUserList();
     }
 

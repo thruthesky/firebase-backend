@@ -7,13 +7,9 @@ import { Base } from './../core/base';
 export class Document extends Base {
 
 
-    constructor(
-        private __collection_name__: string,
-        public db: admin.firestore.Firestore,
-        public query,
-        public response: Response) {
+    constructor( collectionName: string ) {
 
-        super(__collection_name__, db, query, response);
+        super(collectionName);
 
     }
 
@@ -44,21 +40,21 @@ export class Document extends Base {
      * @desc `Collection name` comes from the taxonomy.
      * @desc  Document ID is made of `data.uid`. If `data.uid` is not set, Document ID will be automatically generated.
      */
-    async set(data) {
-        if (!data) return null;
-        const collectionRef = this.db.collection(this.collection);
-        let documentRef;
-        if (data.uid === void 0) documentRef = collectionRef.doc();
-        else documentRef = collectionRef.doc(data.uid);
+    // async set(data) {
+    //     if (!data) return null;
+    //     const collectionRef = this.db.collection(this.collection);
+    //     let documentRef;
+    //     if (data.uid === void 0) documentRef = collectionRef.doc();
+    //     else documentRef = collectionRef.doc(data.uid);
 
-        const obj = this.sanitizeData(data);
-        obj['created'] = this.serverTime();
+    //     const obj = this.sanitizeData(data);
+    //     obj['created'] = this.serverTime();
 
-        const re = await documentRef.set(obj).catch(e => {
-            return { code: e['code'], message: e['message'] }
-        });
+    //     const re = await documentRef.set(obj).catch(e => {
+    //         return { code: e['code'], message: e['message'] }
+    //     });
 
-    }
+    // }
 
     /**
      * It creates a Document.
@@ -68,9 +64,9 @@ export class Document extends Base {
      * 
      * @return If there is an error, it returns `Error Object` or it returns a Promise.
      */
-    async create(data) {
-        return await this.set(data).catch(e => e);
-    }
+    // async create(data) {
+    //     return await this.set(data).catch(e => e);
+    // }
 
 
 

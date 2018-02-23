@@ -5,6 +5,8 @@ import { serviceAccount } from './settings/serviceAccountKey';
 
 import { Router } from './modules/router/router';
 import { Library as lib } from './modules/library/library';
+import { Base } from './modules/core/base';
+
 
 
 
@@ -20,7 +22,7 @@ admin.initializeApp({ // Enable on development.
 
 
 const db = admin.firestore();
-
+Base.db = db;
 
 
 // db.collection('x-users').doc().set({"uid":"abc","name":"nameabc","created":"2018-02-21T17:19:15.212Z"}).then (x => x);
@@ -29,9 +31,8 @@ const db = admin.firestore();
 
 export const api = functions.https.onRequest( (request, response ) => {
     cors(request, response, async  () => {
-        const res = await  (new Router(db, request, response)).run();
-        
-        
+        const queries = Object.assign( {}, request.query, request.body );
+        const res = await  (new Router( queries )).run();
         response.send( res );
     });
 });
