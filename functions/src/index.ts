@@ -26,7 +26,7 @@ Base.db = db;
 
 
 // db.collection('x-users').doc().set({"uid":"abc","name":"nameabc","created":"2018-02-21T17:19:15.212Z"}).then (x => x);
-        
+
 
 
 export const api = functions.https.onRequest( (request, response ) => {
