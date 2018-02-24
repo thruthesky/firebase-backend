@@ -26,7 +26,7 @@ describe('Registration TEST', () => {
     it('Without uid', async () => {
         const re = await route({ route: 'user.set', a: 'b' });
         expect(re).to.be.a('object');
-        expect(re.code).to.be.equal(E.NO_UID);
+        expect(re.code).to.be.equal(E.NO_ID);
     });
     it('Without name should be OK', async () => {
         const re = await route({ route: 'user.set', id: 'uid-a' });
@@ -54,7 +54,7 @@ describe('User Update TEST', () => {
     })
     it(`2. Should failed on update because emtpy document id.`, async() => {
         const re = await route({ route: 'user.update', id: '', name: 'name-b-updated'})
-        expect(re.code).to.be.equal(E.NO_UID);
+        expect(re.code).to.be.equal(E.NO_ID);
     })
     it(`3. Should failed on update because wrong document id.`, async() => {
         const re = await route({ route: 'user.update', id: 'wrong-user-id'});

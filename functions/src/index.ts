@@ -36,3 +36,8 @@ export const api = functions.https.onRequest( (request, response ) => {
         response.send( res );
     });
 });
+
+
+function hook( name ) {
+    console.log("Hook name: ", name);
+}

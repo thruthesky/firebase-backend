@@ -2,7 +2,7 @@ const es = {};
 export const NO_EMAIL = -50; es[NO_EMAIL] = 'No email address.';
 export const NO_PASSWORD = -51; es[NO_PASSWORD] = 'No password.';
 export const NO_NAME = -52; es[NO_NAME] = 'No name.';
-export const NO_UID = -53; es[NO_UID] = 'No uid.';
+export const NO_ID = -53; es[NO_ID] = 'No uid.';
 export const WRONG_GENDER = -61; es[WRONG_GENDER] = 'Wrong gender.';
 export const WRONG_ROUTE = -60; es[WRONG_ROUTE] = 'The given route is not exists. It is a wrong route.';
 export const EMPTY_ROUTE = -61; es[EMPTY_ROUTE] = 'Empty route.';

@@ -2,6 +2,9 @@ import { Response } from 'express';
 import * as admin from 'firebase-admin';
 import { Base } from './../core/base';
 
+import { hook } from './../../hooks';
+
+
 
 
 export class Document extends Base {
@@ -13,6 +16,13 @@ export class Document extends Base {
 
     }
 
+
+    /**
+     * Calls hook
+     */
+    hook(name, data) {
+        hook(name, data);
+    }
 
     /**
      * 

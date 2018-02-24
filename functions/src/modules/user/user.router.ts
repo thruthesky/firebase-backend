@@ -18,6 +18,12 @@ export class UserRouter extends User {
         return 10;
     }
 
+
+    /**
+     * It sanitize user data to set/update.
+     * 
+     * @param p User data 
+     */
     sanitizeUserData(p: USER_DATA) {
         const data = {
             id: p.id,
@@ -27,8 +33,10 @@ export class UserRouter extends User {
             mobile: p.mobile,
             landline: p.landline
         };
+        this.hook( 'user.router.sanitizeUserData', data );
         return data;
     }
+
 
     /**
      * Returns false if there is no error.
@@ -37,7 +45,7 @@ export class UserRouter extends User {
      * @todo validate more on user data.
      */
     validateUserData(p: USER_DATA): ROUTER_RESPONSE | boolean {
-        if (p.id === void 0 || !p.id) return this.error(E.NO_UID);
+        if (p.id === void 0 || !p.id) return this.error(E.NO_ID);
         // if (p.name === void 0 || !p.name) return this.error(E.NO_NAME);
 
         if ( p.gender !== void 0 && p.gender ) {

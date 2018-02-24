@@ -23,12 +23,46 @@ Shopping Mall Plugin
 
 ## Run
 
-* Run `tsc`, Unit Test, deploy to functions-emulator.
+* Run `tsc --watch`, and run mocha to do Unit Test.
+
+
+
+## Unit Testing
+
+* [Unit Testing](https://docs.google.com/document/d/1ncYWftCEXJBJkATExfGM2S4dzerrI_7PA_DjWjNdEmQ/edit#heading=h.tdpnuuowlpnt)
+
+
+### Library Testing
+
+* `Library Testing` is testing by instantiating `new Router()`.
+
+    This means, It does not connect to `Firebase Functions`.
+
+    It initiates `Firebase Admin SDK` and test directly on `Firestore`.
+
+* Mocha does not seem to release the connection of `Firebase Admin SDK` so, when mocha runs next time, there will be initializeApp() problems.
+
+    In this case, you can use ` nodemon `
+
+
 ````
 $ tsc --watch
-$ ./node_modules/.bin/mocha lib/unit-test/start.js --watch -t 100000 // Unit Testing...
-$ ./node_modules/.bin/functions-emulator deploy api --trigger-http
+$ nodemon --watch lib ./node_modules/.bin/mocha src/unit-test/user-register-update.ts --compilers ts:ts-node/register -t 99999 // Typescript Test
+$ nodemon --watch lib ./node_modules/.bin/mocha lib/unit-test/user-register-update.js --watch -t 100000 // Javascript test.
 ````
+
+#### Firebase Functions Test
+
+* Testing real `Firebase Functions`. Tests under `unit-test/server` will not use `Firebase Admin SDK`. That means, it will directly connection to `Firebase Functions HTTP Triggers`.
+
+````
+$ ./node_modules/.bin/mocha src/unit-test/server/user-register-update.ts --compilers ts:ts-node/register --watch -t 100000 // Use TypeScript to test.
+$ /node_modules/.bin/mocha lib/unit-test/server/router.js --watch -t 100000
+$ ./node_modules/.bin/mocha lib/unit-test/server/user-register-update.js --watch -t 100000
+````
+
+
+
 
 * Get Resource URL from functions-emulator after deploy and put it in `test.ts`
 
@@ -63,13 +97,35 @@ $ ./node_modules/.bin/functions deploy Api --trigger-http ; deploy a http functi
 * [Using Firebase Functions Emulator](https://docs.google.com/document/d/1ncYWftCEXJBJkATExfGM2S4dzerrI_7PA_DjWjNdEmQ/edit#heading=h.anlypegtz2yg)
 
 
-## Unit Testing
-
-* [Unit Testing](https://docs.google.com/document/d/1ncYWftCEXJBJkATExfGM2S4dzerrI_7PA_DjWjNdEmQ/edit#heading=h.tdpnuuowlpnt)
-
-
 
 
 ## Return value from `Router()`
 
 * Returns value from `Router()` must be an ERROR_OBJECT object.
+
+
+
+
+## Hook system
+
+* Adding a hook.
+Simple call
+````
+this.hook('hook name', 'data');
+````
+
+* How to code with hook.
+
+Simple add ` if ( hook_name === 'your_hook' )` in `hooks.ts`
+
+
+````
+export function hook(name, data) {
+    console.log('Hook name: ', name);
+    console.log('Hook data: ', data);
+    if (name === 'user.router.sanitizeUserData') {
+        return data['hooked'] = 'yes';
+    }
+    return data;
+}
+````
