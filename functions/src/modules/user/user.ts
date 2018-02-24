@@ -4,13 +4,28 @@ import { COLLECTIONS } from './../core/defines';
 
 
 
-export interface USER_REGISTER {
+/**
+ * User data to create/update.
+ * 
+ * @desc You can update more.
+ */
+export interface USER_DATA {
     id: string;
-    name: string;
+    name?: string;
+    nickname?: string;
+    first_name?: string;
+    middle_name?: string;
+    last_name?: string;
+    email?: string;
     birthday?: string;
     gender?: string;
     mobile?: string;
     landline?: string;
+    address?: string;
+    zipcode?: string;
+    country?: string;
+    province?: string;
+    city?: string;
 };
 
 

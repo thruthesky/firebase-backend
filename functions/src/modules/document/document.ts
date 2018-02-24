@@ -55,6 +55,9 @@ export class Document extends Base {
 
     /**
      * 
+     * Sets data on Document and Returns a Promise.
+     * 
+     * @desc When you set on a Document, you MUST use this method. You must NOT set Documents in other way.
      * 
      * @param documentID - Document ID. If not set, automatically generated.
      * 
@@ -73,11 +76,12 @@ export class Document extends Base {
 
 
      * @return
-     *  
+     *          - A Promise<WriteResult> if success.
+     *          - A Promise<null> if the input data is empty.
      *          - A Promise<ErrorObject> if there is error. note: it is a promise that is being returned.
 
      */
-    async set(data, documentID?) {
+    async set(data, documentID?: string): Promise<any> {
         if (!data) return null;
         data['created'] = this.serverTime();
 
@@ -90,13 +94,39 @@ export class Document extends Base {
 
 
     /**
+     * This updates a Document.
+     * 
+     * @desc It works as `firestore.update()`. It update only some properties without overwriting the entire Document.
+     *      - It add some extra data like 'updated' stamp
+     * 
+     * @note Update will fail if the document does not exsits.
+     * 
+     * @param data data to update
+     * @param documentID Document ID to updated on
+     *      
+     * @return
+     *          - A Promise<WriteResult> if success.
+     *          - A Promise<null> if the input data is empty.
+     *          - A Promise<ErrorObject> if there is error. note: it is a promise that is being returned.
+     */
+    async update(data, documentID: string): Promise<any> {
+        if (!data) return null;
+        data['updated'] = this.serverTime();
+        return await this.collection.doc(documentID).update(this.sanitizeData(data))
+            .catch(e => this.error(e));
+    }
+
+
+    /**
+     * 
+     * Returns a documentation on the currently selected collection
      * 
      * @return A Promise of
      *          - Document data
      *          - null if docuemnt doe not exsits.
      *          - ErrorObject. note: it is a promise that is being returned.
      */
-    async get(documentID) {
+    async get(documentID): Promise<any> {
         return this.collection.doc(documentID).get()
             .then(doc => {
                 if (doc.exists) {
@@ -106,6 +136,7 @@ export class Document extends Base {
             })
             .catch(e => this.error(e));
     }
+
 
     /**
      * It creates a Document.
@@ -121,22 +152,20 @@ export class Document extends Base {
 
 
 
-    async read(collection) {
-        const data = [];
-        const obj = {};
-        await this.db.collection(collection).get()
-            .then(function (querySnapshot) {
-                querySnapshot.forEach(function (doc) {
-                    data.push(obj[doc.id] = doc.data());
-                });
+    // async read(collection) {
+    //     const data = [];
+    //     const obj = {};
+    //     await this.db.collection(collection).get()
+    //         .then(function (querySnapshot) {
+    //             querySnapshot.forEach(function (doc) {
+    //                 data.push(obj[doc.id] = doc.data());
+    //             });
 
-            });
-        // return data;
-        return JSON.stringify(data);
-    }
-    update() {
-        return;
-    }
+    //         });
+    //     // return data;
+    //     return JSON.stringify(data);
+    // }
+
     delete() {
         return;
     }

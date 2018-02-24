@@ -32,7 +32,7 @@ Base.db = db;
 export const api = functions.https.onRequest( (request, response ) => {
     cors(request, response, async  () => {
         const queries = Object.assign( {}, request.query, request.body );
-        const res = await  (new Router( queries )).run();
+        const res = await (new Router( queries )).run();
         response.send( res );
     });
 });

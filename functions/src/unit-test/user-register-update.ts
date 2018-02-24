@@ -24,17 +24,17 @@ async function route(data) {
 
 describe('Registration TEST', () => {
     it('Without uid', async () => {
-        const re = await route({ route: 'user.register', a: 'b' });
+        const re = await route({ route: 'user.set', a: 'b' });
         expect(re).to.be.a('object');
         expect(re.code).to.be.equal(E.NO_UID);
     });
-    it('Without name', async () => {
-        const re = await route({ route: 'user.register', id: 'uid-a' });
+    it('Without name should be OK', async () => {
+        const re = await route({ route: 'user.set', id: 'uid-a' });
         expect(re).to.be.a('object');
-        expect(re.code).to.be.equal(E.NO_NAME);
+        expect(re.code).to.be.equal(0);
     });
-    it('Should be OK', async () => {
-        const re = await route({ route: 'user.register', id: 'uid-a', name: 'user-a', nick: 'Jae' });
+    it('Should be OK with a property that does not exists on Interface USER_DATA.', async () => {
+        const re = await route({ route: 'user.set', id: 'uid-a', name: 'user-a', nick: 'Jae' });
         expect(re).to.be.a('object');
         expect(re.code).to.be.equal(0);
         const user = await route({ route: 'user.get', id: 'uid-a' });
@@ -45,7 +45,7 @@ describe('Registration TEST', () => {
 
 describe('User Update TEST', () => {
     it(`1. Should success on register`, async () => {
-        const re = await route({ route: 'user.register', id: 'user-b', name: 'name-b' });
+        const re = await route({ route: 'user.set', id: 'user-b', name: 'name-b' });
         expect(re).to.be.a('object');
         expect(re.code).to.be.equal(0);
         const got = await route({ route: 'user.get', id: 'user-b' });
@@ -53,16 +53,23 @@ describe('User Update TEST', () => {
         expect(got['data']['name']).to.be.equal('name-b');
     })
     it(`2. Should failed on update because emtpy document id.`, async() => {
-        expect(1).to.be.equal(2);
+        const re = await route({ route: 'user.update', id: '', name: 'name-b-updated'})
+        expect(re.code).to.be.equal(E.NO_UID);
     })
     it(`3. Should failed on update because wrong document id.`, async() => {
-        expect(1).to.be.equal(2);
+        const re = await route({ route: 'user.update', id: 'wrong-user-id'});
+        // console.log(re);
+        expect(re.code).to.be.equal(E.DOCUEMNT_ID_DOES_NOT_EXISTS_FOR_UPDATE);
     })
+
     it(`4. Should failed on update because wrong gender.`, async() => {
-        expect(1).to.be.equal(2);
+        const re = await route({ route: 'user.update', id: 'user-b', gender: 'D'});
+        expect(re.code).to.be.equal(E.WRONG_GENDER);
     })
-    it(`5. Should failed on update because wrong name.`, async() => {
-        expect(1).to.be.equal(2);
+
+    it(`5. Should be success on update name to name-updated.`, async() => {
+        const re = await route({ route: 'user.update', id: 'user-b', name: 'name-updated'});
+        expect(re.code).to.be.equal(0);
     })
 })
 

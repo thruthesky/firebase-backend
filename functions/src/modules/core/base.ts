@@ -5,7 +5,7 @@ import { COLLECTION_PREFIX } from './../../settings/settings';
 import * as E from './../core/error';
 
 
-import { RouterResponse } from './../core/defines';
+import { ROUTER_RESPONSE } from './../core/defines';
 
 
 
@@ -24,7 +24,7 @@ export class Base {
         this.collectionName = collectionName;
     }
 
-    get params() {
+    get params(): any {
         return Base.params;
     }
     get db() {
@@ -53,13 +53,21 @@ export class Base {
 
 
 
-    error(code): RouterResponse {
-        const obj = <RouterResponse>E.obj(code);
+    error(code): ROUTER_RESPONSE {
+        const obj = <ROUTER_RESPONSE>E.obj(code);
         if (obj) {
             obj['route'] = this.param('route');
         }
         return obj;
     }
+
+    /**
+     * Returns true if the input `obj` is an ERROR_OBJECT.
+     */
+    isErrorObject( obj ) : boolean {
+        return obj && obj['code'] !== void 0 && obj['code'] !== 0;
+    }
+    
 
 
     /**

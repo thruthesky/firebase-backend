@@ -66,3 +66,10 @@ $ ./node_modules/.bin/functions deploy Api --trigger-http ; deploy a http functi
 ## Unit Testing
 
 * [Unit Testing](https://docs.google.com/document/d/1ncYWftCEXJBJkATExfGM2S4dzerrI_7PA_DjWjNdEmQ/edit#heading=h.tdpnuuowlpnt)
+
+
+
+
+## Return value from `Router()`
+
+* Returns value from `Router()` must be an ERROR_OBJECT object.

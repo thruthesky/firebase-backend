@@ -6,7 +6,7 @@ export const COLLECTIONS = {
 
 
 
-export interface RouterResponse {
+export interface ROUTER_RESPONSE {
     route: string;
     code: number;
     message?: string;

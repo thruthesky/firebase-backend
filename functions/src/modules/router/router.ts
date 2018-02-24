@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 import { UserRouter } from './../user/user.router';
 import { Base } from './../core/base';
 import * as E from './../core/error';
-import { RouterResponse } from './../core/defines';
+import { ROUTER_RESPONSE } from './../core/defines';
 
 
 
@@ -14,7 +14,7 @@ export class Router extends Base {
         // console.log("[ params ] ", params );
     }
 
-    async run(): Promise<RouterResponse> {
+    async run(): Promise<ROUTER_RESPONSE> {
         if (!this.param('route')) {
             return this.error(E.EMPTY_ROUTE);
         }
@@ -31,16 +31,17 @@ export class Router extends Base {
 
         if ($router[this.routeMethodName] === void 0) return this.error(E.WRONG_METHOD);;
 
-        const ret = { route: this.param('route'), code: 0 };
+        let ret = { route: this.param('route'), code: 0 };
+        const result = await $router[this.routeMethodName]();
 
-        const res = await $router[this.routeMethodName]();
 
-        if (res && res['code'] !== void 0 && res['code'] < 0) { // This is error
-            ret['code'] = res['code'];
-            ret['message'] = res['message'];
+        if (  this.isErrorObject( result ) ) {
+            ret = Object.assign( ret, result );
+            // ret['code'] = res['code'];
+            // ret['message'] = res['message'];
         }
         else {
-            ret['data'] = res;
+            ret['data'] = result;
         }
 
         return ret;
