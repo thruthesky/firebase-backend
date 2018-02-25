@@ -25,6 +25,7 @@ export class UserRouter extends User {
      * @param p User data 
      */
     sanitizeUserData(p: USER_DATA) {
+
         const data = {
             id: p.id,
             name: p.name,
@@ -33,8 +34,9 @@ export class UserRouter extends User {
             mobile: p.mobile,
             landline: p.landline
         };
-        this.hook( 'user.router.sanitizeUserData', data );
-        return data;
+
+        return this.hook( 'user.router.sanitizeUserData', data );
+
     }
 
 
@@ -66,9 +68,19 @@ export class UserRouter extends User {
      *          But we need to add/manage extra user information on `Firestore`.
      * 
      * @note no email. no password.
+     * 
+     * 
+     * 
      */
     async set() {
         if (this.validateUserData(this.params)) return this.validateUserData(this.params);
+
+
+
+        
+        const re = this.hook('user.set');
+        if ( this.isErrorObject( re ) ) return re;
+
         return await super.set(this.sanitizeUserData(this.params), (<USER_DATA>this.params).id);
     }
 

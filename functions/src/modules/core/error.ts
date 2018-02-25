@@ -1,4 +1,5 @@
 const es = {};
+export const TEST = -11; es[TEST] = 'Test Error';
 export const NO_EMAIL = -50; es[NO_EMAIL] = 'No email address.';
 export const NO_PASSWORD = -51; es[NO_PASSWORD] = 'No password.';
 export const NO_NAME = -52; es[NO_NAME] = 'No name.';
@@ -9,16 +10,21 @@ export const EMPTY_ROUTE = -61; es[EMPTY_ROUTE] = 'Empty route.';
 export const WRONG_METHOD = -61; es[WRONG_METHOD] = 'Wrong method.';
 export const NO_USER_DOCUMENT_ID = -4010; es[NO_USER_DOCUMENT_ID] = 'Empty document path for user collection.';
 export const DOCUEMNT_ID_DOES_NOT_EXISTS_FOR_UPDATE = 5; es[DOCUEMNT_ID_DOES_NOT_EXISTS_FOR_UPDATE] = 'Document ID does not exsits for update.';
+export const FAILED_TO_VERIFY_USER = -4020; es [FAILED_TO_VERIFY_USER] = 'Failed to verify who you are.';
+export const FAILED_TO_CREATE_ANONYMOUS = -4022; es[FAILED_TO_CREATE_ANONYMOUS] = 'Failed to create anonymous account';
+export const SYSTEM_ALREADY_INSTALLED = -4100; es[SYSTEM_ALREADY_INSTALLED] = 'System is already installed.';
 
-
-
+export const COLLECTION_IS_NOT_SET = -4200; es[COLLECTION_IS_NOT_SET] = 'Collection name is set set on base class.';
 /**
  * 
- * @desc `code` can be bigger than 0. Firestore error code is bigger than 0
+ * @desc `code` can be a string or a number.
+ *      Firestore error code is usually bigger than 0 and sometimes it is evena  string like `auth/uid-already-exists`.
+ * 
+ * @desc `code` is a falsy value if it is not error.
  * 
  */
 export interface ERROR_OBJECT {
-    code: number;
+    code: number | string;
     message: string;
 };
 

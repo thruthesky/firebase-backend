@@ -10,7 +10,6 @@ import { Base } from './modules/core/base';
 
 
 
-
 const cors = corsOptions({ origin: true });
 
 // admin.initializeApp( functions.config().firebase ); // Enable on production.
@@ -21,8 +20,8 @@ admin.initializeApp({ // Enable on development.
 });
 
 
-const db = admin.firestore();
-Base.db = db;
+Base.admin = admin;
+
 
 
 // db.collection('x-users').doc().set({"uid":"abc","name":"nameabc","created":"2018-02-21T17:19:15.212Z"}).then (x => x);
@@ -37,7 +36,3 @@ export const api = functions.https.onRequest( (request, response ) => {
     });
 });
 
-
-function hook( name ) {
-    console.log("Hook name: ", name);
-}

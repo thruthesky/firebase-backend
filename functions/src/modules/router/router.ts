@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import { UserRouter } from './../user/user.router';
+import { SystemRouter } from './../system/system.router';
 import { Base } from './../core/base';
 import * as E from './../core/error';
 import { ROUTER_RESPONSE } from './../core/defines';
@@ -19,11 +20,16 @@ export class Router extends Base {
             return this.error(E.EMPTY_ROUTE);
         }
 
-        let $router = null;
-        if (this.routeClassName === 'user') {
-            $router = new UserRouter();
+        if ( ! this.verifyUser() ) {
+            return this.error(E.FAILED_TO_VERIFY_USER);
         }
+
+        // console.log('run:');
+        let $router = null;
+        if (this.routeClassName === 'user') $router = new UserRouter();
+        else if (this.routeClassName === 'system' ) $router = new SystemRouter();
         else return this.error(E.WRONG_ROUTE);
+
 
 
 

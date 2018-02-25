@@ -18,14 +18,12 @@ describe('Router Test', () => {
         expect(re).to.be.an('object');
         expect(re['code']).to.be.equal(E.EMPTY_ROUTE);
     });
-
     it(`Test with wrong route`, async () => {
         const data = req({ route: 'wrong-route' });
         const re = await rpn(data).catch(e => e);
         expect(re).to.be.an('object');
         expect(re['code']).to.be.equal(E.WRONG_ROUTE);
     });
-
     it(`Test with wrong method`, async () => {
         const data = req({ route: 'user.wrong_method' });
         const re = await rpn(data).catch(e => e);
@@ -38,5 +36,4 @@ describe('Router Test', () => {
         expect(re).to.be.an('object');
         expect(re['code']).to.be.equal(0);
     });
-
 });

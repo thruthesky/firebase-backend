@@ -1,28 +1,11 @@
-// Firestore init
-import * as admin from 'firebase-admin';
-import { serviceAccount } from './../settings/serviceAccountKey';
-admin.initializeApp({ // Enable on development.
-    credential: admin.credential.cert(<any>serviceAccount),
-    databaseURL: "https://pwa-cms.firebaseio.com"
-});
-const db = admin.firestore();
-
-// Testing tools
 import * as chai from 'chai';
-import * as util from 'util';
 const expect = chai.expect;
+import { Base, E } from './../../modules/core/core';
+import { Router } from './../../modules/router/router';
+import { init, route } from './init';
+Base.admin = init();
 
-// Firebase-backend
-import * as E from './../modules/core/error';
-import { Base } from './../modules/core/base';
-import { Router } from './../modules/router/router';
-Base.db = db;
-
-async function route(data) {
-    return await (new Router(data)).run()
-}
-
-describe('Registration TEST', () => {
+describe('Registration Test.', () => {
     it('Without uid', async () => {
         const re = await route({ route: 'user.set', a: 'b' });
         expect(re).to.be.a('object');
@@ -30,6 +13,7 @@ describe('Registration TEST', () => {
     });
     it('Without name should be OK', async () => {
         const re = await route({ route: 'user.set', id: 'uid-a' });
+        console.log('re: ', re);
         expect(re).to.be.a('object');
         expect(re.code).to.be.equal(0);
     });
@@ -43,7 +27,7 @@ describe('Registration TEST', () => {
 });
 
 
-describe('User Update TEST', () => {
+describe('User Update Test', () => {
     it(`1. Should success on register`, async () => {
         const re = await route({ route: 'user.set', id: 'user-b', name: 'name-b' });
         expect(re).to.be.a('object');

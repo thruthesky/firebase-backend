@@ -5,7 +5,7 @@ import { COLLECTION_PREFIX } from './../../settings/settings';
 import * as E from './../core/error';
 
 
-import { ROUTER_RESPONSE } from './../core/defines';
+import { ROUTER_RESPONSE, Anonymous } from './../core/defines';
 
 
 
@@ -14,8 +14,10 @@ import { ROUTER_RESPONSE } from './../core/defines';
 
 export class Base {
     collectionName: string = null;
-    static db: admin.firestore.Firestore = null;
+
+    static admin;
     static params: any = null;
+    static uid: string = null; // User `uid` if the user is logged in. The user may be Anonymous.
     // static request: Request = null;
     // static response: Response = null;
 
@@ -27,14 +29,32 @@ export class Base {
     get params(): any {
         return Base.params;
     }
-    get db() {
-        return Base.db;
+    get db(): admin.firestore.Firestore {
+        return Base.admin.firestore();
     }
-    set db(db: admin.firestore.Firestore) {
-        Base.db = db;
+    get auth(): admin.auth.Auth {
+        return Base.admin.auth();
     }
+    // set db(db: admin.firestore.Firestore) {
+    //     Base.db = db;
+    // }
     get collection() {
-        return this.db.collection( COLLECTION_PREFIX + this.collectionName);
+        return this.db.collection(this.collectionNameWithPrefix(this.collectionName));
+    }
+
+    /**
+     * Returns collection name with prefix.
+     * 
+     * @desc if input is 'users' then, return would be 'x-users'.
+     * @desc Must use this method to reference any collection.
+     * 
+     * @param name collection name
+     * 
+     * 
+     * @return perfixed collection name
+     */
+    collectionNameWithPrefix(name): string {
+        return COLLECTION_PREFIX + name;
     }
 
 
@@ -64,10 +84,10 @@ export class Base {
     /**
      * Returns true if the input `obj` is an ERROR_OBJECT.
      */
-    isErrorObject( obj ) : boolean {
+    isErrorObject(obj): boolean {
         return obj && obj['code'] !== void 0 && obj['code'] !== 0;
     }
-    
+
 
 
     /**
@@ -94,11 +114,6 @@ export class Base {
         }
     }
 
-
-
-
-
-
     /**
      * Returns server timestmap
      */
@@ -106,4 +121,34 @@ export class Base {
         return admin.firestore.FieldValue.serverTimestamp();
     }
 
+    /**
+     * Returns true if the user is properly verified.
+     * 
+     * @desc it saves the user's uid at `Base.uid`. It many be Anonymous uid.
+     * @desc If no `idToken` was given by HTTP request, then Anonymous uid will be used.
+     * @desc If wrong `idToken` was give, then ErrorObject will be returned.
+     * 
+     * @return
+     *      - TRUE on success.
+     *      - ErrorObject on error.
+     */
+    async verifyUser() {
+        const idToken = this.param('idToken');
+        if (idToken) { // token was given
+            return await this.auth.verifyIdToken(idToken)
+                .then(function (decodedToken) {
+                    this.setLoginUid(decodedToken.uid);
+                    return true;
+                })
+                .catch(e => this.error(e));
+        }
+        else { // no token was given
+            this.setLoginUid(Anonymous.uid);
+            return true;
+        }
+    }
+
+    setLoginUid(uid) {
+        Base.uid = uid;
+    }
 }

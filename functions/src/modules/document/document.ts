@@ -1,8 +1,8 @@
 import { Response } from 'express';
 import * as admin from 'firebase-admin';
-import { Base } from './../core/base';
+import { Base, E } from './../core/core';
 
-import { hook } from './../../hooks';
+import { Hooks } from './../../hooks';
 
 
 
@@ -20,8 +20,9 @@ export class Document extends Base {
     /**
      * Calls hook
      */
-    hook(name, data) {
-        hook(name, data);
+    hook(name, data?) {
+        const hook = new Hooks(this.collectionName);
+        return hook.run(name, data);
     }
 
     /**
@@ -69,7 +70,12 @@ export class Document extends Base {
      * 
      * @desc When you set on a Document, you MUST use this method. You must NOT set Documents in other way.
      * 
+     * @param data - data to be set.
      * @param documentID - Document ID. If not set, automatically generated.
+     * @param collectionName -Collection name. If not set, it will use the collection name that is set on the object.
+     * 
+     * 
+     * @since 2018-02-25. It accepts third parameter as collection name.
      * 
      * 
      * @code
@@ -82,22 +88,35 @@ export class Document extends Base {
             birthday: p.birthday
         };
         return await this.set(data);
-
-
-
+     * 
      * @return
      *          - A Promise<WriteResult> if success.
      *          - A Promise<null> if the input data is empty.
      *          - A Promise<ErrorObject> if there is error. note: it is a promise that is being returned.
 
      */
-    async set(data, documentID?: string): Promise<any> {
+    async set(data, documentID?: string, collectionName?: string): Promise<any> {
         if (!data) return null;
+
+        let collection;
+        if (collectionName) {
+            collection = this.db.collection(this.collectionNameWithPrefix(collectionName));
+        }
+        else {
+            if (this.collectionName) {
+                collection = this.collection;
+            }
+            else {
+                return this.error(E.COLLECTION_IS_NOT_SET);
+            }
+        }
+
+
         data['created'] = this.serverTime();
 
         let documentRef;
-        if (documentID === void 0) documentRef = this.collection.doc();
-        else documentRef = this.collection.doc(documentID);
+        if (documentID) documentRef = collection.doc(documentID);
+        else documentRef = collection.doc();
         return await documentRef.set(this.sanitizeData(data))
             .catch(e => this.error(e));
     }
