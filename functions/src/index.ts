@@ -4,7 +4,6 @@ import * as admin from 'firebase-admin';
 import { serviceAccount } from './settings/serviceAccountKey';
 
 import { Router } from './modules/router/router';
-import { Library as lib } from './modules/library/library';
 import { Base } from './modules/core/base';
 
 

@@ -1,4 +1,4 @@
-import * as admin from 'firebase-admin';
+// import * as admin from 'firebase-admin';
 import { Document } from './../document/document';
 import { COLLECTIONS } from './../core/defines';
 
@@ -10,7 +10,7 @@ import { COLLECTIONS } from './../core/defines';
  * @desc You can update more.
  */
 export interface USER_DATA {
-    id: string;
+    uid: string;
     name?: string;
     nickname?: string;
     first_name?: string;

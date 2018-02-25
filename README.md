@@ -4,6 +4,13 @@ Firebase backend to build CMS
 
 # TODO List
 
+
+* Get ID Token from client without UID and do whatever.
+    ** After user registration, get ID Token with other information and update it on `x-users`.
+
+    ** For unit-test, put a setting in `x-settings` with test=true. if it is set to true, it can test with user uid instead of ID token. After test, it should be false and by default it is false.
+    request will be { idToken: test, uid: user-uid }
+
 * Installation.
     - Web based intsallation build with `capacitor`.
     - get admin email address and put it /x-settings/admins as an array.
@@ -13,7 +20,6 @@ Firebase backend to build CMS
 * Do not nest too much methods. It is extreamly difficult to debug.
 
 * Test on every methods. Even if there are a simple method like `validateUserData()`.
-
 
 * User Management
 With IDTokens https://firebase.google.com/docs/auth/admin/verify-id-tokens

@@ -1,4 +1,3 @@
-import { Request, Response } from 'express';
 import { UserRouter } from './../user/user.router';
 import { SystemRouter } from './../system/system.router';
 import { Base } from './../core/base';

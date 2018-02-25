@@ -1,6 +1,4 @@
-
 import { Base } from './modules/core/base';
-import * as E from './modules/core/error';
 
 export class Hooks extends Base {
 

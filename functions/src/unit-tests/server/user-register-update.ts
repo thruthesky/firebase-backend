@@ -12,10 +12,10 @@ describe('User Register Test', () => {
 
         // console.log(re);
         expect(re).to.be.an('object');
-        expect(re['code']).to.be.equal(E.NO_ID);
+        expect(re['code']).to.be.equal(E.NO_UID);
     });
     it('Expect success', async () => {
-        const data = req({ route: 'user.set', id: 'user-10', a: 'B', c: 'd' });
+        const data = req({ route: 'user.set', uid: 'user-10', a: 'B', c: 'd' });
         const re = await rpn(data).catch(err => err);
 
         // console.log(re);

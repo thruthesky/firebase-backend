@@ -27,7 +27,7 @@ export class UserRouter extends User {
     sanitizeUserData(p: USER_DATA) {
 
         const data = {
-            id: p.id,
+            id: p.uid,
             name: p.name,
             gender: p.gender,
             birthday: p.birthday,
@@ -47,7 +47,9 @@ export class UserRouter extends User {
      * @todo validate more on user data.
      */
     validateUserData(p: USER_DATA): ROUTER_RESPONSE | boolean {
-        if (p.id === void 0 || !p.id) return this.error(E.NO_ID);
+        if (p.uid === void 0 || !p.uid) return this.error(E.NO_UID);
+        if ( p.uid.length > 128 ) return this.error(E.UID_TOO_LONG);
+        if ( p.uid.indexOf('/') !== -1 ) return this.error(E.UID_CANNOT_CONTAIN_SLASH);
         // if (p.name === void 0 || !p.name) return this.error(E.NO_NAME);
 
         if ( p.gender !== void 0 && p.gender ) {
@@ -74,14 +76,13 @@ export class UserRouter extends User {
      */
     async set() {
         if (this.validateUserData(this.params)) return this.validateUserData(this.params);
-
-
-
         
         const re = this.hook('user.set');
         if ( this.isErrorObject( re ) ) return re;
 
-        return await super.set(this.sanitizeUserData(this.params), (<USER_DATA>this.params).id);
+        console.log("Goint to set with UID:" + (<USER_DATA>this.params).uid);
+        console.log("Data: ", this.params);
+        return await super.set(this.sanitizeUserData(this.params), (<USER_DATA>this.params).uid);
     }
 
     /**
@@ -93,14 +94,14 @@ export class UserRouter extends User {
      */
     async update() {
         if (this.validateUserData(this.params)) return this.validateUserData(this.params);
-        return await super.update(this.sanitizeUserData(this.params), (<USER_DATA>this.params).id);
+        return await super.update(this.sanitizeUserData(this.params), (<USER_DATA>this.params).uid);
     }
 
 
     async get() {
-        const id = this.param('id');
+        const id = this.param('uid');
         if (!id) return this.error(E.NO_USER_DOCUMENT_ID);
-        return super.get(this.param('id'));
+        return super.get(this.param('uid'));
     }
 
 

@@ -1,6 +1,6 @@
-import * as admin from 'firebase-admin';
-import { ROUTER_RESPONSE, Anonymous, E } from '../core/core';
-import { User } from '../user/user';
+// import * as admin from 'firebase-admin';
+import { Anonymous, E } from '../core/core';
+// import { User } from '../user/user';
 import { Document } from './../document/document';
 
 
@@ -46,7 +46,7 @@ export class SystemRouter extends Document {
 
 
 
-        return (<admin.auth.UserRecord>user).uid;
+        return Anonymous.uid;
 
     }
 

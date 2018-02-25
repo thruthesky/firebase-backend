@@ -3,7 +3,11 @@ export const TEST = -11; es[TEST] = 'Test Error';
 export const NO_EMAIL = -50; es[NO_EMAIL] = 'No email address.';
 export const NO_PASSWORD = -51; es[NO_PASSWORD] = 'No password.';
 export const NO_NAME = -52; es[NO_NAME] = 'No name.';
-export const NO_ID = -53; es[NO_ID] = 'No uid.';
+export const NO_UID = -53; es[NO_UID] = 'No uid.';
+export const UID_TOO_LONG = -54; es[UID_TOO_LONG] = 'UID is too long. Must be less than 128 characters.';
+export const UID_CANNOT_CONTAIN_SLASH = -55; es[UID_CANNOT_CONTAIN_SLASH] = 'UID cannot contain slashes.';
+
+
 export const WRONG_GENDER = -61; es[WRONG_GENDER] = 'Wrong gender.';
 export const WRONG_ROUTE = -60; es[WRONG_ROUTE] = 'The given route is not exists. It is a wrong route.';
 export const EMPTY_ROUTE = -61; es[EMPTY_ROUTE] = 'Empty route.';

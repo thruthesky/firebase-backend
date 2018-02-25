@@ -1,4 +1,3 @@
-import { Request, Response } from 'express';
 import * as admin from 'firebase-admin';
 import { COLLECTION_PREFIX } from './../../settings/settings';
 
@@ -124,31 +123,44 @@ export class Base {
     /**
      * Returns true if the user is properly verified.
      * 
+     * @desc it sets 'null' on `Base.uid` at first.
      * @desc it saves the user's uid at `Base.uid`. It many be Anonymous uid.
      * @desc If no `idToken` was given by HTTP request, then Anonymous uid will be used.
      * @desc If wrong `idToken` was give, then ErrorObject will be returned.
      * 
+     * 
      * @return
      *      - TRUE on success.
      *      - ErrorObject on error.
+     * 
      */
     async verifyUser() {
+        this.loginUid = null; // reset before verify.
         const idToken = this.param('idToken');
         if (idToken) { // token was given
             return await this.auth.verifyIdToken(idToken)
-                .then(function (decodedToken) {
-                    this.setLoginUid(decodedToken.uid);
+                .then( decodedToken => {
+                    this.loginUid = decodedToken.uid;
                     return true;
                 })
                 .catch(e => this.error(e));
         }
         else { // no token was given
-            this.setLoginUid(Anonymous.uid);
+            this.loginUid = Anonymous.uid;
             return true;
         }
     }
 
-    setLoginUid(uid) {
+    /**
+     * Sets login user's `uid`
+     */
+    set loginUid(uid) {
         Base.uid = uid;
+    }
+    /**
+     * Gets login user's `uid`
+     */
+    get loginUid() {
+        return Base.uid
     }
 }

@@ -1,8 +1,7 @@
-import { Response } from 'express';
 import * as admin from 'firebase-admin';
 import { Base, E } from './../core/core';
-
 import { Hooks } from './../../hooks';
+
 
 
 
@@ -90,7 +89,7 @@ export class Document extends Base {
         return await this.set(data);
      * 
      * @return
-     *          - A Promise<WriteResult> if success.
+     *          - A Promise<DocumentID> if success. Document ID as string will be returned.
      *          - A Promise<null> if the input data is empty.
      *          - A Promise<ErrorObject> if there is error. note: it is a promise that is being returned.
 
@@ -111,13 +110,21 @@ export class Document extends Base {
             }
         }
 
+        
+        // this.db.collection().doc().id
+
 
         data['created'] = this.serverTime();
 
-        let documentRef;
+        console.log("param collectionName: " + collectionName);
+        console.log("this.collectionName: " + this.collectionName);
+        console.log("documentID: " + documentID);
+        let documentRef: admin.firestore.DocumentReference;
         if (documentID) documentRef = collection.doc(documentID);
         else documentRef = collection.doc();
+        
         return await documentRef.set(this.sanitizeData(data))
+            .then( writeResult => documentRef.id )
             .catch(e => this.error(e));
     }
 
