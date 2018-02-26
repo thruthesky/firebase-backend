@@ -30,10 +30,9 @@ export class SystemRouter extends Document {
             .catch(e => this.error(e));
 
         // If Anonymous account is already exists, then it is considered to be installed already.
+        // Or any error, just return the error.
         if (this.isErrorObject(user)) {
-            if ((<E.ERROR_OBJECT>user).code === 'auth/uid-already-exists') {
-                return this.error(E.SYSTEM_ALREADY_INSTALLED);
-            }
+            if ( user['code'] === E.FIREBASE_AUTH_UID_ALREADY_EXISTS ) return this.error( E.SYSTEM_ALREADY_INSTALLED );
             else return user;
         }
 

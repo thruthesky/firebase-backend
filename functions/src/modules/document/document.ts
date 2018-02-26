@@ -110,7 +110,6 @@ export class Document extends Base {
             }
         }
 
-        
         // this.db.collection().doc().id
 
 
@@ -118,7 +117,7 @@ export class Document extends Base {
 
         console.log("param collectionName: " + collectionName);
         console.log("this.collectionName: " + this.collectionName);
-        console.log("documentID: " + documentID);
+        console.log("documentID:  " + documentID);
         let documentRef: admin.firestore.DocumentReference;
         if (documentID) documentRef = collection.doc(documentID);
         else documentRef = collection.doc();
@@ -159,8 +158,9 @@ export class Document extends Base {
      * 
      * @return A Promise of
      *          - Document data
-     *          - null if docuemnt doe not exsits.
+     *
      *          - ErrorObject. note: it is a promise that is being returned.
+     *          
      */
     async get(documentID): Promise<any> {
         return this.collection.doc(documentID).get()
@@ -168,7 +168,7 @@ export class Document extends Base {
                 if (doc.exists) {
                     return doc.data();
                 }
-                else return null;
+                else return this.error(E.DOCUMENT_ID_DOES_NOT_EXISTS_FOR_GET);
             })
             .catch(e => this.error(e));
     }
@@ -187,9 +187,10 @@ export class Document extends Base {
     async delete(documentID): Promise<any> {
         if (!documentID) return null;
         return await this.collection.doc(documentID).delete()
-            .then( a => a )
+            .then( x => documentID )
             .catch( e => this.error(e) );
-       
     }
+
+
 
 }

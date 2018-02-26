@@ -12,11 +12,9 @@ export class PostRouter extends Post {
     }
 
     async get(){
-        const id = this.param('id');
-        const re = await super.get(id);
-        if (!id) return this.error(E.NO_USER_DOCUMENT_ID);
-        if (!re || re == void 0) return this.error(E.DOCUMENT_ID_DOES_NOT_EXISTS_FOR_GET);
-        return re;
+        const id = this.param( 'id' );
+        return await super.get(id);
+        
     }
 
     async edit(){

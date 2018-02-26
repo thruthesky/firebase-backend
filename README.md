@@ -130,7 +130,7 @@ $ ./node_modules/.bin/functions deploy Api --trigger-http ; deploy a http functi
 
 ## Return value from `Router()`
 
-* Returns value from `Router()` must be an ERROR_OBJECT object.
+* Returns value from `Router()` must be an BACKEND_ERROR_OBJECT object.
 
 
 
@@ -140,7 +140,7 @@ $ ./node_modules/.bin/functions deploy Api --trigger-http ; deploy a http functi
 
 * All the comments and information are in `hooks.ts`. So, read carefully comments in `hooks.ts`.
 
-* Hooks must return an `ERROR_OBJECT` to cancel the originated work and return the Error Object.
+* Hooks must return an `BACKEND_ERROR_OBJECT` to cancel the originated work and return the Error Object.
 
 
 
@@ -193,4 +193,15 @@ You can use, `db`, `collection`, `params` and all other code.
 ## User Authentication
 
 * see [User Authentication](https://docs.google.com/document/d/1ncYWftCEXJBJkATExfGM2S4dzerrI_7PA_DjWjNdEmQ/edit#heading=h.p5joalt8chem).
+
+
+
+## Error Handling
+
+* `Firebase Firestore` produces error code as number that is bigger than 0 or sometimes a string. Some times it is a number. and sometimes it is a string.
+
+* We cannot show the error message from `Firestore` since it is fixed in English. We may need to translate it in different language.
+
+* So, we decide that all `ErrorObject` that backend responds to client MUST have a number less than 0.
+
 

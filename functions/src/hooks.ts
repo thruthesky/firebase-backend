@@ -38,7 +38,7 @@ export class Hooks extends Base {
 
     /**
      * 
-     * If it returns `ERROR_OBJECT`, then the `UserRoute::set()` will return this `ERROR_OBJECT`
+     * If it returns `BACKEND_ERROR_OBJECT`, then the `UserRoute::set()` will return this `BACKEND_ERROR_OBJECT`
      *          without setting data.
      *          Otherwise (If it returns other than Error Object),
      *          `UserRouter::set()` will set data normally.

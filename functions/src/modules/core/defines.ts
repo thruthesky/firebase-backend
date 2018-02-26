@@ -1,3 +1,5 @@
+export const UID = 'uid';
+
 export const Anonymous = {
     uid: 'anonymous-uid',
     email: 'anonymous@gmail.com',
@@ -10,18 +12,17 @@ export const Anonymous = {
 
 
 export const COLLECTIONS = {
-    USERS: 'x-users',
-    SETTINGS: 'x-settings',
-    POST_DATA: 'x-posts',
-    POST_SETTINGS: 'x-post-setttings',
-    COMMENTS : 'x-comments'
-
+    USERS: 'users',
+    SETTINGS: 'settings',
+    POST_DATA: 'posts',
+    POST_SETTINGS: 'post-setttings',
+    COMMENTS : 'comments'
 };
 
-export interface ROUTER_RESPONSE {
+
+import { BACKEND_ERROR_OBJECT } from './error';
+export interface ROUTER_RESPONSE extends BACKEND_ERROR_OBJECT {
     route: string;
-    code: number;
-    message?: string;
     data?: any;
 };
 

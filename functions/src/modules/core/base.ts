@@ -1,10 +1,13 @@
 import * as admin from 'firebase-admin';
-import { COLLECTION_PREFIX } from './../../settings/settings';
+import { COLLECTION_PREFIX, USE_UID } from './../../settings/settings';
 
 import * as E from './../core/error';
 
 
 import { ROUTER_RESPONSE, Anonymous } from './../core/defines';
+
+
+
 
 
 
@@ -72,6 +75,11 @@ export class Base {
 
 
 
+    /**
+     * Returns a Reponse with Error Object.
+     * @desc the return from this method is already good enough to response to the client.
+     * @param code Error Code or Firebase Error Object
+     */
     error(code): ROUTER_RESPONSE {
         const obj = <ROUTER_RESPONSE>E.obj(code);
         if (obj) {
@@ -81,10 +89,12 @@ export class Base {
     }
 
     /**
-     * Returns true if the input `obj` is an ERROR_OBJECT.
+     * Returns true if the input `obj` is an Error Object.
+     * 
+     * 
      */
     isErrorObject(obj): boolean {
-        return obj && obj['code'] !== void 0 && obj['code'] !== 0;
+        return E.isErrorObject( obj );
     }
 
 
@@ -129,18 +139,29 @@ export class Base {
      * @desc If wrong `idToken` was give, then ErrorObject will be returned.
      * 
      * 
+     * @desc For unit-testing, You will need to set `USE_UID` to true in settings,
+     *          and `uid` will be accepted from HTTP request and will be used as login user's uid.
+     * 
      * @return
      *      - TRUE on success.
-     *      - ErrorObject on error.
+     *      - Or ErrorObject on error.
      * 
      */
     async verifyUser() {
         this.loginUid = null; // reset before verify.
+
+
+        if ( USE_UID ) {
+            this.loginUid = this.param('uid');
+            return true;
+        }
+
         const idToken = this.param('idToken');
         if (idToken) { // token was given
             return await this.auth.verifyIdToken(idToken)
                 .then( decodedToken => {
                     this.loginUid = decodedToken.uid;
+                    // console.log("===== Verified UID: ", this.loginUid);
                     return true;
                 })
                 .catch(e => this.error(e));
@@ -162,5 +183,18 @@ export class Base {
      */
     get loginUid() {
         return Base.uid
+    }
+
+    /**
+     * Returns false if there is no error. Otherwise, error code will be returned.
+     * @param uid User uid
+     */
+    checkUIDFormat( uid ) {
+
+        if ( !uid ) return this.error(E.NO_UID);
+        if ( uid.length > 128 ) return this.error(E.UID_TOO_LONG);
+        if ( uid.indexOf('/') !== -1 ) return this.error(E.UID_CANNOT_CONTAIN_SLASH);
+
+        return false;
     }
 }
