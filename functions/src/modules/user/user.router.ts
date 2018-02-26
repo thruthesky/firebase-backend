@@ -67,7 +67,7 @@ export class UserRouter extends User {
      * 
      * @note no email. no password.
      */
-    async set() {
+    async set()  : Promise<ROUTER_RESPONSE | boolean> {
         if (this.validateUserData(this.params)) return this.validateUserData(this.params);
         return await super.set(this.sanitizeUserData(this.params), (<USER_DATA>this.params).id);
     }
@@ -79,22 +79,33 @@ export class UserRouter extends User {
      *      - If you are going to update, the user data previously set will be updated and unchanged properties will be remain as they are.
      *      - If you want to reset the document, then use `set()`
      */
-    async update() {
+    async update() : Promise<ROUTER_RESPONSE | boolean> {
         if (this.validateUserData(this.params)) return this.validateUserData(this.params);
         return await super.update(this.sanitizeUserData(this.params), (<USER_DATA>this.params).id);
     }
 
 
-    async get() {
+    async get() : Promise<ROUTER_RESPONSE> {
         const id = this.param('id');
+        const re = await super.get(id);
         if (!id) return this.error(E.NO_USER_DOCUMENT_ID);
-        return super.get(this.param('id'));
+        if (!re || re == void 0) return this.error(E.DOCUMENT_ID_DOES_NOT_EXISTS_FOR_GET);
+        return re;
     }
 
+    /** 
+     * Deletes a user document.
+     * 
+     * @desc doc.delete() returns deletion timestamp even if the document is not existing.
+    */
+    async delete() : Promise<ROUTER_RESPONSE> {
+        const id = this.param('id');
+        const del = await super.delete(id);
+        if( id === null || !id ) return this.error(E.NO_USER_DOCUMENT_ID);
+        return del;
+    }
 
-
-    // async list() {
-    //     return await this.getUserList();
-    // }
+    
 
 }
+
