@@ -1,14 +1,31 @@
 import * as admin from 'firebase-admin';
 import { Document } from './../document/document';
+import { COLLECTIONS } from './../core/defines';
 
 
-interface USER_CREATE {
-    uid: string;
-    name: string;
+
+/**
+ * User data to create/update.
+ * 
+ * @desc You can update more.
+ */
+export interface USER_DATA {
+    id: string;
+    name?: string;
+    nickname?: string;
+    first_name?: string;
+    middle_name?: string;
+    last_name?: string;
+    email?: string;
     birthday?: string;
     gender?: string;
     mobile?: string;
     landline?: string;
+    address?: string;
+    zipcode?: string;
+    country?: string;
+    province?: string;
+    city?: string;
 };
 
 
@@ -16,27 +33,12 @@ interface USER_CREATE {
  * @Attention All the validity, permission check must be done before this class.
  */
 export class User extends Document {
-    constructor( public db: admin.firestore.Firestore, public request, public response ) {
-        super( db, request, response );
+    constructor( ) {
+
+        super( COLLECTIONS.USERS );
+
     }
 
-
-    /**
-     * @attention all the permission and data validity must be checked before this method. 
-     */
-    async create(obj: USER_CREATE) {
-        const re = await super.create(obj);
-        return re;
-    }
-    async getUserList() {
-        const userList = await super.read(this.request.body.collection);
-        return userList;
-        // return userList;
-    }
-    update() {
-        return;
-    }
-    delete() {
-        return;
-    }
+    
+    
 }

@@ -1,48 +1,47 @@
 import { Request, Response } from 'express';
 import { UserRouter } from './../user/user.router';
+import { Base } from './../core/base';
+import * as E from './../core/error';
+import { ROUTER_RESPONSE } from './../core/defines';
 
-export class Router {
-    query;
-    constructor( public db, public request: Request, public response: Response ) {
-        this.query = Object.assign( request.query, request.body );
-        return;
-    }
-    get className() {
-        if ( this.query.route === void 0 ) return false;
-        const re = this.query.route.split('.');
-        return re[0];
-    }
-    get methodName() {
-        const re = this.query.route.split('.');
-        return re[1];
-    }
-    param( name ) {
-        if ( this.query[name] === void 0 ) return false;
-        else return this.query[name];
-    }
-    async run() {
-        if ( ! this.className ) return { code: -1, message: 'No route was specified.' };
-        let route$;
-        if ( this.className === 'user' ) {
 
-         route$ = new UserRouter( this.db, this.query, this.response );
+
+
+export class Router extends Base {
+    constructor(params) {
+        super(null);
+        Base.params = params;
+        // console.log("[ params ] ", params );
+    }
+
+    async run(): Promise<ROUTER_RESPONSE> {
+        if (!this.param('route')) {
+            return this.error(E.EMPTY_ROUTE);
         }
 
-        if ( route$[ this.methodName ] === void 0 ) return { code: -1, message: this.methodName + ' - method does not exists.' };
-        
+        let $router = null;
+        if (this.routeClassName === 'user') {
+            $router = new UserRouter();
+        }
+        else return this.error(E.WRONG_ROUTE);
 
-        const ret = { route: this.param('route') };
-        const res = await route$[ this.methodName ]();
 
-        
 
-        if ( res && res['code'] !== void 0 && res['code'] < 0 ) { // This is error
-            ret['code'] = res['code'];
-            ret['message'] = res['message'];
+        // console.log($router);
+
+        if ($router[this.routeMethodName] === void 0) return this.error(E.WRONG_METHOD);;
+
+        let ret = { route: this.param('route'), code: 0 };
+        const result = await $router[this.routeMethodName]();
+
+
+        if (  this.isErrorObject( result ) ) {
+            ret = Object.assign( ret, result );
+            // ret['code'] = res['code'];
+            // ret['message'] = res['message'];
         }
         else {
-            ret['code'] = 0;
-            ret['data'] = res;
+            ret['data'] = result;
         }
 
         return ret;
