@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import { UserRouter } from './../user/user.router';
+import { PostRouter } from "./../post/post.router";
 import { Base } from './../core/base';
 import * as E from './../core/error';
 import { ROUTER_RESPONSE } from './../core/defines';
@@ -23,6 +24,11 @@ export class Router extends Base {
         if (this.routeClassName === 'user') {
             $router = new UserRouter();
         }
+
+        if (this.routeClassName === 'post') {
+            $router = new PostRouter();
+        }
+
         else return this.error(E.WRONG_ROUTE);
 
 
