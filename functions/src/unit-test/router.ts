@@ -58,18 +58,52 @@ async function route(data) {
     return await (new Router(data)).run()
 }
 
-describe('Router TEST', () => {
-    it('Empty route', async () => {
-        const re = await route({ route: '', a: 'ab' });
+// describe('Router TEST', () => {
+//     it('Empty route', async () => {
+//         const re = await route({ route: '', a: 'ab' });
+//         expect(re).to.be.a('object');
+//         expect(re.code).to.be.equal(E.EMPTY_ROUTE);
+//     });
+//     it('Wrong route', async () => {
+//         const re = await route({ route: 'asd' });
+//         expect(re).to.be.a('object');
+//         expect(re.code).to.be.equal(E.WRONG_ROUTE);
+//     });
+// });
+
+
+describe('Test Post Router', () => {
+    it('post.create method', async () => {
+        const re = await route({ route: 'post.create', id: 'post-a' });
         expect(re).to.be.a('object');
-        expect(re.code).to.be.equal(E.EMPTY_ROUTE);
+        expect(re.code).to.be.equal(0);
+        console.log(re);
     });
-    it('Wrong route', async () => {
-        const re = await route({ route: 'wrong router', a: 'ab' });
+    // it('post.edit method', async () => {
+    //     const re = await route({ route: 'post.edit' });
+    //     expect(re).to.be.a('object');
+    //     expect(re.code).to.be.equal(0);
+    //     console.log(re);
+    // });
+    // it('post.delete method', async () => {
+    //     const re = await route({ route: 'post.delete' });
+    //     expect(re).to.be.a('object');
+    //     expect(re.code).to.be.equal(0);
+    //     console.log(re);
+    // });
+    it('post.get method', async () => {
+        const re = await route({ route: 'post.get', id : 'post-a' });
         expect(re).to.be.a('object');
-        expect(re.code).to.be.equal(E.WRONG_ROUTE);
+        expect(re.code).to.be.equal(0);
+        console.log(re);
     });
 });
+
+
+
+// });
+
+
 
 
 
