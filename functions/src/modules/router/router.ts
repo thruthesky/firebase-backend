@@ -1,5 +1,9 @@
 import { UserRouter } from './../user/user.router';
+<<<<<<< HEAD
 import { SystemRouter } from './../system/system.router';
+=======
+import { PostRouter } from "./../post/post.router";
+>>>>>>> 87596b1f38684073eca2c222d625dd5a21d6c85d
 import { Base } from './../core/base';
 import * as E from './../core/error';
 import { ROUTER_RESPONSE } from './../core/defines';
@@ -23,10 +27,17 @@ export class Router extends Base {
             return this.error(E.FAILED_TO_VERIFY_USER);
         }
 
+<<<<<<< HEAD
         // console.log('run:');
         let $router = null;
         if (this.routeClassName === 'user') $router = new UserRouter();
         else if (this.routeClassName === 'system' ) $router = new SystemRouter();
+=======
+        if (this.routeClassName === 'post') {
+            $router = new PostRouter();
+        }
+
+>>>>>>> 87596b1f38684073eca2c222d625dd5a21d6c85d
         else return this.error(E.WRONG_ROUTE);
 
 

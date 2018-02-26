@@ -62,6 +62,11 @@ $ node_modules/.bin/mocha src/unit-tests/library/* --watch --compilers ts:ts-nod
 $ node_modules/.bin/mocha src/unit-tests/library/user-register-update.ts --watch --compilers ts:ts-node/register -t 99999
 $ node_modules/.bin/mocha src/unit-tests/library/install.ts --watch --compilers ts:ts-node/register -t 99999
 ````
+##### In Windows
+You need to point into mocha js file.
+````
+$ nodemon .\node_modules\mocha\bin\_mocha .\lib\unit-test\server\router.js --watch .\lib\  -t 10000
+````
 
 #### Firebase Functions Test
 
@@ -76,6 +81,11 @@ $ ./node_modules/.bin/mocha src/unit-tests/server/* --compilers ts:ts-node/regis
 $ ./node_modules/.bin/mocha src/unit-tests/server/user-register-update.ts --compilers ts:ts-node/register --watch -t 100000 // Use TypeScript to test.
 $ /node_modules/.bin/mocha lib/unit-test/server/router.js --watch -t 100000
 $ ./node_modules/.bin/mocha lib/unit-test/server/user-register-update.js --watch -t 100000
+````
+##### In Windows
+You need to point into mocha js file.
+````
+$ nodemon .\node_modules\mocha\bin\_mocha .\lib\unit-test\server\router.js --watch .\lib\  -t 10000
 ````
 
 
