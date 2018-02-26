@@ -1,3 +1,4 @@
+import { ROUTER_RESPONSE } from './../core/defines';
 import { Response } from 'express';
 import * as admin from 'firebase-admin';
 import { Base } from './../core/base';
@@ -147,37 +148,23 @@ export class Document extends Base {
             .catch(e => this.error(e));
     }
 
-
     /**
-     * It creates a Document.
-     * @param data Object to set to Firestore
      * 
-     * @desc If `data.uid` is set, then it is considered as `uinique id` and used for the document ID.
+     * Deletes a document in firebase and returns timestamp of deletion.
      * 
-     * @return If there is an error, it returns `Error Object` or it returns a Promise.
+     * @param documentID - Document to delete.
+     * 
+    * @return A Promise of
+     *          - Document data
+     *          - null if docuemnt doe not exsits.
+     *          - ErrorObject. note: it is a promise that is being returned.
      */
-    // async create(data) {
-    //     return await this.set(data).catch(e => e);
-    // }
-
-
-
-    // async read(collection) {
-    //     const data = [];
-    //     const obj = {};
-    //     await this.db.collection(collection).get()
-    //         .then(function (querySnapshot) {
-    //             querySnapshot.forEach(function (doc) {
-    //                 data.push(obj[doc.id] = doc.data());
-    //             });
-
-    //         });
-    //     // return data;
-    //     return JSON.stringify(data);
-    // }
-
-    delete() {
-        return;
+    async delete(documentID): Promise<any> {
+        if (!documentID) return null;
+        return await this.collection.doc(documentID).delete()
+            .then( a => a )
+            .catch( e => this.error(e) );
+       
     }
 
 }
