@@ -37,18 +37,7 @@ export const api = functions.https.onRequest( (request, response ) => {
     });
 });
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-// this should only appear in gemlorenz10 branch
-=======
 
 function hook( name ) {
     console.log("Hook name: ", name);
 }
->>>>>>> ff8c8713caa6bdb2e8a0d06772dca7b25a281268
-=======
-
-function hook( name ) {
-    console.log("Hook name: ", name);
-}
->>>>>>> ff8c8713caa6bdb2e8a0d06772dca7b25a281268
