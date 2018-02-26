@@ -50,6 +50,11 @@ $ tsc --watch
 $ nodemon --watch lib ./node_modules/.bin/mocha src/unit-test/user-register-update.ts --compilers ts:ts-node/register -t 99999 // Typescript Test
 $ nodemon --watch lib ./node_modules/.bin/mocha lib/unit-test/user-register-update.js --watch -t 100000 // Javascript test.
 ````
+##### In Windows
+You need to point into mocha js file.
+````
+$ nodemon .\node_modules\mocha\bin\_mocha .\lib\unit-test\server\router.js --watch .\lib\  -t 10000
+````
 
 #### Firebase Functions Test
 
@@ -59,6 +64,11 @@ $ nodemon --watch lib ./node_modules/.bin/mocha lib/unit-test/user-register-upda
 $ ./node_modules/.bin/mocha src/unit-test/server/user-register-update.ts --compilers ts:ts-node/register --watch -t 100000 // Use TypeScript to test.
 $ /node_modules/.bin/mocha lib/unit-test/server/router.js --watch -t 100000
 $ ./node_modules/.bin/mocha lib/unit-test/server/user-register-update.js --watch -t 100000
+````
+##### In Windows
+You need to point into mocha js file.
+````
+$ nodemon .\node_modules\mocha\bin\_mocha .\lib\unit-test\server\router.js --watch .\lib\  -t 10000
 ````
 
 
