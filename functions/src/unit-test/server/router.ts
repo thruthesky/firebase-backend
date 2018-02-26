@@ -32,8 +32,9 @@ describe('Router Test', () => {
         expect(re).to.be.an('object');
         expect(re['code']).to.be.equal(E.WRONG_METHOD);
     });
+
     it(`Should be OK`, async () => {
-        const data = req({ route: 'user.version' });
+        const data = req({ route: 'user.delete' });
         const re = await rpn(data).catch(e => e);
         expect(re).to.be.an('object');
         expect(re['code']).to.be.equal(0);
