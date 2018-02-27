@@ -57,9 +57,8 @@ Shopping Mall Plugin
     
 
 ````
-$ tsc --watch
 $ node_modules/.bin/mocha src/unit-tests/library/* --watch --compilers ts:ts-node/register -t 99999
-$ node_modules/.bin/mocha src/unit-tests/library/user-register-update.ts --watch --compilers ts:ts-node/register -t 99999
+$ node_modules/.bin/mocha src/unit-tests/library/user-crud-with-uid.ts --watch --compilers ts:ts-node/register -t 99999
 $ node_modules/.bin/mocha src/unit-tests/library/install.ts --watch --compilers ts:ts-node/register -t 99999
 ````
 ##### In Windows
@@ -205,3 +204,23 @@ You can use, `db`, `collection`, `params` and all other code.
 * So, we decide that all `ErrorObject` that backend responds to client MUST have a number less than 0.
 
 
+
+
+# Protocols
+
+## User Identification
+
+* `ID Token` must be delivered as `idToken` on request which will be used to fetch user's `uid` on server side.
+
+
+### For Unit testing.
+
+Backend needs User's `uid` to verify who the user is.
+For unit testing,
+
+
+* You can send user's `uid` instead of `ID Token` to the backend if `Base.useUid` in base.ts is set to true.
+    Then, the backend will assume the `uid` as a verified user.
+
+
+* `Base.useUid` must be false when it is deployed. Do not touch in base.ts. Instead, set it true on unit testing code.

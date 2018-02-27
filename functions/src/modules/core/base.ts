@@ -1,5 +1,5 @@
 import * as admin from 'firebase-admin';
-import { COLLECTION_PREFIX, USE_UID } from './../../settings/settings';
+import { COLLECTION_PREFIX } from './../../settings/settings';
 
 import * as E from './../core/error';
 
@@ -17,12 +17,29 @@ import { ROUTER_RESPONSE, Anonymous } from './../core/defines';
 export class Base {
     collectionName: string = null;
 
-    static admin;
-    static params: any = null;
-    static uid: string = null; // User `uid` if the user is logged in. The user may be Anonymous.
-    // static request: Request = null;
-    // static response: Response = null;
+    /**
+     * If set to true, it will accept `uid` as user's verficaton instead of `ID Token`.
+     * @see README.md
+     */
+    static useUid = false;
 
+    /**
+     * Firestore SDK admin object.
+     */
+    static admin;
+
+    /**
+     * HTTP Request parameters.
+     */
+    static params: any = null;
+
+
+    /**
+     * Login user `uid` if the user is logged in. The user may be Anonymous.
+     * @desc Whether the user logged in with ID Token or `uid`, this value will hold login user's uid.
+     */
+    static uid: string = null;
+    
 
     constructor(collectionName) {
         this.collectionName = collectionName;
@@ -139,7 +156,7 @@ export class Base {
      * @desc If wrong `idToken` was give, then ErrorObject will be returned.
      * 
      * 
-     * @desc For unit-testing, You will need to set `USE_UID` to true in settings,
+     * @desc For unit-testing, You will need to set `Base.useUid` to true in settings,
      *          and `uid` will be accepted from HTTP request and will be used as login user's uid.
      * 
      * @return
@@ -151,7 +168,7 @@ export class Base {
         this.loginUid = null; // reset before verify.
 
 
-        if ( USE_UID ) {
+        if ( Base.useUid ) {
             this.loginUid = this.param('uid');
             return true;
         }

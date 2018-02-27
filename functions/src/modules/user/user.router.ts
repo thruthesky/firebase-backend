@@ -50,7 +50,7 @@ export class UserRouter extends User {
 
 
         /// User's UID is not acceptable for real production site.
-        /// It is only available when USE_UID is set to true.
+        /// It is only available when Base.useUid is set to true.
         if ( p.uid !== void 0 ) {
             if ( this.checkUIDFormat( p.uid ) ) return this.error( this.checkUIDFormat( p.uid ) );
         }

@@ -1,8 +1,11 @@
 import * as chai from 'chai';
 const expect = chai.expect;
 import { Base, E } from './../../modules/core/core';
+import * as settings from './../../settings/settings';
 import { init, route } from './init';
 Base.admin = init();
+Base.useUid = true;
+
 
 
 /**
@@ -10,17 +13,15 @@ Base.admin = init();
  * 
  * 
  * 
- *      WARNING.        YOU ARE TESTING WITH UID. set UTIT_TEST = true on settigns.ts
+ *      WARNING.        YOU ARE TESTING WITH UID. set UTIT_TEST = true
  * 
  * 
  * 
  * 
  * 
  */
-
-
 describe('Registration Test.', () => {
-    it('Without uid. Expect user not log in. When USE_UID is set to true, only UID is acceptable. if No UID is porovided, this.loginUid will be empty. And it causes error on user.route.ts', async () => {
+    it('Without uid. Expect user not log in. When Base.useUid is set to true, only UID is acceptable. if No UID is porovided, this.loginUid will be empty. And it causes error on user.route.ts', async () => {
         const re = await route({ route: 'user.set', a: 'b' });
         if (re && re.code) console.log(re);
         expect(re).to.be.a('object');
