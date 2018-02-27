@@ -35,17 +35,6 @@ export class Hooks extends Base {
         return data;
     }
 
-    post_router_sanitizePostData(data) {
-
-        // console.log("db: ", this.db);
-        // console.log("collection: ", this.collection);
-        // console.log("params: ", this.params);
-
-        data['hooked'] = 'yes';
-        return data;
-    }
-
-
     /**
      * 
      * If it returns `BACKEND_ERROR_OBJECT`, then the `UserRoute::set()` will return this `BACKEND_ERROR_OBJECT`
@@ -57,6 +46,36 @@ export class Hooks extends Base {
     user_set() {
         return false;
         // return this.error( E.TEST );
+    }
+
+    post_router_sanitizePostData(data) {
+
+        // console.log("db: ", this.db);
+        // console.log("collection: ", this.collection);
+        // console.log("params: ", this.params);
+
+        data['hooked'] = 'yes';
+        return data;
+    }
+
+    post_create() {
+        // Work on hook
+        return false;
+    }
+
+    post_get() {
+        // Work on hook
+        return false;
+    }
+
+    post_update() {
+        // Work on hook
+        return false;
+    }
+
+    post_delete() {
+        // Work on hook
+        return false;
     }
 }
 
