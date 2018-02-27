@@ -14,7 +14,7 @@ export const WRONG_METHOD = -61; es[WRONG_METHOD] = 'Wrong method.';
 
 
 export const DOCUMENT_ID_DOES_NOT_EXISTS_FOR_UPDATE = -40005; es[DOCUMENT_ID_DOES_NOT_EXISTS_FOR_UPDATE] = 'Document ID does not exsits for update.';
-export const DOCUMENT_ID_DOES_NOT_EXISTS_FOR_GET = -40004; es[DOCUMENT_ID_DOES_NOT_EXISTS_FOR_GET] = 'Document ID does not exists to get the document data';
+export const DOCUMENT_ID_DOES_NOT_EXISTS_FOR_GET = -40004; es[DOCUMENT_ID_DOES_NOT_EXISTS_FOR_GET] = 'Document ID was not found or does not exists in database';
 
 
 export const USER_NOT_LOGIN = -40010; es[USER_NOT_LOGIN] = 'User has not logged in. Or maybe the has a wrong(expired) ID token.';
