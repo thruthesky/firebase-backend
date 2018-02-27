@@ -51,7 +51,7 @@ $ nodemon --watch lib ./node_modules/.bin/mocha src/unit-test/user-register-upda
 $ nodemon --watch lib ./node_modules/.bin/mocha lib/unit-test/user-register-update.js --watch -t 100000 // Javascript test.
 ````
 ##### In Windows
-You need to point into mocha js file.
+You need to point inside .\node_modules\mocha\bin\_mocha
 ````
 $ nodemon .\node_modules\mocha\bin\_mocha .\lib\unit-test\server\router.js --watch .\lib\  -t 10000
 ````
@@ -65,14 +65,6 @@ $ ./node_modules/.bin/mocha src/unit-test/server/user-register-update.ts --compi
 $ /node_modules/.bin/mocha lib/unit-test/server/router.js --watch -t 100000
 $ ./node_modules/.bin/mocha lib/unit-test/server/user-register-update.js --watch -t 100000
 ````
-##### In Windows
-You need to point into mocha js file.
-````
-$ nodemon .\node_modules\mocha\bin\_mocha .\lib\unit-test\server\router.js --watch .\lib\  -t 10000
-````
-
-
-
 
 * Get Resource URL from functions-emulator after deploy and put it in `test.ts`
 

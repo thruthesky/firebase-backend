@@ -77,7 +77,13 @@ describe('Test Post Router', () => {
         const re = await route({ route: 'post.create', id: 'post-a' });
         expect(re).to.be.a('object');
         expect(re.code).to.be.equal(0);
-        console.log(re);
+        // console.log(re);
+    });
+    it('post.create no body', async () => {
+        const re = await route({ route: 'post.create', id: 'post-a' });
+        expect(re).to.be.a('object');
+        expect(re.code).to.be.equal(0);
+        // console.log(re);
     });
     // it('post.edit method', async () => {
     //     const re = await route({ route: 'post.edit' });
@@ -95,7 +101,7 @@ describe('Test Post Router', () => {
         const re = await route({ route: 'post.get', id : 'post-a' });
         expect(re).to.be.a('object');
         expect(re.code).to.be.equal(0);
-        console.log(re);
+        // console.log(re);
     });
 });
 
