@@ -1,8 +1,3 @@
-<<<<<<< HEAD
-import { ROUTER_RESPONSE } from './../core/defines';
-import { Response } from 'express';
-=======
->>>>>>> bedb2b56ee40da974d4feea3d63fbf4674d71c08
 import * as admin from 'firebase-admin';
 import { Base, E } from './../core/core';
 import { Hooks } from './../../hooks';
@@ -192,17 +187,10 @@ export class Document extends Base {
     async delete(documentID): Promise<any> {
         if (!documentID) return null;
         return await this.collection.doc(documentID).delete()
-<<<<<<< HEAD
-            .then( a => a )
-            .catch( e => this.error(e) );
-       
-    }
-=======
             .then( x => documentID )
             .catch( e => this.error(e) );
     }
 
 
->>>>>>> bedb2b56ee40da974d4feea3d63fbf4674d71c08
 
 }

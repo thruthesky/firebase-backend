@@ -81,13 +81,9 @@ export class UserRouter extends User {
      * 
      * 
      */
-<<<<<<< HEAD
-    async set()  : Promise<ROUTER_RESPONSE | boolean> {
-=======
     async set() : Promise<ROUTER_RESPONSE | boolean> {
 
         if ( ! this.loginUid ) return this.error( E.USER_NOT_LOGIN ); // On Unit Test, it will be set with `uid`
->>>>>>> bedb2b56ee40da974d4feea3d63fbf4674d71c08
         if (this.validateUserData(this.params)) return this.validateUserData(this.params);
         
         const re = this.hook('user.set');
@@ -110,23 +106,12 @@ export class UserRouter extends User {
      *      - If you want to reset the document, then use `set()`
      */
     async update() : Promise<ROUTER_RESPONSE | boolean> {
-<<<<<<< HEAD
-=======
         if ( ! this.loginUid ) return this.error( E.USER_NOT_LOGIN ); // On Unit Test, it will be set with `uid`
->>>>>>> bedb2b56ee40da974d4feea3d63fbf4674d71c08
         if (this.validateUserData(this.params)) return this.validateUserData(this.params);
         return await super.update(this.sanitizeUserData(this.params), this.loginUid);
     }
 
 
-<<<<<<< HEAD
-    async get() : Promise<ROUTER_RESPONSE> {
-        const id = this.param('id');
-        const re = await super.get(id);
-        if (!id) return this.error(E.NO_USER_DOCUMENT_ID);
-        if (!re || re == void 0) return this.error(E.DOCUMENT_ID_DOES_NOT_EXISTS_FOR_GET);
-        return re;
-=======
     /**
      * Returns user data.
      */
@@ -143,22 +128,7 @@ export class UserRouter extends User {
     async delete() : Promise<ROUTER_RESPONSE> {
         if ( ! this.loginUid ) return this.error( E.USER_NOT_LOGIN ); // On Unit Test, it will be set with `uid`
         return await super.delete(this.loginUid);
->>>>>>> bedb2b56ee40da974d4feea3d63fbf4674d71c08
     }
-
-    /** 
-     * Deletes a user document.
-     * 
-     * @desc doc.delete() returns deletion timestamp even if the document is not existing.
-    */
-    async delete() : Promise<ROUTER_RESPONSE> {
-        const id = this.param('id');
-        const del = await super.delete(id);
-        if( id === null || !id ) return this.error(E.NO_USER_DOCUMENT_ID);
-        return del;
-    }
-
-    
 
 }
 
