@@ -115,9 +115,9 @@ export class Document extends Base {
 
         data['created'] = this.serverTime();
 
-        console.log("param collectionName: " + collectionName);
-        console.log("this.collectionName: " + this.collectionName);
-        console.log("documentID:  " + documentID);
+        // console.log("param collectionName: " + collectionName);
+        // console.log("this.collectionName: " + this.collectionName);
+        // console.log("documentID:  " + documentID);
         let documentRef: admin.firestore.DocumentReference;
         if (documentID) documentRef = collection.doc(documentID);
         else documentRef = collection.doc();

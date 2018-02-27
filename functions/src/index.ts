@@ -11,21 +11,15 @@ import { Base } from './modules/core/base';
 
 const cors = corsOptions({ origin: true });
 
-// admin.initializeApp( functions.config().firebase ); // Enable on production.
+admin.initializeApp( functions.config().firebase ); // Enable on production.
 
-admin.initializeApp({ // Enable on development.
-    credential: admin.credential.cert(<any>serviceAccount),
-    databaseURL: "https://pwa-cms.firebaseio.com"
-});
+// admin.initializeApp({ // Enable on development.
+//     credential: admin.credential.cert(<any>serviceAccount),
+//     databaseURL: "https://pwa-cms.firebaseio.com"
+// });
 
 
 Base.admin = admin;
-
-
-
-// db.collection('x-users').doc().set({"uid":"abc","name":"nameabc","created":"2018-02-21T17:19:15.212Z"}).then (x => x);
-
-
 
 export const api = functions.https.onRequest( (request, response ) => {
     cors(request, response, async  () => {

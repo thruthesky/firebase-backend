@@ -224,3 +224,7 @@ For unit testing,
 
 
 * `Base.useUid` must be false when it is deployed. Do not touch in base.ts. Instead, set it true on unit testing code.
+
+
+* @see more information on [Unit Testing](https://docs.google.com/document/d/1ncYWftCEXJBJkATExfGM2S4dzerrI_7PA_DjWjNdEmQ/edit#heading=h.tdpnuuowlpnt)
+

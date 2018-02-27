@@ -2,7 +2,7 @@ import * as chai from 'chai';
 const expect = chai.expect;
 import { Base } from './../../modules/core/core';
 import { Router } from './../../modules/router/router';
-import { init, route, idToken } from './init';
+import { init, idToken } from './init';
 Base.admin = init();
 Base.useUid = false;
 

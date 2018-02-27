@@ -1,10 +1,9 @@
 import * as chai from 'chai';
 const expect = chai.expect;
 import { Base, E } from './../../modules/core/core';
-import * as settings from './../../settings/settings';
 import { init, route } from './init';
 Base.admin = init();
-Base.useUid = true;
+
 
 /**
  * 
@@ -18,10 +17,15 @@ Base.useUid = true;
  * 
  * 
  */
-describe('Registration Test.', () => {
+describe('Registration test with Base.useUid=true.', () => {
+    beforeEach(() => {
+        // console.log("===== before each runs");
+        Base.useUid = true;
+    });
     it('Without uid. Expect user not log in. When Base.useUid is set to true, only UID is acceptable. if No UID is porovided, this.loginUid will be empty. And it causes error on user.route.ts', async () => {
+        
         const re = await route({ route: 'user.set', a: 'b' });
-        if (re && re.code) console.log(re);
+        // console.log(re);
         expect(re).to.be.a('object');
         expect(re.code).to.be.equal( E.USER_NOT_LOGIN );
     });
@@ -49,7 +53,7 @@ describe('Registration Test.', () => {
 
     it('Should be OK with a property that does not exists on Interface USER_DATA.', async () => {
         const re = await route({ route: 'user.set', uid: 'uid-new-2', name: 'user-a', nick: 'Jae' });
-        console.log("re: ", re);
+        // console.log("re: ", re);
         expect(re).to.be.a('object');
         expect(re.code).to.be.equal(0);
         // const user = await route({ route: 'user.get', uid: 'uid-a' });
@@ -59,16 +63,16 @@ describe('Registration Test.', () => {
 });
 
 
-describe('User Update Test', () => {
+describe('User update test with UID.', () => {
     it(`Should success on register`, async () => {
         const re = await route({ route: 'user.set', uid: 'user-b', name: 'name-b' }); // test without ID token.
         // const re = await route({ route: 'user.set', idToken: idToken, name: 'name-b' });
-        if (re && re.code) console.log(re);
+        // if (re && re.code) console.log(re);
         expect(re).to.be.a('object');
         expect(re.code).to.be.equal(0);
         const got = await route({ route: 'user.get', uid: 'user-b' }); // TEST with UID.
         // const got = await route({ route: 'user.get', idToken: idToken });
-        if (got && got.code) console.log(got);
+        // if (got && got.code) console.log(got);
         expect(got).to.be.a('object');
         expect(got['data']['name']).to.be.equal('name-b');
     })
@@ -77,7 +81,7 @@ describe('User Update Test', () => {
     it(`Should failed on update because emtpy document id.`, async () => {
         const re = await route({ route: 'user.update', uid: '', name: 'name-b-updated' }) // TEST with UID.
         // const re = await route({ route: 'user.update', idToken: '', name: 'name-b-updated' })
-        if (re && re.code) console.log("=============== re: ", re);
+        // if (re && re.code) console.log("=============== re: ", re);
         expect(re.code).to.be.equal(E.USER_NOT_LOGIN);
     })
 
@@ -85,7 +89,7 @@ describe('User Update Test', () => {
     it(`Should failed on update because wrong document id.`, async () => {
         const re = await route({ route: 'user.update', uid: 'wrong-user-id' }); //
         // const re = await route({ route: 'user.update', idToken: 'wrong-user-id' });
-        if (re && re.code) console.log(re);
+        // if (re && re.code) console.log(re);
         expect(re.code).to.be.equal(E.DOCUMENT_ID_DOES_NOT_EXISTS_FOR_UPDATE);
     })
 

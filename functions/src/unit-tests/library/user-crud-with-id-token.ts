@@ -26,12 +26,12 @@ describe('User test with ID Token', () => {
     it(`Expect success on register`, async () => {
         // const re = await route({ route: 'user.set', uid: 'user-b', name: 'name-b' }); // test without ID token.
         const re = await route({ route: 'user.set', idToken: idToken, name: 'name-b' });
-        if (re && re.code) console.log(re);
+        // if (re && re.code) console.log(re);
         expect(re).to.be.a('object');
         expect(re.code).to.be.equal(0);
         // const got = await route({ route: 'user.get', uid: 'user-b' }); // TEST with UID.
         const got = await route({ route: 'user.get', idToken: idToken });
-        if (got && got.code) console.log(got);
+        // if (got && got.code) console.log(got);
         expect(got).to.be.a('object');
         expect(got['data']['name']).to.be.equal('name-b');
     })
@@ -39,7 +39,7 @@ describe('User test with ID Token', () => {
     it(`Should failed on update because wrong ID Token.`, async () => {
         // const re = await route({ route: 'user.update', uid: 'wrong-user-id' }); //
         const re = await route({ route: 'user.update', idToken: 'wrong-user-id' });
-        if (re && re.code) console.log(re);
+        // if (re && re.code) console.log(re);
         expect(re.code).to.be.equal(E.FAILED_TO_VERIFY_USER);
     })
 
@@ -61,7 +61,7 @@ describe('User get test', () => {
 
     it('Sould get anonymous user data', async () => {
         const re = await route({ route: 'user.get' });
-        console.log(re);
+        // console.log(re);
     })
 
     it('Should re[data] be null with wrong document id', async () => {

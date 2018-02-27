@@ -2,7 +2,7 @@
 // import { Request, Response } from 'express';
 import * as E from '../core/error';
 import { User, USER_DATA } from './user';
-import { ROUTER_RESPONSE, UID } from '../core/core';
+import { ROUTER_RESPONSE } from '../core/core';
 
 
 export class UserRouter extends User {
@@ -10,14 +10,6 @@ export class UserRouter extends User {
         super();
         return;
     }
-    version() {
-        return '0.1';
-    }
-
-    count() {
-        return 10;
-    }
-
 
     /**
      * It sanitize user data to set/update.
@@ -89,10 +81,8 @@ export class UserRouter extends User {
         const re = this.hook('user.set');
         if ( this.isErrorObject( re ) ) return re;
 
-        // console.log("Goint to set with UID:" + (<USER_DATA>this.params).uid);
+        // console.log("Goint to set with UID: " + this.loginUid);
         // console.log("Data: ", this.params);
-        // return await super.set(this.sanitizeUserData(this.params), (<USER_DATA>this.params).uid);
-
 
         // new code
         return await super.set(this.sanitizeUserData(this.params), this.loginUid);
@@ -118,7 +108,7 @@ export class UserRouter extends User {
     async get() {
         if ( ! this.loginUid ) return this.error( E.USER_NOT_LOGIN ); // On Unit Test, it will be set with `uid`
 
-        console.log("user.router::get() with " + this.loginUid);
+        // console.log("user.router::get() with " + this.loginUid);
         return super.get( this.loginUid );
     }
 

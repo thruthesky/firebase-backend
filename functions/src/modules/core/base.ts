@@ -61,6 +61,13 @@ export class Base {
         return this.db.collection(this.collectionNameWithPrefix(this.collectionName));
     }
 
+
+    version() {
+        return '0.2';
+    }
+
+    
+
     /**
      * Returns collection name with prefix.
      * 
@@ -165,11 +172,12 @@ export class Base {
      * 
      */
     async verifyUser() {
-        this.loginUid = null; // reset before verify.
+        this.loginUid = null; // reset ( on every Router() call) before verify.
 
 
         if ( Base.useUid ) {
             this.loginUid = this.param('uid');
+            debugger;
             return true;
         }
 
