@@ -57,9 +57,14 @@ Shopping Mall Plugin
     
 
 ````
-$ node_modules/.bin/mocha src/unit-tests/library/* --watch --compilers ts:ts-node/register -t 99999
-$ node_modules/.bin/mocha src/unit-tests/library/user-crud-with-uid.ts --watch --compilers ts:ts-node/register -t 99999
-$ node_modules/.bin/mocha src/unit-tests/library/install.ts --watch --compilers ts:ts-node/register -t 99999
+$ $ node_modules/.bin/mocha --watch --compilers ts:ts-node/register -t 99999 src/unit-tests/library/*
+
+
+$ node_modules/.bin/mocha --watch --compilers ts:ts-node/register -t 99999 src/unit-tests/library/user-crud-with-uid.ts
+
+$ node_modules/.bin/mocha --watch --compilers ts:ts-node/register -t 99999 src/unit-tests/library/user-verify-with-id-token.ts
+
+
 ````
 ##### In Windows
 You need to point into mocha js file.
@@ -207,7 +212,12 @@ You can use, `db`, `collection`, `params` and all other code.
 
 ## User Identification
 
-* `ID Token` must be delivered as `idToken` on request which will be used to fetch user's `uid` on server side.
+* `ID Token` must be delivered as `idToken` on request which will be verified and server will fetch user's `uid` from it.
+
+* You may use `uid` as `Verified User UID` instead of `ID Token` if you do the unit testing.
+
+* If you do not set proper Unit-Test settings, and you do not provide `idToken`, then the user will be anonymous.
+
 
 
 ### For Unit testing.

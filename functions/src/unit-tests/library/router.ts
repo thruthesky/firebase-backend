@@ -10,6 +10,7 @@ import { init, route } from './init';
 Base.admin = init();
 
 describe('Router test.', () => {
+    beforeEach(()=> Base.useUid = true);
     it('Empty route', async () => {
         const re = await route({ route: '', a: 'ab' });
         expect(re).to.be.a('object');

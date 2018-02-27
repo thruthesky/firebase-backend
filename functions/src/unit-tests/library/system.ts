@@ -12,6 +12,7 @@ describe("System install test", () => {
         // If already installed, uninstall and install again.
         if ( re.code === E.SYSTEM_ALREADY_INSTALLED ) {
             const un = await route({route: 'system.uninstall'} );
+
             expect( un.code ).to.be.equal( 0 );
 
             re = await route({ route: 'system.install' });

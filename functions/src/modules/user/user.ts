@@ -71,32 +71,6 @@ export class User extends Document {
 
     }
 
-
-    /**
-     * Returns false if there is no error.
-     * Otherwise ErrorObject will be returned.
-     * 
-     * @todo validate more on user data.
-     */
-    validateUserData(p: USER_DATA): ROUTER_RESPONSE | boolean {
-
-
-        /// User's UID is not acceptable for real production site.
-        /// It is only available with unit-test.
-        if ( p.uid !== void 0 ) {
-            if ( this.checkUIDFormat( p.uid ) ) return this.error( this.checkUIDFormat( p.uid ) );
-        }
-
-        /**
-         * Check gender format.
-         */
-        if ( p.gender !== void 0 && p.gender ) {
-            if ( p.gender !== 'M' && p.gender !== 'F' ) return this.error( E.WRONG_GENDER );
-        }
-
-        return false;
-    }
-
     
     
 }

@@ -157,6 +157,8 @@ export class Base {
     /**
      * Returns true if the user is properly verified.
      * 
+     * 
+     * 
      * @desc it sets 'null' on `Base.uid` at first.
      * @desc it saves the user's uid at `Base.uid`. It many be Anonymous uid.
      * @desc If no `idToken` was given by HTTP request, then Anonymous uid will be used.
@@ -170,14 +172,28 @@ export class Base {
      *      - TRUE on success.
      *      - Or ErrorObject on error.
      * 
+     *      On unit test with uid, If there is no uid. that's NOT an error. the user will be set to Anonymous !!
+     *      If the `uid` is set but empty value, then it is an error of 'NO_UID'.
+     * 
+     *
+     * 
      */
-    async verifyUser() {
+    async verifyUser(): Promise<any> {
         this.loginUid = null; // reset ( on every Router() call) before verify.
 
 
         if ( Base.useUid ) {
-            this.loginUid = this.param('uid');
-            debugger;
+            // console.log("verifyUser(). Base.useUid==true. Going to use `uid` as Verified..");
+
+            const uid = this.param('uid');
+            if ( uid === void 0 ) {
+                this.loginUid = Anonymous.uid;
+                return true;
+            }
+            else if ( ! uid ) {
+                return this.error( E.NO_UID );
+            }
+            this.loginUid = uid;
             return true;
         }
 
@@ -189,7 +205,9 @@ export class Base {
                     // console.log("===== Verified UID: ", this.loginUid);
                     return true;
                 })
-                .catch(e => this.error(e));
+                .catch(e => {
+                    return this.error( E.FIREBASE_FAILED_TO_DECODE_ID_TOKEN );
+                });
         }
         else { // no token was given
             this.loginUid = Anonymous.uid;

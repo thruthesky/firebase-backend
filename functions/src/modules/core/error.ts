@@ -28,17 +28,21 @@ export const SYSTEM_ALREADY_INSTALLED = -40100; es[SYSTEM_ALREADY_INSTALLED] = '
 
 export const COLLECTION_IS_NOT_SET = -40200; es[COLLECTION_IS_NOT_SET] = 'Collection name is set set on base class.';
 
-
-export const FIREBASE_CODE = -40900; es[FIREBASE_CODE] = 'Firebase error code';
-export const FIREBASE_AUTH_UID_ALREADY_EXISTS = -40901; es[FIREBASE_AUTH_UID_ALREADY_EXISTS] = 'User already exists';
-export const FIREBASE_ID_TOKEN_EXPIRED = -40902; es[FIREBASE_ID_TOKEN_EXPIRED] = 'User ID Token has expired.';
-
 // Posting errors
 export const EMPTY_POST_BODY = -40301; es[EMPTY_POST_BODY] = 'Post body can\'t be empty';
 export const POST_HAS_NO_CATEGORY = -40302; es[POST_HAS_NO_CATEGORY] = 'Post must have category.';
 export const NO_POST_ID_ON_GET = -40353; es[NO_POST_ID_ON_GET] = 'No post id. Getting post from server needs post id.'
 export const POST_ID_TOO_LONG = -40354; es[POST_ID_TOO_LONG] = 'post id is too long. Must be less than 128 characters.';
 export const POST_ID_CANNOT_CONTAIN_SLASH = -40355; es[POST_ID_CANNOT_CONTAIN_SLASH] = 'post cannot contain slashes.';
+
+// Firebase errors.
+
+export const FIREBASE_CODE = -40900; es[FIREBASE_CODE] = 'Firebase error code';
+export const FIREBASE_AUTH_UID_ALREADY_EXISTS = -40901; es[FIREBASE_AUTH_UID_ALREADY_EXISTS] = 'User already exists';
+export const FIREBASE_ID_TOKEN_EXPIRED = -40902; es[FIREBASE_ID_TOKEN_EXPIRED] = 'User ID Token has expired.';
+export const FIREBASE_FAILED_TO_DECODE_ID_TOKEN = -40905; es[FIREBASE_FAILED_TO_DECODE_ID_TOKEN] = 'Failed to verfiy who you are. The ID Token may be expired or invalid.';
+
+
 
 /**
  * 

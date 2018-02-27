@@ -10,29 +10,7 @@ export class UserRouter extends User {
         super();
         return;
     }
-<<<<<<< HEAD
   
-=======
-
-    /**
-     * It sanitize user data to set/update.
-     * 
-     * @param p User data 
-     */
-    sanitizeUserData(p: USER_DATA) {
-
-        const data = {
-            id: p.uid,
-            name: p.name,
-            gender: p.gender,
-            birthday: p.birthday,
-            mobile: p.mobile,
-            landline: p.landline
-        };
-
-        return this.hook( 'user.router.sanitizeUserData', data );
-
-    }
 
 
     /**
@@ -45,15 +23,14 @@ export class UserRouter extends User {
 
 
         /// User's UID is not acceptable for real production site.
-        /// It is only available when Base.useUid is set to true.
+        /// It is only available with unit-test.
         if ( p.uid !== void 0 ) {
             if ( this.checkUIDFormat( p.uid ) ) return this.error( this.checkUIDFormat( p.uid ) );
         }
 
-
-
-        // if (p.name === void 0 || !p.name) return this.error(E.NO_NAME);
-
+        /**
+         * Check gender format.
+         */
         if ( p.gender !== void 0 && p.gender ) {
             if ( p.gender !== 'M' && p.gender !== 'F' ) return this.error( E.WRONG_GENDER );
         }
@@ -61,7 +38,7 @@ export class UserRouter extends User {
         return false;
     }
 
->>>>>>> master
+    
     /**
      * Creates a doc under users collection.
      * 

@@ -20,21 +20,26 @@ export class Router extends Base {
             return this.error(E.EMPTY_ROUTE);
         }
 
-        if ( ( await this.verifyUser() ) !== true ) {
-            return this.error(E.FAILED_TO_VERIFY_USER);
-        }
-
-        // console.log('run:');
+        // Check router class.
         let $router = null;
         if (this.routeClassName === 'user') $router = new UserRouter();
         else if (this.routeClassName === 'system' ) $router = new SystemRouter();
         else if (this.routeClassName === 'post') $router = new PostRouter();
         else return this.error(E.WRONG_ROUTE);
 
-        // console.log($router);
+        
+        // Check router method.
+        if ($router[this.routeMethodName] === void 0) return this.error(E.WRONG_METHOD);
 
-        if ($router[this.routeMethodName] === void 0) return this.error(E.WRONG_METHOD);;
 
+        // Check user login.
+        const reLogin = await this.verifyUser();
+        if ( reLogin !== true ) {
+            return reLogin;
+        }
+
+
+        // Run router.
         let ret = { route: this.param('route'), code: 0 };
         const result = await $router[this.routeMethodName]();
 

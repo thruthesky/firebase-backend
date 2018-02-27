@@ -1,4 +1,7 @@
-﻿import * as chai from 'chai';
+﻿/**
+ * @author Gem
+ */
+import * as chai from 'chai';
 const expect = chai.expect;
 import { Base, E } from './../../modules/core/core';
 import { init, route } from '../../unit-tests/library/init';
@@ -10,7 +13,7 @@ Base.admin = init();
  * 
  * 
  * 
- *      WARNING.        YOU ARE TESTING WITH UID. set UTIT_TEST = true on settigns.ts
+ *      WARNING.        YOU ARE TESTING WITH UID.
  * 
  * 
  * 
@@ -52,27 +55,33 @@ Base.admin = init();
 
 
 describe('Get post test.', () => {
+
+    beforeEach( () => {
+        Base.useUid = true;
+    });
+
     it('Should be error document id does not exist', async () => {
         const re = await route({ route: 'post.get', uid: 'user-b', postId: 'uz1WgOJtEKZ7a47wqqRM' });
-        if (re && re.code) console.log(re);
+        // console.log("re: ", re);
         expect(re).to.be.a('object');
         expect(re.code).to.be.equal( E.DOCUMENT_ID_DOES_NOT_EXISTS_FOR_GET );
         // console.log('Message: ', re.message);
     });
 
-    it('Should be error user not login', async () => {
-        const re = await route({ route: 'post.get',  postId: 'uz1WgOJtEKZ7a47wqqRM' });
-        if (re && re.message) console.log(re.message);
-        expect(re).to.be.a('object');
-        expect(re.code).to.be.equal( E.USER_NOT_LOGIN );
-        // console.log('Message: ', re.message)
-    });
 
-    it('Should be error no post id', async () => {
-        const re = await route({ route: 'post.get', uid: 'user-b' });
-        if (re && re.message) console.log(re.message);
-        expect(re).to.be.a('object');
-        expect(re.code).to.be.equal( E.NO_POST_ID_ON_GET );
-        // console.log('Message: ', re.message)
-    });
+    // it('Should be error user not login', async () => {
+    //     const re = await route({ route: 'post.get',  postId: 'dfgsdfsdfasdf' });
+    //     console.log(re.message);
+    //     expect(re).to.be.a('object');
+    //     expect(re.code).to.be.equal( E.NO_UID );
+    //     // console.log('Message: ', re.message)
+    // });
+
+    // it('Should be error no post id', async () => {
+    //     const re = await route({ route: 'post.get', uid: 'user-b' });
+    //     if (re && re.message) console.log(re.message);
+    //     expect(re).to.be.a('object');
+    //     expect(re.code).to.be.equal( E.NO_POST_ID_ON_GET );
+    //     // console.log('Message: ', re.message)
+    // });
 });

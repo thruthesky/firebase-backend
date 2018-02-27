@@ -7,7 +7,6 @@ import { init } from './init';
 import { idToken } from '../test-data';
 
 Base.admin = init();
-Base.useUid = false;
 
 
 /**
@@ -16,11 +15,14 @@ Base.useUid = false;
  * 
  */
 describe('Expect success', () => {
+    beforeEach( () => {
+        Base.useUid = false;
+    });
     it('Token copied from client', async () => {
         const $router = new Router({ idToken: idToken });
         const re = await $router.verifyUser();
         expect(re).to.be.equal(true);
-        // console.log( $router.loginUid );
+        // console.log('re: ', re );
     });
 });
 
