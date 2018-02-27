@@ -20,6 +20,7 @@ describe( 'User verify with UID', () => {
         });
     });
     
+    
     describe('User Verify UID with Base.', () => {
         it('Anonymous uid with base', async () => {
             Base.params = { uid: '' }; // Set input data
