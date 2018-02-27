@@ -117,6 +117,8 @@ export class UserRouter extends User {
      */
     async get() {
         if ( ! this.loginUid ) return this.error( E.USER_NOT_LOGIN ); // On Unit Test, it will be set with `uid`
+
+        console.log("user.router::get() with " + this.loginUid);
         return super.get( this.loginUid );
     }
 
