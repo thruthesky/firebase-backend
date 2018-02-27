@@ -12,7 +12,7 @@ Base.useUid = false;
  * It is okay NOT to test this test or try to put a ID Token that less changes.
  * 
  */
-describe('Expect success', () => {
+describe('Expect success.', () => {
     it('Token copied from client', async () => {
         const $router = new Router({ idToken: idToken });
         const re = await $router.verifyUser();
