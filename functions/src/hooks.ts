@@ -35,6 +35,16 @@ export class Hooks extends Base {
         return data;
     }
 
+    post_router_sanitizePostData(data) {
+
+        // console.log("db: ", this.db);
+        // console.log("collection: ", this.collection);
+        // console.log("params: ", this.params);
+
+        data['hooked'] = 'yes';
+        return data;
+    }
+
 
     /**
      * 
