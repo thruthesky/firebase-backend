@@ -14,7 +14,7 @@ export const Anonymous = {
 export const COLLECTIONS = {
     USERS: 'users',
     SETTINGS: 'settings',
-    POST_DATA: 'posts',
+    POSTS: 'posts',
     POST_SETTINGS: 'post-setttings',
     COMMENTS : 'comments'
 };

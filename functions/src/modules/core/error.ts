@@ -31,6 +31,13 @@ export const FIREBASE_CODE = -40900; es[FIREBASE_CODE] = 'Firebase error code';
 
 export const FIREBASE_AUTH_UID_ALREADY_EXISTS = 40901; es[FIREBASE_AUTH_UID_ALREADY_EXISTS] = 'User already exists';
 
+// Posting errors
+export const EMPTY_POST_BODY = -40301; es[EMPTY_POST_BODY] = 'Post body can\'t be empty';
+export const POST_HAS_NO_CATEGORY = -40302; es[POST_HAS_NO_CATEGORY] = 'Post must have category.';
+export const NO_POST_ID_ON_GET = -40353; es[NO_POST_ID_ON_GET] = 'No post id. Getting post from server needs post id.'
+export const POST_ID_TOO_LONG = -40354; es[POST_ID_TOO_LONG] = 'post id is too long. Must be less than 128 characters.';
+export const POST_ID_CANNOT_CONTAIN_SLASH = -40355; es[POST_ID_CANNOT_CONTAIN_SLASH] = 'post cannot contain slashes.';
+
 /**
  * 
  * 
