@@ -163,6 +163,12 @@ export class Base {
      * @desc it saves the user's uid at `Base.uid`. It many be Anonymous uid.
      * @desc If no `idToken` was given by HTTP request, then Anonymous uid will be used.
      * @desc If wrong `idToken` was give, then ErrorObject will be returned.
+     * @desc IMPORTANT:
+     *      If `idToken` is set, but falsy value was given like empty stirng, false, null, undefiend,
+     *          Then this is not an error.
+     *          The user will be logged in as Anonymous.
+     *          This is different from Unit Test with uid.
+     *      
      * 
      * 
      * @desc For unit-testing, You will need to set `Base.useUid` to true in settings,

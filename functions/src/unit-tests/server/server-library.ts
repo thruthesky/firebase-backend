@@ -4,7 +4,9 @@ const apiUrl = "https://us-central1-thruthesky-firebase-backend.cloudfunctions.n
 
 
 import * as request from 'request';
-export function req(obj, debug = false) {
+import * as rpn from 'request-promise-native';
+
+export async function route(obj, debug = false) {
     const data: request.UrlOptions = <request.UrlOptions>{};
     data['method'] = 'POST';
     data['url'] = apiUrl;
@@ -14,5 +16,11 @@ export function req(obj, debug = false) {
     if (debug) {
         console.log("Debug Url: " + apiUrl + '?' + lib.httpBuildQuery(obj));
     }
-    return data;
+
+    const re = await rpn(data).catch(e => e);
+
+    return re;
 }
+
+
+

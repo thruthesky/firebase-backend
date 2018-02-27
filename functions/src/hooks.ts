@@ -1,5 +1,16 @@
 import { Base } from './modules/core/base';
 
+/**
+ * 
+ * 
+ * @desc You can use all the functionality of the project.
+ * 
+ *      `this.db`, `this.collection`, `this.params`, etc.
+ * 
+ * 
+ * 
+ */
+
 export class Hooks extends Base {
 
     constructor(collectionName) {
@@ -27,12 +38,15 @@ export class Hooks extends Base {
 
     user_router_sanitizeUserData(data) {
 
-        // console.log("db: ", this.db);
-        // console.log("collection: ", this.collection);
-        // console.log("params: ", this.params);
+        // Uncomment below if you want to accept all the input from the user.
+        // But becareful on what you are doing. You should be some validation.
+        
+        // const newData = this.params;
+        // newData['hooked'] = 'yes';
+        // return newData;
 
-        data['hooked'] = 'yes';
         return data;
+
     }
 
     /**

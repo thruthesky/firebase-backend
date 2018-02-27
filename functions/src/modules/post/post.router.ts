@@ -2,8 +2,8 @@
 // import { Request, Response } from 'express';
 import * as E from '../core/error';
 import { ROUTER_RESPONSE } from '../core/core';
-import { Base } from '../core/base';
-import { Post, POST_DATA } from './post';
+// import { Base } from '../core/base';
+import { Post } from './post';
 
 export class PostRouter extends Post {
 

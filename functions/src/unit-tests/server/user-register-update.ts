@@ -1,25 +1,28 @@
 import * as chai from 'chai';
 const expect = chai.expect;
 
-import * as rpn from 'request-promise-native';
+
 import * as E from './../../modules/core/error';
-import { req } from './server-library';
+import { route } from './server-library';
 
-describe('User Register Test', () => {
-    it('Expect error  without id', async () => {
-        const data = req({ route: 'user.set', a: 'B', c: 'd' });
-        const re = await rpn(data).catch(err => err);
 
-        // console.log(re);
-        expect(re).to.be.an('object');
-        expect(re['code']).to.be.equal(E.NO_UID);
-    });
-    it('Expect success', async () => {
-        const data = req({ route: 'user.set', uid: 'user-10', a: 'B', c: 'd' });
-        const re = await rpn(data).catch(err => err);
 
-        // console.log(re);
+
+describe('User update without idToken. Meaning, Update will be on Anonymous document.', () => {
+    it('Expect error  without id.', async () => {
+        const re = await route({ route: 'user.update', a: 'Apple', c: 'Cherry' });
+
+        console.log(re);
         expect(re).to.be.an('object');
         expect(re['code']).to.be.equal(0);
     });
+
+    // it('Expect success', async () => {
+    //     const data = req({ route: 'user.set', uid: 'user-10', a: 'B', c: 'd' });
+    //     const re = await rpn(data).catch(err => err);
+
+    //     // console.log(re);
+    //     expect(re).to.be.an('object');
+    //     expect(re['code']).to.be.equal(0);
+    // });
 });

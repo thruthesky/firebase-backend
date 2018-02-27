@@ -1,7 +1,7 @@
 import * as chai from 'chai';
 const expect = chai.expect;
 import { Base } from './../../modules/core/core';
-import { Router } from './../../modules/router/router';
+// import { Router } from './../../modules/router/router';
 
 describe("Base::collection()", () => {
     beforeEach(() => {

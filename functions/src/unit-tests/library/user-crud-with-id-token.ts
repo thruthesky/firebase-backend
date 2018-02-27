@@ -70,6 +70,7 @@ describe('user-crud-with-id-token', () => {
         it('Sould get anonymous user data', async () => {
             const re = await route({ route: 'user.get' });
             // console.log(re);
+            expect( re.code ).to.be.equal(0);
         })
 
         it('Should re[data] be null with wrong document id', async () => {

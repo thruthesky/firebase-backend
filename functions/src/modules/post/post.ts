@@ -1,4 +1,4 @@
-﻿import * as admin from 'firebase-admin';
+﻿// import * as admin from 'firebase-admin';
 import { Document } from './../document/document';
 import { E, COLLECTIONS, ROUTER_RESPONSE } from '../core/core';
 

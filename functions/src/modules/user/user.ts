@@ -1,7 +1,7 @@
-import { E } from '../core/core';
+// import { E } from '../core/core';
 // import * as admin from 'firebase-admin';
 import { Document } from './../document/document';
-import { COLLECTIONS,  ROUTER_RESPONSE } from './../core/defines';
+import { COLLECTIONS } from './../core/defines';
 
 
 
