@@ -7,7 +7,7 @@ import { Post, POST_DATA } from './post';
 
 export class PostRouter extends Post {
 
-    async create(){
+    async create(): Promise<ROUTER_RESPONSE | boolean>  {
         if ( ! this.loginUid ) return this.error( E.USER_NOT_LOGIN ); // On Unit Test, it will be set with `uid`
         if (this.validatePostData(this.params)) return this.validatePostData(this.params);
         
@@ -18,7 +18,7 @@ export class PostRouter extends Post {
         return await super.set(this.sanitizePostData( this.params ), null, this.collectionName);
     }
 
-    async get(){
+    async get(): Promise<ROUTER_RESPONSE | boolean> {
         if ( ! this.loginUid ) return this.error( E.USER_NOT_LOGIN ); // On Unit Test, it will be set with `uid`
         if (this.validatePostRequest(this.params)) return this.validatePostRequest(this.params);
         
