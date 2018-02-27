@@ -52,11 +52,11 @@ Base.admin = init();
 
 
 describe('Get post test.', () => {
-    it('Should be successful', async () => {
+    it('Should be error document id does not exist', async () => {
         const re = await route({ route: 'post.get', uid: 'user-b', postId: 'uz1WgOJtEKZ7a47wqqRM' });
-        // if (re && re.code) console.log(re);
+        if (re && re.code) console.log(re);
         expect(re).to.be.a('object');
-        expect(re.code).to.be.equal( 0 );
+        expect(re.code).to.be.equal( E.DOCUMENT_ID_DOES_NOT_EXISTS_FOR_GET );
         // console.log('Message: ', re.message);
     });
 
