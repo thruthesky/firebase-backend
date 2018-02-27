@@ -7,6 +7,13 @@ import { Post, POST_DATA } from './post';
 
 export class PostRouter extends Post {
 
+    /** 
+     * Pushes data to firebase
+     * 
+     * @desc - Checks user if logged in and then calls super.set() tp push data.
+     * 
+     * @author gem
+    */
     async create(): Promise<ROUTER_RESPONSE | boolean>  {
         if ( ! this.loginUid ) return this.error( E.USER_NOT_LOGIN ); // On Unit Test, it will be set with `uid`
         if (this.validatePostData(this.params)) return this.validatePostData(this.params);
@@ -18,6 +25,13 @@ export class PostRouter extends Post {
         return await super.set(this.sanitizePostData( this.params ), null, this.collectionName);
     }
 
+    /** 
+     * Gets data from firebase based on document id.
+     * @desc - get() checks if user is logged in and then passed document ID and TokenID( in production ) in super.get() to get data from firebase.
+     * 
+     * @author gem
+     * 
+    */
     async get(): Promise<ROUTER_RESPONSE | boolean> {
         if ( ! this.loginUid ) return this.error( E.USER_NOT_LOGIN ); // On Unit Test, it will be set with `uid`
         if (this.validatePostRequest(this.params)) return this.validatePostRequest(this.params);
