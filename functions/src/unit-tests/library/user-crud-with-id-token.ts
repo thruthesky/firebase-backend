@@ -26,7 +26,6 @@ describe('User Update Test', () => {
     })
 
     
-
     it(`Should failed on update because wrong document id.`, async () => {
         // const re = await route({ route: 'user.update', uid: 'wrong-user-id' }); //
         const re = await route({ route: 'user.update', idToken: 'wrong-user-id' });
