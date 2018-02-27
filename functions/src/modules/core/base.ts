@@ -197,4 +197,17 @@ export class Base {
 
         return false;
     }
+
+        /**
+     * Returns false if there is no error. Otherwise, error code will be returned.
+     * @param uid User uid
+     */
+    checkPostIDFormat( postId ) {
+
+        if ( !postId ) return this.error(E.NO_POST_ID_ON_GET);
+        if ( postId.length > 128 ) return this.error(E.POST_ID_TOO_LONG);
+        if ( postId.indexOf('/') !== -1 ) return this.error(E.POST_ID_CANNOT_CONTAIN_SLASH);
+
+        return false;
+    }
 }
