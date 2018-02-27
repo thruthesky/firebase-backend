@@ -1,6 +1,6 @@
 import * as chai from 'chai';
 
-const should = chai.should();
+// const should = chai.should();
 const expect = chai.expect;
 const assert = chai.assert;
 

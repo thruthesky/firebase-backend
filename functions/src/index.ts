@@ -4,9 +4,7 @@ import * as admin from 'firebase-admin';
 import { serviceAccount } from './settings/serviceAccountKey';
 
 import { Router } from './modules/router/router';
-import { Library as lib } from './modules/library/library';
 import { Base } from './modules/core/base';
-
 
 
 
@@ -21,8 +19,8 @@ admin.initializeApp({ // Enable on development.
 });
 
 
-const db = admin.firestore();
-Base.db = db;
+Base.admin = admin;
+
 
 
 // db.collection('x-users').doc().set({"uid":"abc","name":"nameabc","created":"2018-02-21T17:19:15.212Z"}).then (x => x);
@@ -37,7 +35,3 @@ export const api = functions.https.onRequest( (request, response ) => {
     });
 });
 
-
-function hook( name ) {
-    console.log("Hook name: ", name);
-}

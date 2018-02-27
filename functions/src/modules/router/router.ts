@@ -1,5 +1,8 @@
-import { Request, Response } from 'express';
 import { UserRouter } from './../user/user.router';
+<<<<<<< HEAD
+=======
+import { SystemRouter } from './../system/system.router';
+>>>>>>> bedb2b56ee40da974d4feea3d63fbf4674d71c08
 import { PostRouter } from "./../post/post.router";
 import { Base } from './../core/base';
 import * as E from './../core/error';
@@ -20,10 +23,10 @@ export class Router extends Base {
             return this.error(E.EMPTY_ROUTE);
         }
 
-        let $router = null;
-        if (this.routeClassName === 'user') {
-            $router = new UserRouter();
+        if ( ( await this.verifyUser() ) !== true ) {
+            return this.error(E.FAILED_TO_VERIFY_USER);
         }
+<<<<<<< HEAD
 
         if (this.routeClassName === 'post') {
             $router = new PostRouter();
@@ -31,7 +34,15 @@ export class Router extends Base {
 
         else return this.error(E.WRONG_ROUTE);
 
+=======
+>>>>>>> bedb2b56ee40da974d4feea3d63fbf4674d71c08
 
+        // console.log('run:');
+        let $router = null;
+        if (this.routeClassName === 'user') $router = new UserRouter();
+        else if (this.routeClassName === 'system' ) $router = new SystemRouter();
+        else if (this.routeClassName === 'post') $router = new PostRouter();
+        else return this.error(E.WRONG_ROUTE);
 
         // console.log($router);
 

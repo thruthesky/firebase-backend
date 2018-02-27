@@ -1,11 +1,13 @@
-import { Request, Response } from 'express';
 import * as admin from 'firebase-admin';
-import { COLLECTION_PREFIX } from './../../settings/settings';
+import { COLLECTION_PREFIX, USE_UID } from './../../settings/settings';
 
 import * as E from './../core/error';
 
 
-import { ROUTER_RESPONSE } from './../core/defines';
+import { ROUTER_RESPONSE, Anonymous } from './../core/defines';
+
+
+
 
 
 
@@ -14,8 +16,10 @@ import { ROUTER_RESPONSE } from './../core/defines';
 
 export class Base {
     collectionName: string = null;
-    static db: admin.firestore.Firestore = null;
+
+    static admin;
     static params: any = null;
+    static uid: string = null; // User `uid` if the user is logged in. The user may be Anonymous.
     // static request: Request = null;
     // static response: Response = null;
 
@@ -27,14 +31,32 @@ export class Base {
     get params(): any {
         return Base.params;
     }
-    get db() {
-        return Base.db;
+    get db(): admin.firestore.Firestore {
+        return Base.admin.firestore();
     }
-    set db(db: admin.firestore.Firestore) {
-        Base.db = db;
+    get auth(): admin.auth.Auth {
+        return Base.admin.auth();
     }
+    // set db(db: admin.firestore.Firestore) {
+    //     Base.db = db;
+    // }
     get collection() {
-        return this.db.collection( COLLECTION_PREFIX + this.collectionName);
+        return this.db.collection(this.collectionNameWithPrefix(this.collectionName));
+    }
+
+    /**
+     * Returns collection name with prefix.
+     * 
+     * @desc if input is 'users' then, return would be 'x-users'.
+     * @desc Must use this method to reference any collection.
+     * 
+     * @param name collection name
+     * 
+     * 
+     * @return perfixed collection name
+     */
+    collectionNameWithPrefix(name): string {
+        return COLLECTION_PREFIX + name;
     }
 
 
@@ -53,6 +75,11 @@ export class Base {
 
 
 
+    /**
+     * Returns a Reponse with Error Object.
+     * @desc the return from this method is already good enough to response to the client.
+     * @param code Error Code or Firebase Error Object
+     */
     error(code): ROUTER_RESPONSE {
         const obj = <ROUTER_RESPONSE>E.obj(code);
         if (obj) {
@@ -62,12 +89,14 @@ export class Base {
     }
 
     /**
-     * Returns true if the input `obj` is an ERROR_OBJECT.
+     * Returns true if the input `obj` is an Error Object.
+     * 
+     * 
      */
-    isErrorObject( obj ) : boolean {
-        return obj && obj['code'] !== void 0 && obj['code'] !== 0;
+    isErrorObject(obj): boolean {
+        return E.isErrorObject( obj );
     }
-    
+
 
 
     /**
@@ -94,11 +123,6 @@ export class Base {
         }
     }
 
-
-
-
-
-
     /**
      * Returns server timestmap
      */
@@ -106,4 +130,71 @@ export class Base {
         return admin.firestore.FieldValue.serverTimestamp();
     }
 
+    /**
+     * Returns true if the user is properly verified.
+     * 
+     * @desc it sets 'null' on `Base.uid` at first.
+     * @desc it saves the user's uid at `Base.uid`. It many be Anonymous uid.
+     * @desc If no `idToken` was given by HTTP request, then Anonymous uid will be used.
+     * @desc If wrong `idToken` was give, then ErrorObject will be returned.
+     * 
+     * 
+     * @desc For unit-testing, You will need to set `USE_UID` to true in settings,
+     *          and `uid` will be accepted from HTTP request and will be used as login user's uid.
+     * 
+     * @return
+     *      - TRUE on success.
+     *      - Or ErrorObject on error.
+     * 
+     */
+    async verifyUser() {
+        this.loginUid = null; // reset before verify.
+
+
+        if ( USE_UID ) {
+            this.loginUid = this.param('uid');
+            return true;
+        }
+
+        const idToken = this.param('idToken');
+        if (idToken) { // token was given
+            return await this.auth.verifyIdToken(idToken)
+                .then( decodedToken => {
+                    this.loginUid = decodedToken.uid;
+                    // console.log("===== Verified UID: ", this.loginUid);
+                    return true;
+                })
+                .catch(e => this.error(e));
+        }
+        else { // no token was given
+            this.loginUid = Anonymous.uid;
+            return true;
+        }
+    }
+
+    /**
+     * Sets login user's `uid`
+     */
+    set loginUid(uid) {
+        Base.uid = uid;
+    }
+    /**
+     * Gets login user's `uid`
+     */
+    get loginUid() {
+        return Base.uid
+    }
+
+    /**
+     * Returns false if there is no error. Otherwise, error code will be returned.
+     * @param uid User uid
+     */
+    checkUIDFormat( uid ) {
+
+        if ( !uid ) return this.error(E.NO_UID);
+        if ( uid.length > 128 ) return this.error(E.UID_TOO_LONG);
+        if ( uid.indexOf('/') !== -1 ) return this.error(E.UID_CANNOT_CONTAIN_SLASH);
+
+        return false;
+    }
 }

@@ -16,9 +16,10 @@ export function req(obj, debug = false) {
     }
     return data;
 }
-function err(re) {
-    if (re['statusCode'] && re['statusCode'] === 500) {
-        const res = JSON.parse(re.message.split(' - ')[1]);
-        console.log(res['error']['message']);
-    }
-}
+
+// function err(re) {
+//     if (re['statusCode'] && re['statusCode'] === 500) {
+//         const res = JSON.parse(re.message.split(' - ')[1]);
+//         console.log(res['error']['message']);
+//     }
+// }

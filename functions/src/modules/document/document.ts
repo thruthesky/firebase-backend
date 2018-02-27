@@ -1,9 +1,12 @@
+<<<<<<< HEAD
 import { ROUTER_RESPONSE } from './../core/defines';
 import { Response } from 'express';
+=======
+>>>>>>> bedb2b56ee40da974d4feea3d63fbf4674d71c08
 import * as admin from 'firebase-admin';
-import { Base } from './../core/base';
+import { Base, E } from './../core/core';
+import { Hooks } from './../../hooks';
 
-import { hook } from './../../hooks';
 
 
 
@@ -21,8 +24,9 @@ export class Document extends Base {
     /**
      * Calls hook
      */
-    hook(name, data) {
-        hook(name, data);
+    hook(name, data?) {
+        const hook = new Hooks(this.collectionName);
+        return hook.run(name, data);
     }
 
     /**
@@ -70,7 +74,12 @@ export class Document extends Base {
      * 
      * @desc When you set on a Document, you MUST use this method. You must NOT set Documents in other way.
      * 
+     * @param data - data to be set.
      * @param documentID - Document ID. If not set, automatically generated.
+     * @param collectionName -Collection name. If not set, it will use the collection name that is set on the object.
+     * 
+     * 
+     * @since 2018-02-25. It accepts third parameter as collection name.
      * 
      * 
      * @code
@@ -83,23 +92,43 @@ export class Document extends Base {
             birthday: p.birthday
         };
         return await this.set(data);
-
-
-
+     * 
      * @return
-     *          - A Promise<WriteResult> if success.
+     *          - A Promise<DocumentID> if success. Document ID as string will be returned.
      *          - A Promise<null> if the input data is empty.
      *          - A Promise<ErrorObject> if there is error. note: it is a promise that is being returned.
 
      */
-    async set(data, documentID?: string): Promise<any> {
+    async set(data, documentID?: string, collectionName?: string): Promise<any> {
         if (!data) return null;
+
+        let collection;
+        if (collectionName) {
+            collection = this.db.collection(this.collectionNameWithPrefix(collectionName));
+        }
+        else {
+            if (this.collectionName) {
+                collection = this.collection;
+            }
+            else {
+                return this.error(E.COLLECTION_IS_NOT_SET);
+            }
+        }
+
+        // this.db.collection().doc().id
+
+
         data['created'] = this.serverTime();
 
-        let documentRef;
-        if (documentID === void 0) documentRef = this.collection.doc();
-        else documentRef = this.collection.doc(documentID);
+        console.log("param collectionName: " + collectionName);
+        console.log("this.collectionName: " + this.collectionName);
+        console.log("documentID:  " + documentID);
+        let documentRef: admin.firestore.DocumentReference;
+        if (documentID) documentRef = collection.doc(documentID);
+        else documentRef = collection.doc();
+        
         return await documentRef.set(this.sanitizeData(data))
+            .then( writeResult => documentRef.id )
             .catch(e => this.error(e));
     }
 
@@ -134,8 +163,9 @@ export class Document extends Base {
      * 
      * @return A Promise of
      *          - Document data
-     *          - null if docuemnt doe not exsits.
+     *
      *          - ErrorObject. note: it is a promise that is being returned.
+     *          
      */
     async get(documentID): Promise<any> {
         return this.collection.doc(documentID).get()
@@ -143,7 +173,7 @@ export class Document extends Base {
                 if (doc.exists) {
                     return doc.data();
                 }
-                else return null;
+                else return this.error(E.DOCUMENT_ID_DOES_NOT_EXISTS_FOR_GET);
             })
             .catch(e => this.error(e));
     }
@@ -162,9 +192,17 @@ export class Document extends Base {
     async delete(documentID): Promise<any> {
         if (!documentID) return null;
         return await this.collection.doc(documentID).delete()
+<<<<<<< HEAD
             .then( a => a )
             .catch( e => this.error(e) );
        
     }
+=======
+            .then( x => documentID )
+            .catch( e => this.error(e) );
+    }
+
+
+>>>>>>> bedb2b56ee40da974d4feea3d63fbf4674d71c08
 
 }

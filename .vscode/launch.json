@@ -12,7 +12,7 @@
                 "--compilers",
                 "ts:ts-node/register",
                 "--no-timeouts",
-                "${workspaceFolder}/functions/src/unit-test/user-register-update.ts"
+                "${workspaceFolder}/functions/src/unit-test/library/user-register-update.ts"
             ],
             "cwd": "${workspaceRoot}",
             "console": "internalConsole",

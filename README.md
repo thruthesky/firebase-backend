@@ -4,7 +4,22 @@ Firebase backend to build CMS
 
 # TODO List
 
+
+* Get ID Token from client without UID and do whatever.
+    ** After user registration, get ID Token with other information and update it on `x-users`.
+
+    ** For unit-test, put a setting in `x-settings` with test=true. if it is set to true, it can test with user uid instead of ID token. After test, it should be false and by default it is false.
+    request will be { idToken: test, uid: user-uid }
+
+* Installation.
+    - Web based intsallation build with `capacitor`.
+    - get admin email address and put it /x-settings/admins as an array.
+
+
+
 * Do not nest too much methods. It is extreamly difficult to debug.
+
+* Test on every methods. Even if there are a simple method like `validateUserData()`.
 
 * User Management
 With IDTokens https://firebase.google.com/docs/auth/admin/verify-id-tokens
@@ -38,17 +53,19 @@ Shopping Mall Plugin
 
     This means, It does not connect to `Firebase Functions`.
 
-    It initiates `Firebase Admin SDK` and test directly on `Firestore`.
-
-* Mocha does not seem to release the connection of `Firebase Admin SDK` so, when mocha runs next time, there will be initializeApp() problems.
-
-    In this case, you can use ` nodemon `
-
+    It initiates `Firebase Admin SDK` and test the project directly without connecting to `Firebase Functions`
+    
 
 ````
 $ tsc --watch
-$ nodemon --watch lib ./node_modules/.bin/mocha src/unit-test/user-register-update.ts --compilers ts:ts-node/register -t 99999 // Typescript Test
-$ nodemon --watch lib ./node_modules/.bin/mocha lib/unit-test/user-register-update.js --watch -t 100000 // Javascript test.
+$ node_modules/.bin/mocha src/unit-tests/library/* --watch --compilers ts:ts-node/register -t 99999
+$ node_modules/.bin/mocha src/unit-tests/library/user-register-update.ts --watch --compilers ts:ts-node/register -t 99999
+$ node_modules/.bin/mocha src/unit-tests/library/install.ts --watch --compilers ts:ts-node/register -t 99999
+````
+##### In Windows
+You need to point into mocha js file.
+````
+$ nodemon .\node_modules\mocha\bin\_mocha .\lib\unit-test\server\router.js --watch .\lib\  -t 10000
 ````
 ##### In Windows
 You need to point inside .\node_modules\mocha\bin\_mocha
@@ -60,10 +77,20 @@ $ nodemon .\node_modules\mocha\bin\_mocha .\lib\unit-test\server\router.js --wat
 
 * Testing real `Firebase Functions`. Tests under `unit-test/server` will not use `Firebase Admin SDK`. That means, it will directly connection to `Firebase Functions HTTP Triggers`.
 
+
+* You can run test all scripts with `*`.
+
+
 ````
-$ ./node_modules/.bin/mocha src/unit-test/server/user-register-update.ts --compilers ts:ts-node/register --watch -t 100000 // Use TypeScript to test.
+$ ./node_modules/.bin/mocha src/unit-tests/server/* --compilers ts:ts-node/register --watch -t 100000 // All tests
+$ ./node_modules/.bin/mocha src/unit-tests/server/user-register-update.ts --compilers ts:ts-node/register --watch -t 100000 // Use TypeScript to test.
 $ /node_modules/.bin/mocha lib/unit-test/server/router.js --watch -t 100000
 $ ./node_modules/.bin/mocha lib/unit-test/server/user-register-update.js --watch -t 100000
+````
+##### In Windows
+You need to point into mocha js file.
+````
+$ nodemon .\node_modules\mocha\bin\_mocha .\lib\unit-test\server\router.js --watch .\lib\  -t 10000
 ````
 
 * Get Resource URL from functions-emulator after deploy and put it in `test.ts`
@@ -72,6 +99,8 @@ $ ./node_modules/.bin/mocha lib/unit-test/server/user-register-update.js --watch
 
 * [Developer's Programming Guide](https://docs.google.com/document/d/1ncYWftCEXJBJkATExfGM2S4dzerrI_7PA_DjWjNdEmQ/edit#)
 
+
+* [Database Design](https://docs.google.com/document/d/1ncYWftCEXJBJkATExfGM2S4dzerrI_7PA_DjWjNdEmQ/edit#heading=h.t870v2webv2r)
 
 
 ## How To Install For Developers.
@@ -103,31 +132,78 @@ $ ./node_modules/.bin/functions deploy Api --trigger-http ; deploy a http functi
 
 ## Return value from `Router()`
 
-* Returns value from `Router()` must be an ERROR_OBJECT object.
+* Returns value from `Router()` must be an BACKEND_ERROR_OBJECT object.
 
 
 
 
 ## Hook system
 
+
+* All the comments and information are in `hooks.ts`. So, read carefully comments in `hooks.ts`.
+
+* Hooks must return an `BACKEND_ERROR_OBJECT` to cancel the originated work and return the Error Object.
+
+
+
 * Adding a hook.
-Simple call
+
+Simple call like below anywhere.
+
 ````
-this.hook('hook name', 'data');
+return this.hook( 'ClassName.Method', data );
 ````
+
+* Example
+````
+export class UserRouter extends ... {
+    sanitizeUserData( v ) {
+        return this.hook( 'user.router.sanitizeUserData', v );
+    }
+}
+````
+
+* `this.hook()` is in `document.ts` and it sets the `collectionName` and call `Hooks::run()` in `hooks.ts`.
+
+* Then, `Hooks::run()` will change `dot(.)` in ClassName/MethodName to `underbar(_)` and call the method.
+
+For instance, `user.router.sanitizerUseData` is used as name, then `user_router_sanitizeUserData()` will be called.
+
+
+
+
 
 * How to code with hook.
 
-Simple add ` if ( hook_name === 'your_hook' )` in `hooks.ts`
+Simply create a method of the hook name and that method of hook name will be called.
 
+You can use, `db`, `collection`, `params` and all other code.
 
 ````
-export function hook(name, data) {
-    console.log('Hook name: ', name);
-    console.log('Hook data: ', data);
-    if (name === 'user.router.sanitizeUserData') {
-        return data['hooked'] = 'yes';
+    user_router_sanitizeUserData(data) {
+
+        console.log("db: ", this.db);
+        console.log("collection: ", this.collection);
+        console.log("params: ", this.params);
+        
+        data['hooked'] = 'yes';
+        return data;
     }
-    return data;
-}
 ````
+
+
+## User Authentication
+
+* see [User Authentication](https://docs.google.com/document/d/1ncYWftCEXJBJkATExfGM2S4dzerrI_7PA_DjWjNdEmQ/edit#heading=h.p5joalt8chem).
+
+
+
+## Error Handling
+
+* `Firebase Firestore` produces error code as number that is bigger than 0 or sometimes a string. Some times it is a number. and sometimes it is a string.
+
+* We cannot show the error message from `Firestore` since it is fixed in English. We may need to translate it in different language.
+
+* So, we decide that all `ErrorObject` that backend responds to client MUST have a number less than 0.
+
+

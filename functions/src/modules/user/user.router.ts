@@ -2,7 +2,7 @@
 // import { Request, Response } from 'express';
 import * as E from '../core/error';
 import { User, USER_DATA } from './user';
-import { ROUTER_RESPONSE } from '../core/core';
+import { ROUTER_RESPONSE, UID } from '../core/core';
 
 
 export class UserRouter extends User {
@@ -25,16 +25,18 @@ export class UserRouter extends User {
      * @param p User data 
      */
     sanitizeUserData(p: USER_DATA) {
+
         const data = {
-            id: p.id,
+            id: p.uid,
             name: p.name,
             gender: p.gender,
             birthday: p.birthday,
             mobile: p.mobile,
             landline: p.landline
         };
-        this.hook( 'user.router.sanitizeUserData', data );
-        return data;
+
+        return this.hook( 'user.router.sanitizeUserData', data );
+
     }
 
 
@@ -45,7 +47,16 @@ export class UserRouter extends User {
      * @todo validate more on user data.
      */
     validateUserData(p: USER_DATA): ROUTER_RESPONSE | boolean {
-        if (p.id === void 0 || !p.id) return this.error(E.NO_ID);
+
+
+        /// User's UID is not acceptable for real production site.
+        /// It is only available when USE_UID is set to true.
+        if ( p.uid !== void 0 ) {
+            if ( this.checkUIDFormat( p.uid ) ) return this.error( this.checkUIDFormat( p.uid ) );
+        }
+
+
+
         // if (p.name === void 0 || !p.name) return this.error(E.NO_NAME);
 
         if ( p.gender !== void 0 && p.gender ) {
@@ -66,10 +77,29 @@ export class UserRouter extends User {
      *          But we need to add/manage extra user information on `Firestore`.
      * 
      * @note no email. no password.
+     * 
+     * 
+     * 
      */
+<<<<<<< HEAD
     async set()  : Promise<ROUTER_RESPONSE | boolean> {
+=======
+    async set() : Promise<ROUTER_RESPONSE | boolean> {
+
+        if ( ! this.loginUid ) return this.error( E.USER_NOT_LOGIN ); // On Unit Test, it will be set with `uid`
+>>>>>>> bedb2b56ee40da974d4feea3d63fbf4674d71c08
         if (this.validateUserData(this.params)) return this.validateUserData(this.params);
-        return await super.set(this.sanitizeUserData(this.params), (<USER_DATA>this.params).id);
+        
+        const re = this.hook('user.set');
+        if ( this.isErrorObject( re ) ) return re;
+
+        // console.log("Goint to set with UID:" + (<USER_DATA>this.params).uid);
+        // console.log("Data: ", this.params);
+        // return await super.set(this.sanitizeUserData(this.params), (<USER_DATA>this.params).uid);
+
+
+        // new code
+        return await super.set(this.sanitizeUserData(this.params), this.loginUid);
     }
 
     /**
@@ -80,17 +110,40 @@ export class UserRouter extends User {
      *      - If you want to reset the document, then use `set()`
      */
     async update() : Promise<ROUTER_RESPONSE | boolean> {
+<<<<<<< HEAD
+=======
+        if ( ! this.loginUid ) return this.error( E.USER_NOT_LOGIN ); // On Unit Test, it will be set with `uid`
+>>>>>>> bedb2b56ee40da974d4feea3d63fbf4674d71c08
         if (this.validateUserData(this.params)) return this.validateUserData(this.params);
-        return await super.update(this.sanitizeUserData(this.params), (<USER_DATA>this.params).id);
+        return await super.update(this.sanitizeUserData(this.params), this.loginUid);
     }
 
 
+<<<<<<< HEAD
     async get() : Promise<ROUTER_RESPONSE> {
         const id = this.param('id');
         const re = await super.get(id);
         if (!id) return this.error(E.NO_USER_DOCUMENT_ID);
         if (!re || re == void 0) return this.error(E.DOCUMENT_ID_DOES_NOT_EXISTS_FOR_GET);
         return re;
+=======
+    /**
+     * Returns user data.
+     */
+    async get() {
+        if ( ! this.loginUid ) return this.error( E.USER_NOT_LOGIN ); // On Unit Test, it will be set with `uid`
+        return super.get( this.loginUid );
+    }
+
+    /** 
+     * Deletes a user document.
+     * 
+     * @desc doc.delete() returns deletion timestamp even if the document is not existing.
+    */
+    async delete() : Promise<ROUTER_RESPONSE> {
+        if ( ! this.loginUid ) return this.error( E.USER_NOT_LOGIN ); // On Unit Test, it will be set with `uid`
+        return await super.delete(this.loginUid);
+>>>>>>> bedb2b56ee40da974d4feea3d63fbf4674d71c08
     }
 
     /** 

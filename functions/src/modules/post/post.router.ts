@@ -12,11 +12,17 @@ export class PostRouter extends Post {
     }
 
     async get(){
+<<<<<<< HEAD
         const id = this.param('id');
         const re = await super.get(id);
         if (!id) return this.error(E.NO_USER_DOCUMENT_ID);
         if (!re || re == void 0) return this.error(E.DOCUMENT_ID_DOES_NOT_EXISTS_FOR_GET);
         return re;
+=======
+        const id = this.param( 'id' );
+        return await super.get(id);
+        
+>>>>>>> bedb2b56ee40da974d4feea3d63fbf4674d71c08
     }
 
     async edit(){
@@ -27,5 +33,9 @@ export class PostRouter extends Post {
         return 'i am delete';
     }
 
+<<<<<<< HEAD
 }
 
+=======
+}
+>>>>>>> bedb2b56ee40da974d4feea3d63fbf4674d71c08
