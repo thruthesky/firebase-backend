@@ -9,9 +9,11 @@ import { COLLECTIONS,  ROUTER_RESPONSE } from './../core/defines';
  * User data to create/update.
  * 
  * @desc You can update more.
+ * 
+ * @desc The Document ID is actually `uid`.
  */
 export interface USER_DATA {
-    uid: string;
+    uid?: string;               /// `uid` is needed only for unit test. `uid` should not be saved in document.
     name?: string;
     nickname?: string;
     first_name?: string;
@@ -58,7 +60,6 @@ export class User extends Document {
     sanitizeUserData(p: USER_DATA) {
 
         const data = {
-            id: p.uid,
             name: p.name,
             gender: p.gender,
             birthday: p.birthday,
@@ -81,15 +82,14 @@ export class User extends Document {
 
 
         /// User's UID is not acceptable for real production site.
-        /// It is only available when USE_UID is set to true.
+        /// It is only available with unit-test.
         if ( p.uid !== void 0 ) {
             if ( this.checkUIDFormat( p.uid ) ) return this.error( this.checkUIDFormat( p.uid ) );
         }
 
-
-
-        // if (p.name === void 0 || !p.name) return this.error(E.NO_NAME);
-
+        /**
+         * Check gender format.
+         */
         if ( p.gender !== void 0 && p.gender ) {
             if ( p.gender !== 'M' && p.gender !== 'F' ) return this.error( E.WRONG_GENDER );
         }
