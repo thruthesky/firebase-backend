@@ -67,11 +67,6 @@ You need to point into mocha js file.
 ````
 $ nodemon .\node_modules\mocha\bin\_mocha .\lib\unit-test\server\router.js --watch .\lib\  -t 10000
 ````
-##### In Windows
-You need to point inside .\node_modules\mocha\bin\_mocha
-````
-$ nodemon .\node_modules\mocha\bin\_mocha .\lib\unit-test\server\router.js --watch .\lib\  -t 10000
-````
 
 #### Firebase Functions Test
 
