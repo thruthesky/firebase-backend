@@ -27,9 +27,11 @@ export const FAILED_TO_CREATE_ANONYMOUS = -40032; es[FAILED_TO_CREATE_ANONYMOUS]
 export const SYSTEM_ALREADY_INSTALLED = -40100; es[SYSTEM_ALREADY_INSTALLED] = 'System is already installed.';
 
 export const COLLECTION_IS_NOT_SET = -40200; es[COLLECTION_IS_NOT_SET] = 'Collection name is set set on base class.';
-export const FIREBASE_CODE = -40900; es[FIREBASE_CODE] = 'Firebase error code';
 
-export const FIREBASE_AUTH_UID_ALREADY_EXISTS = 40901; es[FIREBASE_AUTH_UID_ALREADY_EXISTS] = 'User already exists';
+
+export const FIREBASE_CODE = -40900; es[FIREBASE_CODE] = 'Firebase error code';
+export const FIREBASE_AUTH_UID_ALREADY_EXISTS = -40901; es[FIREBASE_AUTH_UID_ALREADY_EXISTS] = 'User already exists';
+export const FIREBASE_ID_TOKEN_EXPIRED = -40902; es[FIREBASE_ID_TOKEN_EXPIRED] = 'User ID Token has expired.';
 
 // Posting errors
 export const EMPTY_POST_BODY = -40301; es[EMPTY_POST_BODY] = 'Post body can\'t be empty';
@@ -130,6 +132,9 @@ function convertFirestoreErrorToBackendError( FireStoreErrorObject ) {
     switch( FireStoreErrorObject['code'] ) {
         case 5 : code = DOCUMENT_ID_DOES_NOT_EXISTS_FOR_UPDATE; break;
         case 'auth/uid-already-exists': code = FIREBASE_AUTH_UID_ALREADY_EXISTS; break;
+        case 'auth/argument-error' :
+            if ( FireStoreErrorObject['message'].indexOf('ID token has expired') !== -1 ) code = FIREBASE_ID_TOKEN_EXPIRED;
+        break;
         default : 
         return { code: FIREBASE_CODE, message: `Firebase error code. it is not converted. code: ${FireStoreErrorObject['code']}. message: ${FireStoreErrorObject['message']}`}
     }
