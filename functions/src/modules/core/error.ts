@@ -1,5 +1,6 @@
 const es = {};
 export const TEST = -11; es[TEST] = 'Test Error';
+export const UNKNOWN = -12; es[UNKNOWN] = 'Unknown erorr.';
 export const NO_EMAIL = -50; es[NO_EMAIL] = 'No email address.';
 export const NO_PASSWORD = -51; es[NO_PASSWORD] = 'No password.';
 export const NO_NAME = -52; es[NO_NAME] = 'No name.';
@@ -99,11 +100,20 @@ export function isErrorObject(o): boolean {
 
 /**
  * 
+ * Returns `BACKEND_ERROR_OBJECT` from a number or `Firebase error object`.
+ * 
  * @param code It may be a ERROR CODE or a `Error Object`.
  * 
  *          - If `Firestore Error Object` or `Javascript Error Object` was given, then it will be replaced as BACKEND_ERROR_OBJECT.
+ * 
+ * @return
+ *      - If the input is falsy value return the input is retuerned as it is.
+ *      - if the input is not a number or Error Object, then the input is returned as it is.
+ *      - Otherwise, Backend Error Object is returned.
  */
 export function obj(code): BACKEND_ERROR_OBJECT {
+
+    if ( ! code ) return code; // if falsy, return as it is.
 
     if (typeof code === 'number') { // Backend Error Code 
         return {
@@ -111,7 +121,7 @@ export function obj(code): BACKEND_ERROR_OBJECT {
             message: es[code]
         };
     }
-    else if (typeof code === 'object') { // May be an Error Code Object or `Firestore Error` object.
+    else if (typeof code === 'object' && code && code.code !== void 0 ) { // May be an Error Code Object or `Firestore Error` object.
 
         const eo = code; // error object
         if (eo['code'] === void 0) { // has no code? then it's not an error object.

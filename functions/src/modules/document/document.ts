@@ -35,6 +35,7 @@ export class Document extends Base {
         if (!obj) return null;
         if (typeof obj !== 'object') return null;
         Object.keys(obj).forEach(key => obj[key] === undefined && delete obj[key]);
+        // return this.hook('document.sanitizeData', obj);
         return obj;
     }
 
