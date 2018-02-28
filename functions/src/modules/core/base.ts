@@ -247,13 +247,25 @@ export class Base {
         return false;
     }
 
-        /**
+    /**
      * Returns false if there is no error. Otherwise, error code will be returned.
-     * @param uid User uid
+     * 
+     * @param postid User uid
+     * 
+     * @desc document id or post id constraints
+     *      - Must be no longer than 1,500 bytes
+            - Cannot contain a forward slash (/)
+            - Cannot solely consist of a single period (.) or double periods (..)
+            - Cannot match the regular expression __.*__
+     * @return 'false: boolean' - If postid have passed the constraints.
+     * 
+     * @return ROUTER_REPONSE error - If postid did not match any of the constraints
+     * 
      */
     checkPostIDFormat( postId ) {
 
         if ( !postId ) return this.error(E.NO_POST_ID_ON_GET);
+        if ( postId === '.' || postId === '..' ) return this.error(E.POST_ID_CANNOT_SOLELY_CONSIST_DOT);
         if ( postId.length > 128 ) return this.error(E.POST_ID_TOO_LONG);
         if ( postId.indexOf('/') !== -1 ) return this.error(E.POST_ID_CANNOT_CONTAIN_SLASH);
 
