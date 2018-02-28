@@ -36,6 +36,13 @@ Shopping Mall Plugin
 
 # Developer
 
+## Resources
+
+### Javascript Library, Frames.
+
+* Lodash is installed.
+
+
 ## Run
 
 * Run `tsc --watch`, and run mocha to do Unit Test.

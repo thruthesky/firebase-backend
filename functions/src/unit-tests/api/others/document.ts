@@ -1,5 +1,6 @@
 import * as chai from 'chai';
 const expect = chai.expect;
+import * as _ from 'lodash';
 import { Base, E } from './../../../modules/core/core';
 import { Document } from './../../../modules/document/document';
 import { init, route } from './../init';
@@ -36,16 +37,21 @@ describe('document.ts', () => {
             expect(re).to.be.a('object');
             expect( Object.keys( re ).length ).to.be.equal( 0 );
 
-
-
-            // Warning: this isn't true?
-            // expect( re ).to.be.equal( {} );
+            expect( _.isEqual( re, {} ) ).to.be.equal( true );
         });
 
         it('test with object property', () => {
             const re = $document.sanitizeData( { a: 1 } );
-            expect( re ).to.be.equal( { a: 1 } );
+            expect( _.isEqual( re, { a: 1 } ) ).to.be.equal( true );
+        });
+        it('test object with undefined.', () => {
+            const re = $document.sanitizeData( { a: 1, b: undefined } );
+            expect( _.isEqual( re, { a: 1 } ) ).to.be.equal( true );
 
+            expect( _.isEqual( $document.sanitizeData({ a: undefined }), {} )).to.be.equal( true );
+            expect( _.isEqual( $document.sanitizeData({ a: undefined, cde: undefined }), {} )).to.be.equal( true );
+            expect( _.isEqual( $document.sanitizeData({ a: undefined, b: 1, cde: undefined }), { b: 1 } )).to.be.equal( true );
+            expect( _.isEqual( $document.sanitizeData({ a: undefined, f: 'fruits', cde: undefined }), { f: 'fruits' } )).to.be.equal( true );
         });
         
     });
