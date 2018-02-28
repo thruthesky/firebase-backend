@@ -3,8 +3,9 @@
  */
 import * as chai from 'chai';
 const expect = chai.expect;
-import { Base, E } from './../../modules/core/core';
+import { Base, E, Anonymous } from './../../modules/core/core';
 import { init, route } from '../../unit-tests/library/init';
+import { PostRouter } from '../../modules/post/post.router';
 Base.admin = init();
 
 
@@ -20,6 +21,27 @@ Base.admin = init();
  * 
  * 
  */
+
+
+// describe('post-verify-with-uid', () => {
+//     const postId = '4LNEQ5sNcazSiAv4TcjX';
+//     beforeEach( () => {
+//         Base.useUid = true;
+//     });
+//     describe('Post verify without UID. The user will login as Anonymous.', () => {
+//         describe('Post get without UID.', () => {
+//             it('Anonymous uid with router. If uid is not set, then the user will be an anonymous.', async () => {
+//                 const $post = new PostRouter(); // Set input data
+//                 const re = await $post.validatePostRequest( { route: 'post.get', postId: postId, uid: Anonymous.uid } );
+//                 expect($post.loginUid).to.be.equal(Anonymous.uid);
+//                 expect(re).to.be.a('object');
+//                 expect(re['code']).to.be.equal(0);
+
+//             });
+//         });
+    
+// });
+
 
 
 // describe('Post creating Test.', () => {
@@ -54,34 +76,35 @@ Base.admin = init();
 
 
 
-describe('Get post test.', () => {
+// describe('post-crud-with-uid', () => {
 
-    beforeEach( () => {
-        Base.useUid = true;
-    });
+//     beforeEach( () => {
+//         Base.useUid = true;
+//     });
+//     describe('Get post test.', () => {
+//         it('Should be error document id does not exist', async () => {
+//             const re = await route({ route: 'post.get', uid: 'user-b', postId: 'uz1WgOJtEKZ7a47wqqRM' });
+//             // console.log("re: ", re);
+//             expect(re).to.be.a('object');
+//             expect(re.code).to.be.equal( E.DOCUMENT_ID_DOES_NOT_EXISTS_FOR_GET );
+//             // console.log('Message: ', re.message);
+//         });
+//         it('Should be error user not login.', async () => {
+//             const re = await route({ route: 'post.get',  postId: 'dfgsdfsdfasdf' });
+//             // console.log(re.message);
+//             expect(re).to.be.a('object');
+//             expect(re.code).to.be.equal( E.NO_UID );
+//             // console.log('Message: ', re.message)
+//         });
 
-    it('Should be error document id does not exist', async () => {
-        const re = await route({ route: 'post.get', uid: 'user-b', postId: 'uz1WgOJtEKZ7a47wqqRM' });
-        // console.log("re: ", re);
-        expect(re).to.be.a('object');
-        expect(re.code).to.be.equal( E.DOCUMENT_ID_DOES_NOT_EXISTS_FOR_GET );
-        // console.log('Message: ', re.message);
-    });
+//         it('Should be error no post id', async () => {
+//             const re = await route({ route: 'post.get', uid: 'user-b' });
+//             // if (re && re.message) console.log(re.message);
+//             expect(re).to.be.a('object');
+//             expect(re.code).to.be.equal( E.NO_POST_ID_ON_GET );
+//             // console.log('Message: ', re.message)
+//         });
+//     });
 
+// });
 
-    // it('Should be error user not login', async () => {
-    //     const re = await route({ route: 'post.get',  postId: 'dfgsdfsdfasdf' });
-    //     console.log(re.message);
-    //     expect(re).to.be.a('object');
-    //     expect(re.code).to.be.equal( E.NO_UID );
-    //     // console.log('Message: ', re.message)
-    // });
-
-    // it('Should be error no post id', async () => {
-    //     const re = await route({ route: 'post.get', uid: 'user-b' });
-    //     if (re && re.message) console.log(re.message);
-    //     expect(re).to.be.a('object');
-    //     expect(re.code).to.be.equal( E.NO_POST_ID_ON_GET );
-    //     // console.log('Message: ', re.message)
-    // });
-});
