@@ -32,9 +32,12 @@ export class Document extends Base {
      * @param obj Object to be set into `firestore`.
      */
     sanitizeData(obj) {
-        if (!obj) return null;
-        if (typeof obj !== 'object') return null;
-        Object.keys(obj).forEach(key => obj[key] === undefined && delete obj[key]);
+        if (obj) {
+            if (typeof obj === 'object') {
+                Object.keys(obj).forEach(key => obj[key] === undefined && delete obj[key]);
+            }
+        }
+        
         // return this.hook('document.sanitizeData', obj);
         return obj;
     }
