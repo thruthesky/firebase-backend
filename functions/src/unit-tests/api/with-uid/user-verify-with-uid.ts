@@ -1,8 +1,8 @@
 import * as chai from 'chai';
 const expect = chai.expect;
-import { Base, Anonymous, E } from './../../modules/core/core';
-import { Router } from './../../modules/router/router';
-import { init } from './init';
+import { Base, Anonymous, E } from './../../../modules/core/core';
+import { Router } from './../../../modules/router/router';
+import { init } from './../init';
 Base.admin = init();
 
 

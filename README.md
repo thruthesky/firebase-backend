@@ -57,12 +57,13 @@ Shopping Mall Plugin
     
 
 ````
-$ node_modules/.bin/mocha --watch --compilers ts:ts-node/register -t 99999 src/unit-tests/library/*
+$ node_modules/.bin/mocha --watch --compilers ts:ts-node/register -t 99999 src/unit-tests/api/with-uid/*
+$ node_modules/.bin/mocha --watch --compilers ts:ts-node/register -t 99999 src/unit-tests/api/with-uid/user-crud-with-uid.ts
 
 
-$ node_modules/.bin/mocha --watch --compilers ts:ts-node/register -t 99999 src/unit-tests/library/user-crud-with-uid.ts
 
-$ node_modules/.bin/mocha --watch --compilers ts:ts-node/register -t 99999 src/unit-tests/library/user-verify-with-id-token.ts
+
+$ node_modules/.bin/mocha --watch --compilers ts:ts-node/register -t 99999 src/unit-tests/api/with-id-token/*
 
 
 ````
