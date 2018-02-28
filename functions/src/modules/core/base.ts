@@ -39,7 +39,7 @@ export class Base {
      * @desc Whether the user logged in with ID Token or `uid`, this value will hold login user's uid.
      */
     static uid: string = null;
-    
+
 
     constructor(collectionName) {
         this.collectionName = collectionName;
@@ -66,7 +66,7 @@ export class Base {
         return '0.2';
     }
 
-    
+
 
     /**
      * Returns collection name with prefix.
@@ -118,7 +118,7 @@ export class Base {
      * 
      */
     isErrorObject(obj): boolean {
-        return E.isErrorObject( obj );
+        return E.isErrorObject(obj);
     }
 
 
@@ -188,16 +188,16 @@ export class Base {
         this.loginUid = null; // reset ( on every Router() call) before verify.
 
 
-        if ( Base.useUid ) {
+        if (Base.useUid) {
             // console.log("verifyUser(). Base.useUid==true. Going to use `uid` as Verified..");
 
             const uid = this.param('uid');
-            if ( uid === void 0 ) {
+            if (uid === void 0) {
                 this.loginUid = Anonymous.uid;
                 return true;
             }
-            else if ( ! uid ) {
-                return this.error( E.NO_UID );
+            else if (!uid) {
+                return this.error(E.NO_UID);
             }
             this.loginUid = uid;
             return true;
@@ -206,13 +206,13 @@ export class Base {
         const idToken = this.param('idToken');
         if (idToken) { // token was given
             return await this.auth.verifyIdToken(idToken)
-                .then( decodedToken => {
+                .then(decodedToken => {
                     this.loginUid = decodedToken.uid;
                     // console.log("===== Verified UID: ", this.loginUid);
                     return true;
                 })
                 .catch(e => {
-                    return this.error( E.FIREBASE_FAILED_TO_DECODE_ID_TOKEN );
+                    return this.error(E.FIREBASE_FAILED_TO_DECODE_ID_TOKEN);
                 });
         }
         else { // no token was given
@@ -238,25 +238,34 @@ export class Base {
      * Returns false if there is no error. Otherwise, error code will be returned.
      * @param uid User uid
      */
-    checkUIDFormat( uid ) {
+    checkUIDFormat(uid) {
 
-        if ( !uid ) return this.error(E.NO_UID);
-        if ( uid.length > 128 ) return this.error(E.UID_TOO_LONG);
-        if ( uid.indexOf('/') !== -1 ) return this.error(E.UID_CANNOT_CONTAIN_SLASH);
+        if (!uid) return this.error(E.NO_UID);
+        if (uid.length > 128) return this.error(E.UID_TOO_LONG);
+        if (uid.indexOf('/') !== -1) return this.error(E.UID_CANNOT_CONTAIN_SLASH);
 
         return false;
     }
 
-        /**
+    /**
      * Returns false if there is no error. Otherwise, error code will be returned.
      * @param uid User uid
      */
-    checkPostIDFormat( postId ) {
+    checkPostIDFormat(postId) {
 
-        if ( !postId ) return this.error(E.NO_POST_ID_ON_GET);
-        if ( postId.length > 128 ) return this.error(E.POST_ID_TOO_LONG);
-        if ( postId.indexOf('/') !== -1 ) return this.error(E.POST_ID_CANNOT_CONTAIN_SLASH);
+        if (!postId) return this.error(E.NO_POST_ID_ON_GET);
+        if (postId.length > 128) return this.error(E.POST_ID_TOO_LONG);
+        if (postId.indexOf('/') !== -1) return this.error(E.POST_ID_CANNOT_CONTAIN_SLASH);
 
         return false;
+    }
+
+
+    /**
+     * 
+     * @todo test
+     */
+    isAnonymous() {
+        return this.loginUid === Anonymous.uid;
     }
 }

@@ -116,7 +116,7 @@ export class Document extends Base {
 
         
         // you can change collectionRef
-        collectionRef = this.hook('document_set_collectionRef', collectionRef);
+        collectionRef = this.hook('document.set_collectionRef', collectionRef);
 
         data['created'] = this.serverTime();
 
@@ -126,7 +126,7 @@ export class Document extends Base {
         else documentRef = collectionRef.doc();
 
         // you can change documentRef
-        documentRef = this.hook('document_set_documentRef', documentRef);
+        documentRef = this.hook('document.set_documentRef', documentRef);
         
 
         // you can chagne data before set.
@@ -135,7 +135,7 @@ export class Document extends Base {
             .then( writeResult => {
                 let id = documentRef.id;
                 // you can do something after the document is set.
-                id = this.hook('document_set_then', {
+                id = this.hook('document.set_then', {
                     id: id,
                     data: data,
                     documentRef: documentRef,
@@ -167,7 +167,7 @@ export class Document extends Base {
         if (!data) return null;
         data['updated'] = this.serverTime();
         // you can chagne data before set.
-        data = this.hook('document_update_before', data);
+        data = this.hook('document.update_before', data);
         return await this.collection.doc(documentID).update(this.sanitizeData(data))
             .then( x => {
                 let id = documentID;
@@ -196,7 +196,8 @@ export class Document extends Base {
         return this.collection.doc(documentID).get()
             .then(doc => {
                 if (doc.exists) {
-                    return doc.data();
+                    const data = doc.data();
+                    return this.hook('document.get_then', data);
                 }
                 else return this.error(E.DOCUMENT_ID_DOES_NOT_EXISTS_FOR_GET);
             })

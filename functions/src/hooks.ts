@@ -188,6 +188,14 @@ export class Hooks extends Base {
     document_update_then( obj: { id: string, data: any, collectionRef: any } ) {
         return obj.id;
     }
+
+    /**
+     * Can do data manipulation after data is retrieved from Document.
+     * @param data Data retrieved from a Docuemnt
+     */
+    document_get_then( data ) {
+        return data;
+    }
 }
 
 
