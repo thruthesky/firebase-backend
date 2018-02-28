@@ -4,6 +4,7 @@ export const NO_EMAIL = -50; es[NO_EMAIL] = 'No email address.';
 export const NO_PASSWORD = -51; es[NO_PASSWORD] = 'No password.';
 export const NO_NAME = -52; es[NO_NAME] = 'No name.';
 export const NO_UID = -53; es[NO_UID] = 'No uid.';
+
 export const UID_TOO_LONG = -54; es[UID_TOO_LONG] = 'UID is too long. Must be less than 128 characters.';
 export const UID_CANNOT_CONTAIN_SLASH = -55; es[UID_CANNOT_CONTAIN_SLASH] = 'UID cannot contain slashes.';
 
@@ -33,7 +34,8 @@ export const EMPTY_POST_BODY = -40301; es[EMPTY_POST_BODY] = 'Post body can\'t b
 export const POST_HAS_NO_CATEGORY = -40302; es[POST_HAS_NO_CATEGORY] = 'Post must have category.';
 export const NO_POST_ID_ON_GET = -40353; es[NO_POST_ID_ON_GET] = 'No post id. Getting post from server needs post id.'
 export const POST_ID_TOO_LONG = -40354; es[POST_ID_TOO_LONG] = 'post id is too long. Must be less than 128 characters.';
-export const POST_ID_CANNOT_CONTAIN_SLASH = -40355; es[POST_ID_CANNOT_CONTAIN_SLASH] = 'post cannot contain slashes.';
+export const POST_ID_CANNOT_CONTAIN_SLASH = -40355; es[POST_ID_CANNOT_CONTAIN_SLASH] = 'post id cannot contain slashes.';
+export const POST_ID_CANNOT_SOLELY_CONSIST_DOT = -40356; es[POST_ID_CANNOT_SOLELY_CONSIST_DOT] = 'Post id or document id cannot be equal to dot [.] or double dot [..] ';
 
 // Firebase errors.
 
