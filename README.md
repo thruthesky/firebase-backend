@@ -57,7 +57,7 @@ Shopping Mall Plugin
     
 
 ````
-$ $ node_modules/.bin/mocha --watch --compilers ts:ts-node/register -t 99999 src/unit-tests/library/*
+$ node_modules/.bin/mocha --watch --compilers ts:ts-node/register -t 99999 src/unit-tests/library/*
 
 
 $ node_modules/.bin/mocha --watch --compilers ts:ts-node/register -t 99999 src/unit-tests/library/user-crud-with-uid.ts
