@@ -1,11 +1,24 @@
 import { Base } from './modules/core/base';
+import * as admin from 'firebase-admin';
+
+
+/**
+ * Hook data inteface for document_set
+ */
+interface HOOK_DOCUMENT_SET {
+    id: string;
+    collectionRef: any;
+    documentRef: admin.firestore.DocumentReference;
+    data: any;
+};
 
 /**
  * 
  * 
- * @desc You can use all the functionality of the project.
  * 
- *      `this.db`, `this.collection`, `this.params`, etc.
+ * @desc `Hooks` class is initialized on `Docuemnt` class with the same `collectionName`.
+ *          - You can use all the functionality of the Document.
+ *          - `this.db`, `this.collection`, `this.params`, etc.
  * 
  * 
  * 
@@ -36,6 +49,11 @@ export class Hooks extends Base {
     }
 
 
+    /**
+     * Returns user data after sanitizing.
+     * @param data user data
+     * @return data to be used after sanitizing
+     */
     user_router_sanitizeUserData(data) {
 
         // Uncomment below if you want to accept all the input from the user.
@@ -90,6 +108,85 @@ export class Hooks extends Base {
     post_delete() {
         // Work on hook
         return false;
+    }
+
+
+    /**
+     * Returns the data after sanitizing.
+     * @param obj data to be set/update on Documents.
+     * 
+     * @return data to be set on document.
+     */
+    document_sanitizeData( obj ) {
+        return obj;
+    }
+
+
+    /**
+     * You can chage collection of the document.
+     * @param collectionRef Collection Reference
+     * 
+     * @return (new or unchanged) collectionRef must be returned.
+     */
+    document_set_collectionRef( collectionRef ) {
+        return collectionRef;
+    }
+    /**
+     * You can change the docuemnt.
+     * 
+     * @param documentRef Document Reference
+     * @return (new or unchanged) documentRef must be returned.
+     */
+    document_set_documentRef( documentRef ) {
+        return documentRef;
+    }
+
+    /**
+     * This hook is invoked right before `document.set()`.
+     * You can change the data based `this.collectionName`.
+     * It can be a user collection or post collection or any collection.
+     * @param data data to be set on a Document
+     */
+    document_set_before( data ) {
+        return data;
+    }
+
+    /**
+     * You can do anything after set a document.
+     * @param obj Object of document.set() properties.
+     * 
+     * @return the Document ID must be returned.
+     */
+    document_set_then( obj:HOOK_DOCUMENT_SET ): string {
+        
+        return obj.id;
+    }
+
+
+    /**
+     * You can change data right before `Document.update()`.
+     * 
+     * @desc This method is invoked right before `doc().update( data )`.
+     *          You can update the data based on `this.collectionName`
+     * 
+     *          `this.collectionName` would be 'usrs', etc.
+     * 
+     * @param data Data to be updated on a Document.
+     */
+    document_update_before( data ) {
+        // console.log('document_update_before. collectionName: ', this.collectionName);
+        return data;
+    }
+    /**
+     * 
+     * You can do anything after a document has updated.
+     * 
+     * 
+     * @param obj Object of doucment.update() properties.
+     * @return Documnet ID must be returned.
+     */
+    document_update_then( obj: { id: string, data: any, collectionRef: any } ) {
+        return obj.id;
     }
 }
 

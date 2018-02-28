@@ -100,8 +100,8 @@ export class Base {
 
 
     /**
-     * Returns a Reponse with Error Object.
-     * @desc the return from this method is already good enough to response to the client.
+     * Returns a Reponse of Error Object.
+     * @desc the return from this method is good enough to be sent to the client for respond.
      * @param code Error Code or Firebase Error Object
      */
     error(code): ROUTER_RESPONSE {
