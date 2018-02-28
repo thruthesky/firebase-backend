@@ -38,8 +38,8 @@ export class Document extends Base {
             }
         }
         
-        // return this.hook('document.sanitizeData', obj);
-        return obj;
+        return this.hook('document.sanitizeData', obj);
+        // return obj;
     }
 
     /**
@@ -101,33 +101,48 @@ export class Document extends Base {
     async set(data, documentID?: string, collectionName?: string): Promise<any> {
         if (!data) return null;
 
-        let collection;
+        let collectionRef;
         if (collectionName) {
-            collection = this.db.collection(this.collectionNameWithPrefix(collectionName));
+            collectionRef = this.db.collection(this.collectionNameWithPrefix(collectionName));
         }
         else {
             if (this.collectionName) {
-                collection = this.collection;
+                collectionRef = this.collection;
             }
             else {
                 return this.error(E.COLLECTION_IS_NOT_SET);
             }
         }
 
-        // this.db.collection().doc().id
-
+        
+        // you can change collectionRef
+        collectionRef = this.hook('document_set_collectionRef', collectionRef);
 
         data['created'] = this.serverTime();
 
-        // console.log("param collectionName: " + collectionName);
-        // console.log("this.collectionName: " + this.collectionName);
-        // console.log("documentID:  " + documentID);
+
         let documentRef: admin.firestore.DocumentReference;
-        if (documentID) documentRef = collection.doc(documentID);
-        else documentRef = collection.doc();
+        if (documentID) documentRef = collectionRef.doc(documentID);
+        else documentRef = collectionRef.doc();
+
+        // you can change documentRef
+        documentRef = this.hook('document_set_documentRef', documentRef);
         
+
+        // you can chagne data before set.
+        data = this.hook('document_set_before', data);
         return await documentRef.set(this.sanitizeData(data))
-            .then( writeResult => documentRef.id )
+            .then( writeResult => {
+                let id = documentRef.id;
+                // you can do something after the document is set.
+                id = this.hook('document_set_then', {
+                    id: id,
+                    data: data,
+                    documentRef: documentRef,
+                    collectionRef: collectionRef
+                })
+                return id;
+             } )
             .catch(e => this.error(e));
     }
 
@@ -151,7 +166,18 @@ export class Document extends Base {
     async update(data, documentID: string): Promise<any> {
         if (!data) return null;
         data['updated'] = this.serverTime();
+        // you can chagne data before set.
+        data = this.hook('document_update_before', data);
         return await this.collection.doc(documentID).update(this.sanitizeData(data))
+            .then( x => {
+                let id = documentID;
+                id = this.hook('document_update_then', {
+                    id: id,
+                    data: data,
+                    collectionRef: this.collection
+                })
+                return id;
+            })
             .catch(e => this.error(e));
     }
 
