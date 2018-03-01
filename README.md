@@ -40,7 +40,7 @@ Shopping Mall Plugin
 
 ### Javascript Library, Frames.
 
-* Lodash is installed.
+* [Lodash](https://lodash.com/) is installed. Use lodash whenever possible.
 
 
 ## Run

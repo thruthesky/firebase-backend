@@ -5,6 +5,7 @@ import * as E from './../core/error';
 
 
 import { ROUTER_RESPONSE, Anonymous } from './../core/defines';
+import { Library } from './../library/library';
 
 
 
@@ -41,8 +42,10 @@ export class Base {
     static uid: string = null;
 
 
+    library: Library;
     constructor(collectionName) {
         this.collectionName = collectionName;
+        this.library = new Library();
     }
 
     get params(): any {
@@ -134,17 +137,23 @@ export class Base {
         if (this.params) return this.params[key];
     }
 
+    /**
+     * Returns class name in the HTTP router variable.
+     * 
+     * @return class name
+     */
     get routeClassName() {
-        if (this.param('route')) {
-            const re = this.param('route').split('.');
-            return re[0];
-        }
+        return this.library.segment( this.param('route'), '.', 0 );
     }
+
+    /**
+     * Returns method name in the HTTP method variable.
+     * 
+     * @return 
+     * 
+     */
     get routeMethodName() {
-        if (this.param('route')) {
-            const re = this.param('route').split('.');
-            return re[1];
-        }
+        return this.library.segment( this.param('route'), '.', 1 );
     }
 
     /**
@@ -263,9 +272,13 @@ export class Base {
 
     /**
      * 
+     * Returns true if the usre is not logged in.
      * @todo test
      */
     isAnonymous() {
         return this.loginUid === Anonymous.uid;
     }
+
+
+
 }
