@@ -257,10 +257,19 @@ export class Base {
     }
 
     /**
+     * 
+     * Checks if the Document ID is in right format.
+     * 
      * Returns false if there is no error. Otherwise, error code will be returned.
+     * 
+     * @since 2018-03-01. We cannot create methods of all entity.
+     *      - And it is even in wrong place.
+     *      - It should be a global method to check all the Document ID.
+     *          Hence, method name changes from `checkPostIDFormat` to `checkDocumentIDFormat`
+     * 
      * @param uid User uid
      */
-    checkPostIDFormat(postId) {
+    checkDocumentIDFormat(postId) {
 
         if (!postId) return this.error(E.NO_POST_ID_ON_GET);
         if (postId.length > 128) return this.error(E.POST_ID_TOO_LONG);
