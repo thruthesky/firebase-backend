@@ -268,13 +268,12 @@ export class Base {
      *          Hence, method name changes from `checkPostIDFormat` to `checkDocumentIDFormat`
      * 
      * @param uid User uid
+     * @todo Unit test
      */
     checkDocumentIDFormat(postId) {
-
         if (!postId) return this.error(E.NO_POST_ID_ON_GET);
         if (postId.length > 128) return this.error(E.POST_ID_TOO_LONG);
         if (postId.indexOf('/') !== -1) return this.error(E.POST_ID_CANNOT_CONTAIN_SLASH);
-
         return false;
     }
 
@@ -282,7 +281,7 @@ export class Base {
     /**
      * 
      * Returns true if the usre is not logged in.
-     * @todo test
+     * 
      */
     isAnonymous() {
         return this.loginUid === Anonymous.uid;

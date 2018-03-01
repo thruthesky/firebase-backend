@@ -4,6 +4,7 @@ Firebase backend to build CMS
 
 # TODO List
 
+* Install on web.
 
 * Get ID Token from client without UID and do whatever.
     ** After user registration, get ID Token with other information and update it on `x-users`.
@@ -101,6 +102,14 @@ $ nodemon .\node_modules\mocha\bin\_mocha .\lib\unit-test\server\router.js --wat
 ````
 
 * Get Resource URL from functions-emulator after deploy and put it in `test.ts`
+
+## Client SDK
+
+* You can install client SDK for `firebase-backend` as `npm i firebase-cms`.
+* If you would like to get document of `firebase-cms`, please follow the instruction on [Github Firebase CMS Project](https://github.com/thruthesky/firebase-cms)
+
+
+
 
 ## Documents & References
 

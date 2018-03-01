@@ -42,30 +42,7 @@ export class Document extends Base {
         // return obj;
     }
 
-    /**
-     * Sets a data to a document.
-     *
-     * @attention Must use this when you set a document. You cannot use any other method to set data into firestore.
-     * @param data Data to set.
-     * @desc `Collection name` comes from the taxonomy.
-     * @desc  Document ID is made of `data.uid`. If `data.uid` is not set, Document ID will be automatically generated.
-     */
-    // async set(data) {
-    //     if (!data) return null;
-    //     const collectionRef = this.db.collection(this.collection);
-    //     let documentRef;
-    //     if (data.uid === void 0) documentRef = collectionRef.doc();
-    //     else documentRef = collectionRef.doc(data.uid);
-
-    //     const obj = this.sanitizeData(data);
-    //     obj['created'] = this.serverTime();
-
-    //     const re = await documentRef.set(obj).catch(e => {
-    //         return { code: e['code'], message: e['message'] }
-    //     });
-
-    // }
-
+    
 
     /**
      * 
@@ -188,11 +165,14 @@ export class Document extends Base {
      * 
      * @return A Promise of
      *          - Document data
+     *          - null if Documnet ID is empty.
      *
      *          - ErrorObject. note: it is a promise that is being returned.
      *          
      */
     async get(documentID): Promise<any> {
+        if (!documentID) return null;
+        documentID = this.hook('document.get_before', documentID);
         return this.collection.doc(documentID).get()
             .then(doc => {
                 if (doc.exists) {
@@ -211,14 +191,19 @@ export class Document extends Base {
      * @param documentID - Document to delete.
      * 
     * @return A Promise of
-     *          - Document data
-     *          - null if docuemnt doe not exsits.
+     *          - Document ID if successfully deleted.
+     *          - null if docuemnt ID is empty.
      *          - ErrorObject. note: it is a promise that is being returned.
      */
     async delete(documentID): Promise<any> {
         if (!documentID) return null;
+
+        documentID = this.hook('document.delete_before', documentID);
         return await this.collection.doc(documentID).delete()
-            .then( x => documentID )
+            .then( x => {
+                documentID = this.hook('document.delete_then', documentID);
+                return documentID;
+             } )
             .catch( e => this.error(e) );
     }
 

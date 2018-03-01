@@ -190,12 +190,47 @@ export class Hooks extends Base {
     }
 
     /**
+     * 
+     * Can change Document ID to get the data.
+     * 
+     * @desc This is invoked right before `document.get()`
+     * 
+     * @param documentID Document ID to retrieve data from that Docuemnt
+     */
+    document_get_before( documentID ) {
+        return documentID;
+    }
+    /**
      * Can do data manipulation after data is retrieved from Document.
+     * @desc This method is invoked from the inside of `.then()`
      * @param data Data retrieved from a Docuemnt
      */
     document_get_then( data ) {
         return data;
     }
+
+
+    /**
+     * 
+     * Can change Document ID to delete the document.
+     * 
+     * @desc This is invoked right before `document.delete()`
+     * 
+     * @param documentID Document ID to delete that Docuemnt
+     */
+    document_delete_before( documentID ) {
+        return documentID;
+    }
+    /**
+     * Can do something after deleting a Document.
+     * @desc This method is invoked from the inside of `.then()`
+     * @param DocumentID that was deleted just a while ago.
+     */
+    document_delete_then( documentID ) {
+        return documentID;
+    }
+
+    
 }
 
 
