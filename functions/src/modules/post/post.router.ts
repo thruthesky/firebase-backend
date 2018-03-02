@@ -80,7 +80,7 @@ export class PostRouter extends Post {
         
         if ( data.uid !== void 0 || data.postId !== void 0  ) {
             if ( this.checkUIDFormat( data.uid ) ) return this.error( this.checkUIDFormat( data.uid ) );
-            if ( this.checkPostIDFormat( data.postId ) ) return this.error( this.checkPostIDFormat( data.postId ) );
+            if ( this.checkDocumentIDFormat( data.postId ) ) return this.error( this.checkDocumentIDFormat( data.postId ) );
         }
         
         return false

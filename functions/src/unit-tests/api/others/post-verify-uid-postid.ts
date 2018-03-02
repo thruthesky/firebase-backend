@@ -69,16 +69,6 @@ describe('post-verify-uid-postid', () => {
                 expect(re).to.be.equal(false);
             });
 
-            it(`Post ID is equal to dot[.] and double[..]. Expected error: '${E.obj(E.POST_ID_CANNOT_SOLELY_CONSIST_DOT).message}'`, async () => {
-                const $post = new PostRouter(); // Set input data
-                const dot = await $post.validatePostRequest( { uid: Anonymous.uid, postId: '.' } );
-                const doubleDot = await $post.validatePostRequest( { uid: Anonymous.uid, postId: '..' } );
-                // const dots = await $post.validatePostRequest( { uid: Anonymous.uid, postId: '...' } );
-                // console.log(dots)
-                expect(dot['code']).to.be.equal(E.POST_ID_CANNOT_SOLELY_CONSIST_DOT);
-                expect(doubleDot['code']).to.be.equal(E.POST_ID_CANNOT_SOLELY_CONSIST_DOT);
-            });
-
             it(`Post ID exceeds 128 length. Expected error: '${E.obj(E.POST_ID_TOO_LONG).message}' `, async () => {
                 const $post = new PostRouter(); // Set input datad
                 const re = await $post.validatePostRequest( { uid: Anonymous.uid, postId: 'kjadfasdfasfdsfaskjagfhaskffhgasddkjfddhd5dgskjdfhgsakjdfhgskjfgaskjfhgaskjdfgsakjfgaskjfhgskjfgsakjdfgaskjdfgaksjdfgaksdjfgaskjdfgaskjd' } );
