@@ -13,16 +13,17 @@ export class PostRouter extends Post {
      * 
      * @desc - Checks user if logged in and then calls super.set() tp push data.
      * 
-    */
-    async create(): Promise<ROUTER_RESPONSE | boolean>  {
-        if ( ! this.loginUid ) return this.error( E.USER_NOT_LOGIN ); // On Unit Test, it will be set with `uid`
+     * @author gem
+     */
+    async create(): Promise<ROUTER_RESPONSE | boolean> {
+        if (!this.loginUid) return this.error(E.USER_NOT_LOGIN); // On Unit Test, it will be set with `uid`
         if (this.validatePostData(this.params)) return this.validatePostData(this.params);
-        
+
         const re = this.hook('post.create');
-        if ( this.isErrorObject( re ) ) return re;
+        if (this.isErrorObject(re)) return re;
 
         // new code
-        return await super.set(this.sanitizePostData( this.params ), null, this.collectionName);
+        return await super.set(this.sanitizePostData(this.params), null, this.collectionName);
     }
 
     /** 
@@ -30,23 +31,23 @@ export class PostRouter extends Post {
      * @desc - get() checks if user is logged in and then passed document ID and TokenID( in production ) in super.get() to get data from firebase.
      * 
      * 
-    */
+     */
     async get(): Promise<ROUTER_RESPONSE | boolean> {
-        if ( ! this.loginUid ) return this.error( E.USER_NOT_LOGIN ); // On Unit Test, it will be set with `uid`
+        if (!this.loginUid) return this.error(E.USER_NOT_LOGIN); // On Unit Test, it will be set with `uid`
         if (this.validatePostRequest(this.params)) return this.validatePostRequest(this.params);
-        
-        const re = this.hook('post.get');
-        if ( this.isErrorObject( re ) ) return re;
 
-        return await super.get( this.params.postId );
+        const re = this.hook('post.get');
+        if (this.isErrorObject(re)) return re;
+
+        return await super.get(this.params.postId);
         // return 'I am get';
     }
 
-    async edit(){
+    async edit() {
         return 'i am edit';
     }
 
-    async delete(){
+    async delete() {
         return 'i am delete';
     }
 
@@ -72,6 +73,7 @@ export class PostRouter extends Post {
      * Validates request information of complete
      * 
      * @param data data to validate
+     * 
      * 
      */
     validatePostRequest( data ): ROUTER_RESPONSE | boolean {

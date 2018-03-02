@@ -33,6 +33,7 @@ export class Router extends Base {
 
 
         // Check user login.
+        // 
         const reLogin = await this.verifyUser();
         if ( reLogin !== true ) {
             return reLogin;

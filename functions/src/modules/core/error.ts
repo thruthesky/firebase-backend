@@ -9,10 +9,13 @@ export const NO_UID = -53; es[NO_UID] = 'No uid.';
 export const UID_TOO_LONG = -54; es[UID_TOO_LONG] = 'UID is too long. Must be less than 128 characters.';
 export const UID_CANNOT_CONTAIN_SLASH = -55; es[UID_CANNOT_CONTAIN_SLASH] = 'UID cannot contain slashes.';
 
-export const WRONG_GENDER = -61; es[WRONG_GENDER] = 'Wrong gender.';
-export const WRONG_ROUTE = -60; es[WRONG_ROUTE] = 'The given route is not exists. It is a wrong route.';
-export const EMPTY_ROUTE = -61; es[EMPTY_ROUTE] = 'Empty route.';
-export const WRONG_METHOD = -61; es[WRONG_METHOD] = 'Wrong method.';
+export const WRONG_GENDER = -40061; es[WRONG_GENDER] = 'Wrong gender.';
+export const WRONG_ROUTE = -40060; es[WRONG_ROUTE] = 'The given route is not exists. It is a wrong route.';
+export const EMPTY_ROUTE = -40063; es[EMPTY_ROUTE] = 'Empty route.';
+export const WRONG_METHOD = -40064; es[WRONG_METHOD] = 'Wrong method.';
+export const ANONYMOUS_CANNOT_EDIT_PROFILE = -40070; es[ANONYMOUS_CANNOT_EDIT_PROFILE] = 'Anonymous cannot set/update profile.';
+
+
 
 
 export const DOCUMENT_ID_DOES_NOT_EXISTS_FOR_UPDATE = -40005; es[DOCUMENT_ID_DOES_NOT_EXISTS_FOR_UPDATE] = 'Document ID does not exsits for update.';

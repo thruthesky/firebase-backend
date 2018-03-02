@@ -45,18 +45,21 @@ export class UserRouter extends User {
      * @desc When a user sets his profile data, it is more likely the user is registering.
      *      - `set()` will erase all the data in the document and set it.
      * 
-     * @note All the users must register with `Firebase Authentication`.
-     *          So, we do not need to do authencation, nor login information on `Firestore`.
-     *          But we need to add/manage extra user information on `Firestore`.
+     * @desc All the users must register with `Firebase Authentication` and login before this method.
+     *          So, we do not need to do check the user's authencation or login here.
      * 
-     * @note no email. no password.
+     * @desc Anonymous users may enter this method.
+     * 
      * 
      * 
      * 
      */
     async set() : Promise<ROUTER_RESPONSE | boolean> {
 
-        if ( ! this.loginUid ) return this.error( E.USER_NOT_LOGIN ); // On Unit Test, it will be set with `uid`
+
+        if ( this.isAnonymous() ) return this.error( E.ANONYMOUS_CANNOT_EDIT_PROFILE );
+
+        //
         if (this.validateUserData(this.params)) return this.validateUserData(this.params);
         
         const re = this.hook('user.set');
@@ -72,12 +75,13 @@ export class UserRouter extends User {
     /**
      * Update user document. It will only update with the properties of input.
      * 
+     * @desc User authentication must be done before this method. ( It is done in verifiyUser() )
      * @desc You have option to set or update user data.
      *      - If you are going to update, the user data previously set will be updated and unchanged properties will be remain as they are.
      *      - If you want to reset the document, then use `set()`
      */
     async update() : Promise<ROUTER_RESPONSE | boolean> {
-        if ( ! this.loginUid ) return this.error( E.USER_NOT_LOGIN ); // On Unit Test, it will be set with `uid`
+        if ( this.isAnonymous() ) return this.error( E.ANONYMOUS_CANNOT_EDIT_PROFILE );
         if (this.validateUserData(this.params)) return this.validateUserData(this.params);
         return await super.update(this.sanitizeUserData(this.params), this.loginUid);
     }
@@ -85,11 +89,11 @@ export class UserRouter extends User {
 
     /**
      * Returns user data.
+     * 
+     * @desc Anonymous may enter this method and get the anonymous data. We allow Anonymous to get data for the basic functionality and activities.
+     * 
      */
     async get() {
-        if ( ! this.loginUid ) return this.error( E.USER_NOT_LOGIN ); // On Unit Test, it will be set with `uid`
-
-        // console.log("user.router::get() with " + this.loginUid);
         return super.get( this.loginUid );
     }
 
