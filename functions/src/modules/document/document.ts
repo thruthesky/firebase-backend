@@ -37,12 +37,12 @@ export class Document extends Base {
                 Object.keys(obj).forEach(key => obj[key] === undefined && delete obj[key]);
             }
         }
-        
+
         return this.hook('document.sanitizeData', obj);
         // return obj;
     }
 
-    
+
 
     /**
      * 
@@ -91,7 +91,7 @@ export class Document extends Base {
             }
         }
 
-        
+
         // you can change collectionRef
         collectionRef = this.hook('document.set_collectionRef', collectionRef);
 
@@ -104,12 +104,12 @@ export class Document extends Base {
 
         // you can change documentRef
         documentRef = this.hook('document.set_documentRef', documentRef);
-        
+
 
         // you can chagne data before set.
         data = this.hook('document_set_before', data);
         return await documentRef.set(this.sanitizeData(data))
-            .then( writeResult => {
+            .then(writeResult => {
                 let id = documentRef.id;
                 // you can do something after the document is set.
                 id = this.hook('document.set_then', {
@@ -119,7 +119,7 @@ export class Document extends Base {
                     collectionRef: collectionRef
                 })
                 return id;
-             } )
+            })
             .catch(e => this.error(e));
     }
 
@@ -146,7 +146,7 @@ export class Document extends Base {
         // you can chagne data before set.
         data = this.hook('document.update_before', data);
         return await this.collection.doc(documentID).update(this.sanitizeData(data))
-            .then( x => {
+            .then(x => {
                 let id = documentID;
                 id = this.hook('document_update_then', {
                     id: id,
@@ -173,7 +173,7 @@ export class Document extends Base {
     async get(documentID): Promise<any> {
         if (!documentID) return null;
         documentID = this.hook('document.get_before', documentID);
-        return this.collection.doc(documentID).get()
+        return await this.collection.doc(documentID).get()
             .then(doc => {
                 if (doc.exists) {
                     const data = doc.data();
@@ -200,11 +200,11 @@ export class Document extends Base {
 
         documentID = this.hook('document.delete_before', documentID);
         return await this.collection.doc(documentID).delete()
-            .then( x => {
+            .then(x => {
                 documentID = this.hook('document.delete_then', documentID);
                 return documentID;
-             } )
-            .catch( e => this.error(e) );
+            })
+            .catch(e => this.error(e));
     }
 
 

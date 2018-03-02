@@ -1,9 +1,9 @@
 import * as chai from 'chai';
 const expect = chai.expect;
 import * as _ from 'lodash';
-import { Base, E } from './../../../modules/core/core';
+import { Base } from './../../../modules/core/core';
 import { Document } from './../../../modules/document/document';
-import { init, route } from './../init';
+import { init } from './../init';
 Base.admin = init();
 
 

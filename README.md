@@ -90,7 +90,7 @@ $ nodemon .\node_modules\mocha\bin\_mocha .\lib\unit-test\server\router.js --wat
 
 
 ````
-$ ./node_modules/.bin/mocha src/unit-tests/server/* --compilers ts:ts-node/register --watch -t 100000 // All tests
+$ ./node_modules/.bin/mocha --compilers ts:ts-node/register --watch -t 100000  src/unit-tests/server/* // All tests
 $ ./node_modules/.bin/mocha src/unit-tests/server/user-register-update.ts --compilers ts:ts-node/register --watch -t 100000 // Use TypeScript to test.
 $ /node_modules/.bin/mocha lib/unit-test/server/router.js --watch -t 100000
 $ ./node_modules/.bin/mocha lib/unit-test/server/user-register-update.js --watch -t 100000
@@ -252,3 +252,17 @@ For unit testing,
 
 * @see more information on [Unit Testing](https://docs.google.com/document/d/1ncYWftCEXJBJkATExfGM2S4dzerrI_7PA_DjWjNdEmQ/edit#heading=h.tdpnuuowlpnt)
 
+
+
+## Case study
+
+### User get/update own document
+
+When user get/update his document, There might be error of `Document ID was not found` meaning,
+
+He already registered with `Google Authentication` but somehow he was not able to create his own document on `user collection`. This may happen when his phone/compuer reboot suddenly out of control. All offline data will be gone if the device is rebooted. There might be many other reason.
+
+So we do not consider it as a critial error.
+When there is no document of a user in `user collection`, the backend create one silently.
+
+In this case, the document will have `createdOnGet` property.

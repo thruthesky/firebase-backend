@@ -1,5 +1,5 @@
 
-import { Library as lib, Library } from './../../modules/library/library';
+import { Library } from './../../modules/library/library';
 const apiUrl = "https://us-central1-thruthesky-firebase-backend.cloudfunctions.net/api";
 
 
