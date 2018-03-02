@@ -73,7 +73,8 @@ describe('post-verify-uid-postid', () => {
                 const $post = new PostRouter(); // Set input data
                 const dot = await $post.validatePostRequest( { uid: Anonymous.uid, postId: '.' } );
                 const doubleDot = await $post.validatePostRequest( { uid: Anonymous.uid, postId: '..' } );
-                // console.log(typeof re)
+                // const dots = await $post.validatePostRequest( { uid: Anonymous.uid, postId: '...' } );
+                // console.log(dots)
                 expect(dot['code']).to.be.equal(E.POST_ID_CANNOT_SOLELY_CONSIST_DOT);
                 expect(doubleDot['code']).to.be.equal(E.POST_ID_CANNOT_SOLELY_CONSIST_DOT);
             });
