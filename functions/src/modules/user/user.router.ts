@@ -95,6 +95,8 @@ export class UserRouter extends User {
      */
     async get() {
         const re = await super.get( this.loginUid );
+
+        /** @todo test more on `create on get` */
         if ( this.isErrorObject( re ) && re.code === E.DOCUMENT_ID_DOES_NOT_EXISTS_FOR_GET ) {
             // console.log("user.router::get() user document does not exists. going to create one");
             const reSet = await super.set( { createdOnGet: true }, this.loginUid );
