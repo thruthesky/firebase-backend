@@ -63,25 +63,7 @@ describe('user-crud-with-id-token', () => {
         })
 
     })
-
-
-    describe('User get test', () => {
-
-        it('Sould get anonymous user data', async () => {
-            const re = await route({ route: 'user.get' });
-            // console.log(re);
-            expect( re.code ).to.be.equal(0);
-        })
-
-        it('Should re[data] be null with wrong document id', async () => {
-            const re = await route({ route: 'user.get', idToken: 'wrong-document-id' });
-            expect(re).to.be.a('object');
-            expect(re.code).to.be.equal(E.FIREBASE_FAILED_TO_DECODE_ID_TOKEN);
-        })
-    });
-
-
-
+    
 
 });
 

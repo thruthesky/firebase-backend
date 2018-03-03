@@ -94,7 +94,20 @@ export class UserRouter extends User {
      * 
      */
     async get() {
-        return super.get( this.loginUid );
+        const re = await super.get( this.loginUid );
+
+        /** @todo test more on `create on get` */
+        if ( this.isErrorObject( re ) && re.code === E.DOCUMENT_ID_DOES_NOT_EXISTS_FOR_GET ) {
+            // console.log("user.router::get() user document does not exists. going to create one");
+            const reSet = await super.set( { createdOnGet: true }, this.loginUid );
+            if ( this.isErrorObject(reSet) ) return reSet;
+            else if ( ! reSet ) return reSet;
+            else {
+                // console.log("user.router::get() user documnet has created.");
+                return await super.get( this.loginUid );
+            }
+        }
+        else return re;
     }
 
     /** 
@@ -103,7 +116,8 @@ export class UserRouter extends User {
      * @desc doc.delete() returns deletion timestamp even if the document is not existing.
     */
     async delete() : Promise<ROUTER_RESPONSE> {
-        if ( ! this.loginUid ) return this.error( E.USER_NOT_LOGIN ); // On Unit Test, it will be set with `uid`
+        if ( this.isAnonymous() ) return this.error( E.ANONYMOUS_CANNOT_EDIT_PROFILE );
+        // if ( ! this.loginUid ) return this.error( E.USER_NOT_LOGIN ); // On Unit Test, it will be set with `uid`
         return await super.delete(this.loginUid);
     }
 

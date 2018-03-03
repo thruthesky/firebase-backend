@@ -2,19 +2,20 @@ import * as chai from 'chai';
 const expect = chai.expect;
 
 
-import * as E from './../../modules/core/error';
+
 import { route } from './server-library';
+import { E } from './../../modules/core/core';
 
 
 
 
-describe('User update without idToken. Meaning, Update will be on Anonymous document.', () => {
+
+describe('User update without idToken. Meaning, the User is anonymous and will try to update on Anonymous document.', () => {
     it('Expect error  without id.', async () => {
         const re = await route({ route: 'user.update', a: 'Apple', c: 'Cherry' });
-
-        console.log(re);
+        // console.log(re);
         expect(re).to.be.an('object');
-        expect(re['code']).to.be.equal(0);
+        expect(re['code']).to.be.equal( E.ANONYMOUS_CANNOT_EDIT_PROFILE );
     });
 
     // it('Expect success', async () => {
