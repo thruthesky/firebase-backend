@@ -33,6 +33,11 @@ Blog Plugin
 Shopping Mall Plugin
 
 
+# Resources
+
+* See [Firebase CMS Sample App](https://github.com/thruthesky/firebase-cms-app) to know how it works.
+* See [Firebase CMS Client SDK](https://github.com/thruthesky/firebase-cms) to use `Firebase Backend`.
+
 
 
 # Developer
