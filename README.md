@@ -6,6 +6,9 @@ Firebase backend to build CMS
 
 * Install on web.
 
+* Buy domain `FIREBASEBACKEND.COM`.
+
+
 * Get ID Token from client without UID and do whatever.
     ** After user registration, get ID Token with other information and update it on `x-users`.
 

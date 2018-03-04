@@ -18,8 +18,8 @@ export const ANONYMOUS_CANNOT_EDIT_PROFILE = -40070; es[ANONYMOUS_CANNOT_EDIT_PR
 
 
 
-export const DOCUMENT_ID_DOES_NOT_EXISTS_FOR_UPDATE = -40005; es[DOCUMENT_ID_DOES_NOT_EXISTS_FOR_UPDATE] = 'Document ID does not exsits for update.';
-export const DOCUMENT_ID_DOES_NOT_EXISTS_FOR_GET = -40004; es[DOCUMENT_ID_DOES_NOT_EXISTS_FOR_GET] = 'Document ID was not found or does not exists in database';
+export const DOCUMENT_ID_DOES_NOT_EXISTS_FOR_UPDATE = -40005; es[DOCUMENT_ID_DOES_NOT_EXISTS_FOR_UPDATE] = 'Document ID "#id" does not exsit for update.';
+export const DOCUMENT_ID_DOES_NOT_EXISTS_FOR_GET = -40004; es[DOCUMENT_ID_DOES_NOT_EXISTS_FOR_GET] = 'Document ID was not found or does not exist in database';
 
 
 export const USER_NOT_LOGIN = -40010; es[USER_NOT_LOGIN] = 'User has not logged in. Or maybe the has a wrong(expired) ID token.';
@@ -116,50 +116,77 @@ export function isErrorObject(o): boolean {
  *      - if the input is not a number or Error Object, then the input is returned as it is.
  *      - Otherwise, Backend Error Object is returned.
  */
-export function obj(code): BACKEND_ERROR_OBJECT {
+export function obj(code, info: object = null): BACKEND_ERROR_OBJECT {
 
-    if ( ! code ) return code; // if falsy, return as it is.
+    if (!code) return code; // if falsy, return as it is.
 
+    let re: BACKEND_ERROR_OBJECT;
     if (typeof code === 'number') { // Backend Error Code 
-        return {
+        re = {
             code: code,
             message: es[code]
         };
     }
-    else if (typeof code === 'object' && code && code.code !== void 0 ) { // May be an Error Code Object or `Firestore Error` object.
+    else if (typeof code === 'object' && code && code.code !== void 0) { // May be an Error Code Object or `Firestore Error` object.
 
         const eo = code; // error object
         if (eo['code'] === void 0) { // has no code? then it's not an error object.
             return code; // just return as it is.
         }
-        if (typeof eo['code'] === 'string' || ( typeof eo['code'] === 'number' && eo['code'] > 0 ) ) { // It is `Firestore` Error Object.
-            return convertFirestoreErrorToBackendError(eo)
+        if (typeof eo['code'] === 'string' || (typeof eo['code'] === 'number' && eo['code'] > 0)) { // It is `Firestore` Error Object.
+            re = convertFirestoreErrorToBackendError(eo)
         }
-        return {
-            code: code['code'],
-            message: code['message']
+        else {
+            re = {
+                code: code['code'],
+                message: code['message']
+            }
         }
     }
     // if the input is not number or object. Just return as it was.
-    return code;
+    else {
+        return code;
+    }
+
+    return patchErrorInfo( re, info );
 };
 
+function patchErrorInfo(e: BACKEND_ERROR_OBJECT, info: object = null): BACKEND_ERROR_OBJECT { 
+    const keys = Object.keys( info );
+    if ( ! keys.length ) return e;
+    for ( const k of keys ) {
+        e.message.replace( '#' + k, info[k]);
+    }
+    return e;
+}
 
-function convertFirestoreErrorToBackendError( FireStoreErrorObject ) {
+
+
+function convertFirestoreErrorToBackendError(FireStoreErrorObject) {
 
     let code = 0;
-    switch( FireStoreErrorObject['code'] ) {
-        case 5 : code = DOCUMENT_ID_DOES_NOT_EXISTS_FOR_UPDATE; break;
-        case 'auth/uid-already-exists': code = FIREBASE_AUTH_UID_ALREADY_EXISTS; break;
-        case 'auth/argument-error' :
-            if ( FireStoreErrorObject['message'].indexOf('ID token has expired') !== -1 ) code = FIREBASE_ID_TOKEN_EXPIRED;
-        break;
-        default : 
-        return { code: FIREBASE_CODE, message: `Firebase error code. it is not converted. code: ${FireStoreErrorObject['code']}. message: ${FireStoreErrorObject['message']}`}
+    let message = '';
+    switch (FireStoreErrorObject['code']) {
+        case 5:
+            code = DOCUMENT_ID_DOES_NOT_EXISTS_FOR_UPDATE;
+            message = FireStoreErrorObject['message'];
+            break;
+        case 'auth/uid-already-exists':
+            code = FIREBASE_AUTH_UID_ALREADY_EXISTS;
+            message = FireStoreErrorObject['message'];
+            break;
+        case 'auth/argument-error':
+            if (FireStoreErrorObject['message'].indexOf('ID token has expired') !== -1) {
+                code = FIREBASE_ID_TOKEN_EXPIRED;
+                message = FireStoreErrorObject['message'];
+            }
+            break;
+        default:
+            return { code: FIREBASE_CODE, message: `Firebase error code. it is not converted. code: ${FireStoreErrorObject['code']}. message: ${FireStoreErrorObject['message']}` }
     }
 
     return {
         code: code,
-        message: es[code]
+        message: message
     };
 }
