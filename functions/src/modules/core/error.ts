@@ -148,28 +148,58 @@ export function obj(code, info: object = null): BACKEND_ERROR_OBJECT {
         return code;
     }
 
-    return patchErrorInfo( re, info );
+    re['message'] = patchWithMarker(re['message'], info);
+    return re;
 };
 
-function patchErrorInfo(e: BACKEND_ERROR_OBJECT, info: object = null): BACKEND_ERROR_OBJECT { 
-    const keys = Object.keys( info );
-    if ( ! keys.length ) return e;
-    for ( const k of keys ) {
-        e.message.replace( '#' + k, info[k]);
+
+/**
+ * 
+ * Returns a string after patching error information.
+ * @param str Error string
+ * @param info Error information to patch into the string
+ * 
+ * @see convertFirestoreErrorToBackendError() to know how to use.
+ */
+function patchWithMarker(str, info: object = null): string {
+
+    if (info === null || typeof info !== 'object') return str;
+    const keys = Object.keys(info);
+    if (!keys.length) return str;
+
+    for (const k of keys) {
+        str = str.replace('#' + k, (<string>info[k]));
     }
-    return e;
+    return str;
 }
 
 
 
-function convertFirestoreErrorToBackendError(FireStoreErrorObject) {
+/**
+ * Returns BACKEND_ERROR object.
+ * @param FireStoreErrorObject a Firebase Error Object.
+ * 
+ * 
+ */
+function convertFirestoreErrorToBackendError(FireStoreErrorObject): BACKEND_ERROR_OBJECT {
+
 
     let code = 0;
     let message = '';
+
+    // console.log("convert; ", FireStoreErrorObject);
     switch (FireStoreErrorObject['code']) {
-        case 5:
+        case 5: /// convert firebase error message into backend error message with information.
             code = DOCUMENT_ID_DOES_NOT_EXISTS_FOR_UPDATE;
-            message = FireStoreErrorObject['message'];
+            message = es[code];
+            const error_object_message = <string>FireStoreErrorObject['message'];
+            let id = '';
+            const arr = error_object_message.split('x-users/');
+            if (arr.length === 2) {
+                id = arr[1];
+            }
+            else id = error_object_message;
+            message = patchWithMarker(es[code], { id: id });
             break;
         case 'auth/uid-already-exists':
             code = FIREBASE_AUTH_UID_ALREADY_EXISTS;
