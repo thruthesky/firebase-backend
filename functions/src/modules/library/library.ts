@@ -12,14 +12,10 @@ export class Library {
      */
     httpBuildQuery(params) : string | null {
 
-
         if ( _.isEmpty( params ) ) return null; //
-
         
         const keys = Object.keys(params);
         if ( keys.length === 0 ) return null; //
-
-
 
         const esc = encodeURIComponent;
         const query = keys
