@@ -1,10 +1,14 @@
 # Firebase Backend
-Firebase backend to build CMS
+
+This is a serverless and headless backend to build a cms with client end javascript.
+And yet, we didn't decide it what to call.
 
 
 # TODO List
 
 * Install on web.
+
+* test more on register. like with wrong email format.
 
 * Buy domain `FIREBASEBACKEND.COM`.
 
@@ -63,18 +67,21 @@ Shopping Mall Plugin
 * [Unit Testing](https://docs.google.com/document/d/1ncYWftCEXJBJkATExfGM2S4dzerrI_7PA_DjWjNdEmQ/edit#heading=h.tdpnuuowlpnt)
 
 
-### Library Testing
+### Api Testing
 
-* `Library Testing` is testing by instantiating `new Router()`.
+* `Api Testing` is testing the `api` code with Firebase without connecting to `Firebase Functions`.
 
-    This means, It does not connect to `Firebase Functions`.
+    This means, you can build the backend without `Firebase Functions` which would lead a great difficulty in development.
 
-    It initiates `Firebase Admin SDK` and test the project directly without connecting to `Firebase Functions`
-    
+    It initiates `Firebase Admin SDK` and test the project directly `api` that connect to `Firebase`
 
 ````
 $ node_modules/.bin/mocha --watch --compilers ts:ts-node/register -t 99999 src/unit-tests/api/others/*
+<<<<<<< HEAD
 $ node_modules/.bin/mocha --watch --compilers ts:ts-node/register -t 99999 src/unit-tests/api/with-id-token/user-verify-with-id-token.ts
+=======
+$ node_modules/.bin/mocha --watch --compilers ts:ts-node/register -t 99999 src/unit-tests/api/others/user-verify-with-uid.ts
+>>>>>>> master
 ````
 
 #### Firebase Functions Test
@@ -222,6 +229,15 @@ You can use, `db`, `collection`, `params` and all other code.
 
 
 # Protocols
+
+
+## User Registration
+
+* We do not use `Firebase Authentication` for email/password registration since `Firebase Authentication UID` is really meanning less. We will create an Authentication with `api` so we can have understandable `Firebase Authentication UID`.
+* But for other logins like google, facebook, etc, we simply don't change the UID.
+
+
+
 
 ## User Identification
 

@@ -69,7 +69,7 @@ describe('user-crud-with-uid', () => {
         })
 
 
-        it(`Should failed on update because emtpy uid.`, async () => {
+        it(`Should failed on update because emtpy uid`, async () => {
             const re = await route({ route: 'user.update', uid: '', name: 'name-b-updated' }) // TEST with UID.
             // const re = await route({ route: 'user.update', idToken: '', name: 'name-b-updated' })
             // if (re && re.code) console.log("=============== re: ", re);
@@ -79,10 +79,10 @@ describe('user-crud-with-uid', () => {
 
         it(`Expect 'Document ID does not exists' with wrong uid.`, async () => {
             const re = await route({ route: 'user.update', uid: 'wrong-user-id' }); //
-            // console.log(re);
+            // console.log("============= re: ");
+            // console.log('re: ', re);
             expect(re.code).to.be.equal( E.DOCUMENT_ID_DOES_NOT_EXISTS_FOR_UPDATE );
         })
-
 
         it(`Should failed on update because wrong gender.`, async () => {
             const re = await route({ route: 'user.update', uid: 'user-b', gender: 'D' });
@@ -93,27 +93,31 @@ describe('user-crud-with-uid', () => {
             const re = await route({ route: 'user.update', uid: 'user-b', name: 'name-updated' });
             expect(re.code).to.be.equal(0);
         })
-
     })
 
 
 
     describe('User get test', () => {
-        it(`Should be error(${E.NO_UID}) with no uid`, async () => {
+        it(`Expect success. Guest with no uid will get his profile data.`, async () => {
             const re = await route({ route: 'user.get' });
             expect(re).to.be.a('object');
             expect(re.code).to.be.equal(0);
         })
+<<<<<<< HEAD
         it('Should OK with wrong document id. It will create a new one if its not existing.', async () => {
+=======
+        it('Expect success. If wrong UID is given, it will create a new x-user document since 1. wrong UID is a uid anyway, 2. If docuemnt does not exist on get, it will create one.', async () => {
+>>>>>>> master
             const re = await route({ route: 'user.get', uid: 'wrong-document-id' });
+            // console.log(re);
             expect(re).to.be.a('object');
             expect(re.code).to.be.equal(0);
+<<<<<<< HEAD
             expect(re.data['createdOnGet']).to.be.equal(true)
+=======
+>>>>>>> master
         })
     });
-
-
-
 
 });
 

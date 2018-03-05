@@ -10,6 +10,8 @@ import { Library } from './../library/library';
 
 
 
+// import { Hooks } from './../../hooks';
+
 
 
 
@@ -41,6 +43,8 @@ export class Base {
      */
     static uid: string = null;
 
+    static hookObj = null;
+
 
     library: Library;
     constructor(collectionName) {
@@ -66,7 +70,7 @@ export class Base {
 
 
     version() {
-        return '0.2';
+        return '2018-03-05-7-18-pm';
     }
 
 
@@ -286,6 +290,9 @@ export class Base {
     isAnonymous() {
         return this.loginUid === Anonymous.uid;
     }
+
+
+
 
 
 

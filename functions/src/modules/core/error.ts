@@ -47,6 +47,7 @@ export const FIREBASE_CODE = -40900; es[FIREBASE_CODE] = 'Firebase error code';
 export const FIREBASE_AUTH_UID_ALREADY_EXISTS = -40901; es[FIREBASE_AUTH_UID_ALREADY_EXISTS] = 'User already exists';
 export const FIREBASE_ID_TOKEN_EXPIRED = -40902; es[FIREBASE_ID_TOKEN_EXPIRED] = 'User ID Token has expired.';
 export const FIREBASE_FAILED_TO_DECODE_ID_TOKEN = -40905; es[FIREBASE_FAILED_TO_DECODE_ID_TOKEN] = 'Failed to verfiy who you are. The ID Token may be expired or invalid.';
+export const FIREBASE_INVALID_PASSWORD = -40906; es[FIREBASE_INVALID_PASSWORD] = '';
 
 
 
@@ -148,28 +149,58 @@ export function obj(code, info: object = {}): BACKEND_ERROR_OBJECT {
         return code;
     }
 
-    return patchErrorInfo( re, info );
+    re['message'] = patchWithMarker(re['message'], info);
+    return re;
 };
 
-function patchErrorInfo(e: BACKEND_ERROR_OBJECT, info: object): BACKEND_ERROR_OBJECT { 
-    const keys = Object.keys( info );
-    if ( ! keys.length ) return e;
-    for ( const k of keys ) {
-        e.message.replace( '#' + k, info[k]);
+
+/**
+ * 
+ * Returns a string after patching error information.
+ * @param str Error string
+ * @param info Error information to patch into the string
+ * 
+ * @see convertFirestoreErrorToBackendError() to know how to use.
+ */
+function patchWithMarker(str, info: object = null): string {
+
+    if (info === null || typeof info !== 'object') return str;
+    const keys = Object.keys(info);
+    if (!keys.length) return str;
+
+    for (const k of keys) {
+        str = str.replace('#' + k, (<string>info[k]));
     }
-    return e;
+    return str;
 }
 
 
 
-function convertFirestoreErrorToBackendError(FireStoreErrorObject) {
+/**
+ * Returns BACKEND_ERROR object.
+ * @param FireStoreErrorObject a Firebase Error Object.
+ * 
+ * 
+ */
+function convertFirestoreErrorToBackendError(FireStoreErrorObject): BACKEND_ERROR_OBJECT {
+
 
     let code = 0;
     let message = '';
+
+    // console.log("convert; ", FireStoreErrorObject);
     switch (FireStoreErrorObject['code']) {
-        case 5:
+        case 5: /// convert firebase error message into backend error message with information.
             code = DOCUMENT_ID_DOES_NOT_EXISTS_FOR_UPDATE;
-            message = FireStoreErrorObject['message'];
+            message = es[code];
+            const error_object_message = <string>FireStoreErrorObject['message'];
+            let id = '';
+            const arr = error_object_message.split('x-users/');
+            if (arr.length === 2) {
+                id = arr[1];
+            }
+            else id = error_object_message;
+            message = patchWithMarker(es[code], { id: id });
             break;
         case 'auth/uid-already-exists':
             code = FIREBASE_AUTH_UID_ALREADY_EXISTS;
@@ -180,6 +211,10 @@ function convertFirestoreErrorToBackendError(FireStoreErrorObject) {
                 code = FIREBASE_ID_TOKEN_EXPIRED;
                 message = FireStoreErrorObject['message'];
             }
+            break;
+        case 'auth/invalid-password':
+            code = FIREBASE_INVALID_PASSWORD;
+            message = <string>FireStoreErrorObject['message'];
             break;
         default:
             return { code: FIREBASE_CODE, message: `Firebase error code. it is not converted. code: ${FireStoreErrorObject['code']}. message: ${FireStoreErrorObject['message']}` }

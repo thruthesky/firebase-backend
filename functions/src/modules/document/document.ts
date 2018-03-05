@@ -24,25 +24,6 @@ export class Document extends Base {
         return hook.run(name, data);
     }
 
-    /**
-     * 
-     * Sometimes, somehow, you cannot set an Object into firestore `document`.
-     * In that case, It needs to be `JSON.stringify` and `JSON.parse` again.
-     * 
-     * @param obj Object to be set into `firestore`.
-     */
-    sanitizeData(obj) {
-        if (obj) {
-            if (typeof obj === 'object') {
-                Object.keys(obj).forEach(key => obj[key] === undefined && delete obj[key]);
-            }
-        }
-
-        return this.hook('document.sanitizeData', obj);
-        // return obj;
-    }
-
-
 
     /**
      * 
@@ -205,6 +186,29 @@ export class Document extends Base {
                 return documentID;
             })
             .catch(e => this.error(e));
+    }
+
+
+
+    /**
+     * 
+     * Removes properties with `undefined` value from the object.
+     * 
+     * You cannot set `undefiend` value into firestore `document`. It will produce a Critical error.
+     * 
+     * @param obj Object to be set into `firestore`.
+     * 
+     * @return object
+     */
+    sanitizeData(obj) {
+        if (obj) {
+            if (typeof obj === 'object') {
+                Object.keys(obj).forEach(key => obj[key] === undefined && delete obj[key]);
+            }
+        }
+
+        return this.hook('sanitizeData', obj);
+        // return obj;
     }
 
 
