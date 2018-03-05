@@ -10,10 +10,10 @@ Base.admin = init();
 
 
 /**
- * This may fail depeding on the `idToken` changes.
- * It is okay NOT to test this test or try to put a ID Token that less changes.
- * 
- */
+* This may fail depeding on the `idToken` changes.
+* It is okay NOT to test this test or try to put a ID Token that less changes.
+* 
+*/
 describe('Expect success', () => {
     beforeEach( () => {
         Base.useUid = false;

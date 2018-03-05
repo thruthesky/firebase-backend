@@ -11,20 +11,20 @@
 import * as admin from 'firebase-admin';
 import { serviceAccount } from './../../../settings/serviceAccountKey';
 admin.initializeApp({ // Enable on development.
-    credential: admin.credential.cert(<any>serviceAccount),
-    databaseURL: "https://pwa-cms.firebaseio.com"
+  credential: admin.credential.cert(<any>serviceAccount),
+  databaseURL: "https://pwa-cms.firebaseio.com"
 });
 
 /** UID 를 지정해서 사용자 생성하기. 이것은 프로젝트 웹 콘솔에서 할 수 없는 것이다. */
 admin.auth().createUser({
-    uid: "some-uid",
-    email: "user@example.com",
-    phoneNumber: "+11234567890"
-  })
-    .then(function(userRecord) {
-      // See the UserRecord reference doc for the contents of userRecord.
-      console.log("Successfully created new user:", userRecord.uid);
-    })
-    .catch(function(error) {
-      console.log("Error creating new user:", error);
-    });
+  uid: "some-uid",
+  email: "user@example.com",
+  phoneNumber: "+11234567890"
+})
+.then(function(userRecord) {
+  // See the UserRecord reference doc for the contents of userRecord.
+  console.log("Successfully created new user:", userRecord.uid);
+})
+.catch(function(error) {
+  console.log("Error creating new user:", error);
+});
