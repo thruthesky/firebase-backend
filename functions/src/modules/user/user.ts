@@ -29,6 +29,7 @@ export interface USER_DATA {
     country?: string;
     province?: string;
     city?: string;
+    role?: string; /** @author Gem @desc user role/permissions i.e. admin, etc. @desc Can only update by admin */
 };
 
 

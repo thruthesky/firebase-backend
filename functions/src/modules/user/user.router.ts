@@ -111,14 +111,22 @@ export class UserRouter extends User {
     }
 
     /** 
-     * Deletes a user document.
+     * Deletes a user document/data in users collection.
      * 
      * @desc doc.delete() returns deletion timestamp even if the document is not existing.
+     * 
+     * 
     */
-    async delete() : Promise<ROUTER_RESPONSE> {
+    async delete() : Promise<ROUTER_RESPONSE | boolean> {
         if ( this.isAnonymous() ) return this.error( E.ANONYMOUS_CANNOT_EDIT_PROFILE );
+
+        // if ( 'this.loginUid !== this.params.uid' ) return E.(user type/permission level must be admin)
+
+        if (this.validateUserData(this.params)) return this.validateUserData(this.params);
         // if ( ! this.loginUid ) return this.error( E.USER_NOT_LOGIN ); // On Unit Test, it will be set with `uid`
-        return await super.delete(this.loginUid);
+
+        // return await super.delete(this.loginUid); // this will delete the current user 
+        return await super.delete(this.params.uid); // deletes selected user. They can pass their current ID if they want to delete current account.
     }
 
 }

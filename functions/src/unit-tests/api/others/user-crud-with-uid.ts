@@ -104,10 +104,11 @@ describe('user-crud-with-uid', () => {
             expect(re).to.be.a('object');
             expect(re.code).to.be.equal(0);
         })
-        it('Should fail with wrong document id', async () => {
+        it('Should OK with wrong document id. It will create a new one if its not existing.', async () => {
             const re = await route({ route: 'user.get', uid: 'wrong-document-id' });
             expect(re).to.be.a('object');
-            expect(re.code).to.be.equal(E.DOCUMENT_ID_DOES_NOT_EXISTS_FOR_GET);
+            expect(re.code).to.be.equal(0);
+            expect(re.data['createdOnGet']).to.be.equal(true)
         })
     });
 
