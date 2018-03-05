@@ -113,11 +113,13 @@ export class Hooks extends Base {
 
     /**
      * Returns the data after sanitizing.
+     * 
      * @param obj data to be set/update on Documents.
      * 
      * @return data to be set on document.
+     * 
      */
-    document_sanitizeData( obj ) {
+    sanitizeData( obj ) {
         return obj;
     }
 

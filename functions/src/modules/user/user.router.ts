@@ -1,7 +1,9 @@
 // import * as admin from 'firebase-admin';
 // import { Request, Response } from 'express';
 import * as E from '../core/error';
-import { User, USER_DATA } from './user';
+import * as _ from 'lodash';
+import { Base } from './../core/base';
+import { User, USER_DATA, USER_REGISTER } from './user';
 import { ROUTER_RESPONSE } from '../core/core';
 
 
@@ -10,7 +12,7 @@ export class UserRouter extends User {
         super();
         return;
     }
-  
+
 
 
     /**
@@ -24,21 +26,62 @@ export class UserRouter extends User {
 
         /// User's UID is not acceptable for real production site.
         /// It is only available with unit-test.
-        if ( p.uid !== void 0 ) {
-            if ( this.checkUIDFormat( p.uid ) ) return this.error( this.checkUIDFormat( p.uid ) );
+        if (p.uid !== void 0) {
+            if (this.checkUIDFormat(p.uid)) return this.error(this.checkUIDFormat(p.uid));
         }
 
         /**
          * Check gender format.
          */
-        if ( p.gender !== void 0 && p.gender ) {
-            if ( p.gender !== 'M' && p.gender !== 'F' ) return this.error( E.WRONG_GENDER );
+        if (p.gender !== void 0 && p.gender) {
+            if (p.gender !== 'M' && p.gender !== 'F') return this.error(E.WRONG_GENDER);
         }
 
         return false;
     }
 
-    
+
+    /**
+     * 
+     * This registers(creates) a user authenticatoin whose `uid` is same as email address. 
+     * 
+     * 
+     * @return ROUTER_RESPONSE
+     * 
+     *      - On success, `uid` that is same as the user's email will be returned in `data` field of the response.
+     */
+    async register(): Promise<any> {
+
+        // @todo check email, password, name, etc.
+
+        const user = this.sanitizeData( this.params );
+        if ( _.isEmpty(user.email) ) return this.error( E.NO_EMAIL );
+        if ( _.isEmpty(user.password) ) return this.error( E.NO_PASSWORD );
+
+
+        const data: USER_REGISTER = {
+            uid: user.email,
+            email: user.email,
+            password: user.password
+        };
+
+        if ( user.displayName !== void 0 ) data.displayName = user.displayName;
+        if ( user.phoneNumber !== void 0 ) data.phoneNumber = user.phoneNumber;
+        if ( user.photoURL !== void 0 ) data.photoURL = user.photoURL;
+        
+
+
+        return await this.auth.createUser(this.sanitizeData(data))
+            .then( newUser => {
+                delete user.password;
+                this.loginUid = newUser.uid;
+                Base.params = user;
+                return this.set();
+            })
+            .catch(e => this.error(e));
+
+    }
+
     /**
      * Creates a doc under users collection.
      * 
@@ -52,18 +95,23 @@ export class UserRouter extends User {
      * 
      * 
      * 
+     * @desc This is an interface. It shouldn't have parameters. If you are sure what you are doing, you can call like below.
+     * @code
+     *          this.loginUid = newUser.uid;
+                Base.params = user;
+                return this.set();
      * 
      */
-    async set() : Promise<ROUTER_RESPONSE | boolean> {
+    async set(): Promise<ROUTER_RESPONSE | boolean> {
 
 
-        if ( this.isAnonymous() ) return this.error( E.ANONYMOUS_CANNOT_EDIT_PROFILE );
+        if (this.isAnonymous()) return this.error(E.ANONYMOUS_CANNOT_EDIT_PROFILE);
 
         //
         if (this.validateUserData(this.params)) return this.validateUserData(this.params);
-        
+
         const re = this.hook('user.set');
-        if ( this.isErrorObject( re ) ) return re;
+        if (this.isErrorObject(re)) return re;
 
         // console.log("Goint to set with UID: " + this.loginUid);
         // console.log("Data: ", this.params);
@@ -80,8 +128,8 @@ export class UserRouter extends User {
      *      - If you are going to update, the user data previously set will be updated and unchanged properties will be remain as they are.
      *      - If you want to reset the document, then use `set()`
      */
-    async update() : Promise<ROUTER_RESPONSE | boolean> {
-        if ( this.isAnonymous() ) return this.error( E.ANONYMOUS_CANNOT_EDIT_PROFILE );
+    async update(): Promise<ROUTER_RESPONSE | boolean> {
+        if (this.isAnonymous()) return this.error(E.ANONYMOUS_CANNOT_EDIT_PROFILE);
         if (this.validateUserData(this.params)) return this.validateUserData(this.params);
         return await super.update(this.sanitizeUserData(this.params), this.loginUid);
     }
@@ -94,17 +142,17 @@ export class UserRouter extends User {
      * 
      */
     async get() {
-        const re = await super.get( this.loginUid );
+        const re = await super.get(this.loginUid);
 
         /** @todo test more on `create on get` */
-        if ( this.isErrorObject( re ) && re.code === E.DOCUMENT_ID_DOES_NOT_EXISTS_FOR_GET ) {
+        if (this.isErrorObject(re) && re.code === E.DOCUMENT_ID_DOES_NOT_EXISTS_FOR_GET) {
             // console.log("user.router::get() user document does not exists. going to create one");
-            const reSet = await super.set( { createdOnGet: true }, this.loginUid );
-            if ( this.isErrorObject(reSet) ) return reSet;
-            else if ( ! reSet ) return reSet;
+            const reSet = await super.set({ createdOnGet: true }, this.loginUid);
+            if (this.isErrorObject(reSet)) return reSet;
+            else if (!reSet) return reSet;
             else {
                 // console.log("user.router::get() user documnet has created.");
-                return await super.get( this.loginUid );
+                return await super.get(this.loginUid);
             }
         }
         else return re;
@@ -115,8 +163,8 @@ export class UserRouter extends User {
      * 
      * @desc doc.delete() returns deletion timestamp even if the document is not existing.
     */
-    async delete() : Promise<ROUTER_RESPONSE> {
-        if ( this.isAnonymous() ) return this.error( E.ANONYMOUS_CANNOT_EDIT_PROFILE );
+    async delete(): Promise<ROUTER_RESPONSE> {
+        if (this.isAnonymous()) return this.error(E.ANONYMOUS_CANNOT_EDIT_PROFILE);
         // if ( ! this.loginUid ) return this.error( E.USER_NOT_LOGIN ); // On Unit Test, it will be set with `uid`
         return await super.delete(this.loginUid);
     }

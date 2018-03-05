@@ -47,6 +47,7 @@ export const FIREBASE_CODE = -40900; es[FIREBASE_CODE] = 'Firebase error code';
 export const FIREBASE_AUTH_UID_ALREADY_EXISTS = -40901; es[FIREBASE_AUTH_UID_ALREADY_EXISTS] = 'User already exists';
 export const FIREBASE_ID_TOKEN_EXPIRED = -40902; es[FIREBASE_ID_TOKEN_EXPIRED] = 'User ID Token has expired.';
 export const FIREBASE_FAILED_TO_DECODE_ID_TOKEN = -40905; es[FIREBASE_FAILED_TO_DECODE_ID_TOKEN] = 'Failed to verfiy who you are. The ID Token may be expired or invalid.';
+export const FIREBASE_INVALID_PASSWORD = -40906; es[FIREBASE_INVALID_PASSWORD] = '';
 
 
 
@@ -210,6 +211,10 @@ function convertFirestoreErrorToBackendError(FireStoreErrorObject): BACKEND_ERRO
                 code = FIREBASE_ID_TOKEN_EXPIRED;
                 message = FireStoreErrorObject['message'];
             }
+            break;
+        case 'auth/invalid-password':
+            code = FIREBASE_INVALID_PASSWORD;
+            message = <string>FireStoreErrorObject['message'];
             break;
         default:
             return { code: FIREBASE_CODE, message: `Firebase error code. it is not converted. code: ${FireStoreErrorObject['code']}. message: ${FireStoreErrorObject['message']}` }
