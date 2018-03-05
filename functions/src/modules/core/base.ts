@@ -271,7 +271,7 @@ export class Base {
      * @todo Unit test
      */
     checkDocumentIDFormat(postId) {
-        if (!postId) return this.error(E.NO_POST_ID_ON_GET);
+        if (!postId) return this.error(E.NO_POST_ID);
         if (postId.length > 128) return this.error(E.POST_ID_TOO_LONG);
         if (postId.indexOf('/') !== -1) return this.error(E.POST_ID_CANNOT_CONTAIN_SLASH);
         return false;

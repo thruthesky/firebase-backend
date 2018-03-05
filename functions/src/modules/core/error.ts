@@ -36,7 +36,7 @@ export const COLLECTION_IS_NOT_SET = -40200; es[COLLECTION_IS_NOT_SET] = 'Collec
 // Posting errors
 export const EMPTY_POST_BODY = -40301; es[EMPTY_POST_BODY] = 'Post body can\'t be empty';
 export const POST_HAS_NO_CATEGORY = -40302; es[POST_HAS_NO_CATEGORY] = 'Post must have category.';
-export const NO_POST_ID_ON_GET = -40353; es[NO_POST_ID_ON_GET] = 'No post id. Getting post from server needs post id.'
+export const NO_POST_ID = -40353; es[NO_POST_ID] = 'No post id. Post id is needed to identify the post.'
 export const POST_ID_TOO_LONG = -40354; es[POST_ID_TOO_LONG] = 'post id is too long. Must be less than 128 characters.';
 export const POST_ID_CANNOT_CONTAIN_SLASH = -40355; es[POST_ID_CANNOT_CONTAIN_SLASH] = 'post id cannot contain slashes.';
 export const POST_ID_CANNOT_SOLELY_CONSIST_DOT = -40356; es[POST_ID_CANNOT_SOLELY_CONSIST_DOT] = 'Post id or document id cannot be equal to dot [.] or double dot [..] ';
@@ -116,7 +116,7 @@ export function isErrorObject(o): boolean {
  *      - if the input is not a number or Error Object, then the input is returned as it is.
  *      - Otherwise, Backend Error Object is returned.
  */
-export function obj(code, info: object = null): BACKEND_ERROR_OBJECT {
+export function obj(code, info: object = {}): BACKEND_ERROR_OBJECT {
 
     if (!code) return code; // if falsy, return as it is.
 
@@ -151,7 +151,7 @@ export function obj(code, info: object = null): BACKEND_ERROR_OBJECT {
     return patchErrorInfo( re, info );
 };
 
-function patchErrorInfo(e: BACKEND_ERROR_OBJECT, info: object = null): BACKEND_ERROR_OBJECT { 
+function patchErrorInfo(e: BACKEND_ERROR_OBJECT, info: object): BACKEND_ERROR_OBJECT { 
     const keys = Object.keys( info );
     if ( ! keys.length ) return e;
     for ( const k of keys ) {
