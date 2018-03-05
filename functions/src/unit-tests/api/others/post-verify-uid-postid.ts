@@ -4,10 +4,10 @@
  */
 import * as chai from 'chai';
 const expect = chai.expect;
-import * as _ from 'lodash';
+// import * as _ from 'lodash';
 import { Base, E, Anonymous } from './../../../modules/core/core';
 import { PostRouter } from './../../../modules/post/post.router';
-import { Document } from './../../../modules/document/document';
+// import { Document } from './../../../modules/document/document';
 import { init } from './../init';
 Base.admin = init();
 

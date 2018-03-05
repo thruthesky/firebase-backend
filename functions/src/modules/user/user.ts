@@ -53,12 +53,7 @@ export class User extends Document {
         super( COLLECTIONS.USERS );
 
     }
-
-
-    version() {
-        return '0.1';
-    }
-
+    
     count() {
         return 10;
     }

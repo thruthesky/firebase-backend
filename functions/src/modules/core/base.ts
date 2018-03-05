@@ -70,7 +70,7 @@ export class Base {
 
 
     version() {
-        return '0.2.18';
+        return '2018-03-05-7-18-pm';
     }
 
 

@@ -8,6 +8,8 @@ And yet, we didn't decide it what to call.
 
 * Install on web.
 
+* test more on register. like with wrong email format.
+
 * Buy domain `FIREBASEBACKEND.COM`.
 
 
