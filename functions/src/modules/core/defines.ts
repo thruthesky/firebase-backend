@@ -15,7 +15,7 @@ export const COLLECTIONS = {
     USERS: 'users',
     SETTINGS: 'settings',
     POSTS: 'posts',
-    POST_SETTINGS: 'post-setttings',
+    CATEGORIES: 'categories',
     COMMENTS : 'comments'
 };
 
