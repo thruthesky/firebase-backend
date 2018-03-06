@@ -1,5 +1,5 @@
 import * as admin from 'firebase-admin';
-import * as _ from 'lodash';
+// import * as _ from 'lodash';
 
 import { COLLECTION_PREFIX } from './../../settings/settings';
 
@@ -81,7 +81,7 @@ export class Base {
 
 
     version() {
-        return '2018-03-05-7-18-pm';
+        return '2018-03-06-9-9-pm';
     }
 
 

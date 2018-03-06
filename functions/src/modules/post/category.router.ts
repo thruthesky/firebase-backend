@@ -1,7 +1,7 @@
 
 // import * as admin from 'firebase-admin';
-import { COLLECTIONS, ROUTER_RESPONSE } from '../core/core';
-import { Document } from './../document/document';
+import { ROUTER_RESPONSE } from '../core/core';
+// import { Document } from './../document/document';
 import { Category } from './category';
 
 

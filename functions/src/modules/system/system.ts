@@ -2,7 +2,7 @@
 
 import { Document } from './../document/document';
 import { COLLECTIONS } from '../core/core';
-import { SYSTEM_SETTINGS } from './../core/defines';
+// import { SYSTEM_SETTINGS } from './../core/defines';
 
 
 
