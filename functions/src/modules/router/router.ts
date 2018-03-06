@@ -32,7 +32,7 @@ export class Router extends Base {
         // Check router class.
         let $router = null;
         if (this.routeClassName === 'user') {
-            const userRouter = <UserRouter>(new UserRouter());
+            const userRouter = new UserRouter();
             $router = userRouter;
         }
         else if (this.routeClassName === 'system' ) $router = new SystemRouter();

@@ -8,6 +8,18 @@ And yet, we didn't decide it what to call.
 
 * Install on web.
 
+
+* Unit test for category.
+ * Category crud test.
+ * Category crud with some fields test.
+  * moderator is an array, so needs to be tested.
+  * moderator roles. roles apply to all moderators.
+
+* Test creating posts.
+ * Creat a post with the relation of category and user.
+
+
+
 * test more on register. like with wrong email format.
 
 * Buy domain `FIREBASEBACKEND.COM`.
@@ -256,6 +268,26 @@ You can use, `db`, `collection`, `params` and all other code.
 
 * If you do not set proper Unit-Test settings, and you do not provide `idToken`, then the user will be anonymous.
 
+## Category and Post, Comment
+
+* `category.create`
+* `category.update`
+* `category.list`
+* `category.delete`
+* `post.create`
+* `post.list`
+* `post.view`
+* `post.edit`
+* `post.delete`
+* `post.report`
+* `post.block` - Block the user with `WebbrowserID`, `IP`
+* `post.hide` - It does not block the user but don't show the post to the public.
+* `post.like`
+* `post.dislike`
+* `post.reminder`
+* `post.move`
+* `post.copy`
+* ...
 
 
 ### For Unit testing.

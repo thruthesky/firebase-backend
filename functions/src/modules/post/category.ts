@@ -5,6 +5,14 @@ import * as _ from 'lodash';
 
 
 
+export interface MODERATOR_ROLES {
+    read?: boolean;
+    edit?: boolean;
+    delete?: boolean;
+    copy?: boolean;
+    move?: boolean;
+    reminder?: boolean; // moderator can change the remdiner or stick posts.
+}
 
 export interface CATEGORY {
     id: string;
@@ -15,7 +23,7 @@ export interface CATEGORY {
     numberOfPostsPerPage?: number;
     numberOfPagesOnNavigation?: number;
     moderators?: Array<string>;
-    moderatorRoles?: 'read' | 'edit' | 'delete' | 'copy' | 'move';
+    moderatorRoles?: MODERATOR_ROLES;
     allowAttachment?: boolean;
     levelOnList?: number;
     levelOnWrite?: number;
@@ -26,6 +34,8 @@ export interface CATEGORY {
     footerOnWriter?: string;
     headerOnView?: string;
     footerOnView?: string;
+    numberOfPosts?: number;
+    numberOfComment?: number;
 }
 
 /**

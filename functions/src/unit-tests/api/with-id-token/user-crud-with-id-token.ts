@@ -1,12 +1,13 @@
 import * as chai from 'chai';
 const expect = chai.expect;
 import { Base, E } from './../../../modules/core/core';
+import { User } from './../../../modules/user/user';
 import { Router } from './../../../modules/router/router';
 import { init, route } from './../init';
 import { idToken } from '../../test-data';
 Base.admin = init();
 
-
+const $user: User = new User();
 
 
 describe('user-crud-with-id-token', () => {
@@ -20,8 +21,8 @@ describe('user-crud-with-id-token', () => {
      */
     describe('Expect success.', () => {
         it('Token copied from client', async () => {
-            const $router = new Router({ idToken: idToken });
-            const re = await $router.verifyUser();
+            new Router({ idToken: idToken });
+            const re = await $user.verify();
 
             if (re !== true) console.log(re);
             expect(re).to.be.equal(true);

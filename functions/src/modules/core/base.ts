@@ -1,5 +1,5 @@
 import * as admin from 'firebase-admin';
-import * as _ from 'lodash';
+// import * as _ from 'lodash';
 
 import { COLLECTION_PREFIX } from './../../settings/settings';
 
@@ -81,7 +81,7 @@ export class Base {
 
 
     version() {
-        return '2018-03-05-7-18-pm';
+        return '2018-03-06-9-9-pm';
     }
 
 
@@ -137,9 +137,9 @@ export class Base {
         if (obj) {
             obj['route'] = this.param('route');
         }
-
         return obj;
     }
+
 
     /**
      * @desc Might be useful when parsing error dynamically.
@@ -150,13 +150,13 @@ export class Base {
      * 
      * @author gem
      */
-    unhandledError( newError ): ROUTER_RESPONSE {
-        return {
-            code: E.UNHANDLED,
-            message : `You need to handle unknown error [${newError}]`,
-            route: this.param('route')
-        }
-    }
+    // unhandledError( newError ): ROUTER_RESPONSE {
+    //     return {
+    //         code: E.UNHANDLED,
+    //         message : `You need to handle unknown error [${newError}]`,
+    //         route: this.param('route')
+    //     }
+    // }
 
     
     /**

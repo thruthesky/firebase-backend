@@ -7,8 +7,8 @@ export const NO_ADMIN_EMAIL = -400100; es[NO_ADMIN_EMAIL] = "Please input admin 
 
 /// Users
 export const TEST = -11; es[TEST] = 'Test Error';
-export const UNKNOWN = -12; es[UNKNOWN] = 'Unknown erorr.';
-export const UNHANDLED = -10; es[UNHANDLED] = 'Unhandled error message must have suggestion on which error is to be handled.'
+export const UNKNOWN = -12; es[UNKNOWN] = 'Unknown erorr. #info';
+// export const UNHANDLED = -10; es[UNHANDLED] = 'Unhandled error message must have suggestion on which error is to be handled.'
 export const NO_EMAIL = -50; es[NO_EMAIL] = 'No email address.';
 export const NO_PASSWORD = -51; es[NO_PASSWORD] = 'No password.';
 export const NO_NAME = -52; es[NO_NAME] = 'No name.';
@@ -33,6 +33,14 @@ export const ANONYMOUS_CANNOT_EDIT_PROFILE = -40070; es[ANONYMOUS_CANNOT_EDIT_PR
 export const USER_ID_NOT_EXISTS_IN_USER_COLLECTION = -40020; es[USER_ID_NOT_EXISTS_IN_USER_COLLECTION] = 'User UID "#id" in users collection does not exists.';
 
 
+
+// basic error message
+
+// export const CATEGORY_LEVEL_ON_WRITE_MUST_CONTAIN_NUMBER = -40446; es[CATEGORY_LEVEL_ON_WRITE_MUST_CONTAIN_NUMBER] = 'Level on write field in category should be number.'
+// export const CATEGORY_LEVEL_ON_READ_MUST_CONTAIN_NUMBER = -40447; es[CATEGORY_LEVEL_ON_READ_MUST_CONTAIN_NUMBER] = 'Level on read field in category should be a number.'
+// export const CATEGORY_LEVEL_ON_LIST_MUST_CONTAIN_NUMBER = -40448; es[CATEGORY_LEVEL_ON_LIST_MUST_CONTAIN_NUMBER] = 'Level on list field in category should be a number.'
+
+export const MUST_BE_A_NUMBER = -400204; es[MUST_BE_A_NUMBER] = 'Value must be a number with #name';
 
 
 // documnets
@@ -64,10 +72,10 @@ export const POST_ID_CANNOT_CONTAIN_SLASH = -40355; es[POST_ID_CANNOT_CONTAIN_SL
 export const NO_CATEGORY_ID = -40460; es[NO_CATEGORY_ID] = 'Category should have an ID.';
 export const CATEGORY_ID_TOO_LONG = -40454; es[CATEGORY_ID_TOO_LONG] = 'Category id is too long. Must be less than 128 characters.';
 export const CATEGORY_ID_CANNOT_CONTAIN_SLASH = -40445; es[CATEGORY_ID_CANNOT_CONTAIN_SLASH] = 'Category id cannot contain slashes.';
-export const CATEGORY_LEVEL_ON_WRITE_MUST_CONTAIN_NUMBER = -40446; es[CATEGORY_LEVEL_ON_WRITE_MUST_CONTAIN_NUMBER] = 'Level on write field in category should be number.'
-export const CATEGORY_LEVEL_ON_READ_MUST_CONTAIN_NUMBER = -40447; es[CATEGORY_LEVEL_ON_READ_MUST_CONTAIN_NUMBER] = 'Level on read field in category should be a number.'
-export const CATEGORY_LEVEL_ON_LIST_MUST_CONTAIN_NUMBER = -40448; es[CATEGORY_LEVEL_ON_LIST_MUST_CONTAIN_NUMBER] = 'Level on list field in category should be a number.'
+
 export const ANONYMOUS_CANNOT_SET_CATEGORY = -40449; es[ANONYMOUS_CANNOT_SET_CATEGORY] = 'Anonymous cannot set a category';
+
+
 
 // Firebase errors.
 

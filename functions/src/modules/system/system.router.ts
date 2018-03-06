@@ -2,7 +2,7 @@
 import { Anonymous, E } from '../core/core';
 // import { User } from '../user/user';
 import { System } from './system';
-import { Base } from './../core/base';
+// import { Base } from './../core/base';
 
 
 
@@ -41,6 +41,7 @@ export class SystemRouter extends System {
         // console.log("DI?");
 
         const re = await this.set({adminEmail: this.param('adminEmail')}, 'system' );
+        if ( this.isErrorObject( re ) ) return re;
 
         // Create Anonymous account.
         const user = await this.auth.createUser({

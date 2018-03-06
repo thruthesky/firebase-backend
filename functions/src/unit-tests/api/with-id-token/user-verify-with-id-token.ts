@@ -3,9 +3,11 @@ const expect = chai.expect;
 import { Base } from './../../../modules/core/core';
 import { Router } from './../../../modules/router/router';
 import { init } from './../init';
+import { User } from './../../../modules/user/user';
 
 import { idToken } from '../../test-data';
 
+const $user: User = new User();
 Base.admin = init();
 
 
@@ -19,8 +21,8 @@ describe('Expect success', () => {
         Base.useUid = false;
     });
     it('Token copied from client', async () => {
-        const $router = new Router({ idToken: idToken });
-        const re = await $router.verifyUser();
+        new Router({ idToken: idToken }); // save data to base.
+        const re = await $user.verify();
         expect(re).to.be.equal(true);
         // console.log('re: ', re );
     });
