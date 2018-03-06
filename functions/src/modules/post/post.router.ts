@@ -50,6 +50,10 @@ export class PostRouter extends Post {
     async delete() {
         return 'i am delete';
     }
+
+    async search_category(){
+        
+    }
     
     
     

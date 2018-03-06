@@ -41,6 +41,9 @@ export const POST_ID_TOO_LONG = -40354; es[POST_ID_TOO_LONG] = 'post id is too l
 export const POST_ID_CANNOT_CONTAIN_SLASH = -40355; es[POST_ID_CANNOT_CONTAIN_SLASH] = 'post id cannot contain slashes.';
 export const POST_ID_CANNOT_SOLELY_CONSIST_DOT = -40356; es[POST_ID_CANNOT_SOLELY_CONSIST_DOT] = 'Post id or document id cannot be equal to dot [.] or double dot [..] ';
 
+// Categories
+export const NO_CATEGORY_ID = -40360; es[NO_CATEGORY_ID] = 'Category should have an ID.';
+
 // Firebase errors.
 
 export const FIREBASE_CODE = -40900; es[FIREBASE_CODE] = 'Firebase error code';
