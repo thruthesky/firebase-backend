@@ -36,14 +36,7 @@ describe('[ user-crud-with-uid.ts ]', () => {
             expect(re.code).to.be.equal(E.ANONYMOUS_CANNOT_EDIT_PROFILE);
         })
 
-
-        it(`Expect 'Document ID does not exists' with wrong uid.`, async () => {
-            const re = await route({ route: 'user.update', uid: 'wrong-user-id' }); //
-            // console.log("============= re: ");
-            // console.log('re: ', re);
-            expect(re.code).to.be.equal( E.USER_ID_NOT_EXISTS_IN_USER_COLLECTION );
-        })
-
+        
         it(`Should failed on update because wrong gender.`, async () => {
             const re = await route({ route: 'user.update', uid: 'user-b', gender: 'D' });
             expect(re.code).to.be.equal(E.WRONG_GENDER);

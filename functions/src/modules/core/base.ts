@@ -272,7 +272,7 @@ export class Base {
      * Returns true if the user is admin.
      */
     isAdmin(): boolean {
-        console.log(this.loginUid);
+        // console.log(this.loginUid);
         return Base.systemSettings.adminEmail === this.loginUid;
     }
 

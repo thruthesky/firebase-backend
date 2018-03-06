@@ -129,6 +129,8 @@ export class UserRouter extends User {
      * @desc You have option to set or update user data.
      *      - If you are going to update, the user data previously set will be updated and unchanged properties will be remain as they are.
      *      - If you want to reset the document, then use `set()`
+     * 
+     * @return this.loginUid
      */
     async update(): Promise<ROUTER_RESPONSE | boolean> {
 

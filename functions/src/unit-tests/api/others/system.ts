@@ -26,7 +26,6 @@ describe("[ system.ts ]", () => {
         else {
             // console.log("un installed. No need to install.");
         }
-
     });
 
 
@@ -45,8 +44,7 @@ describe("[ system.ts ]", () => {
 
     it("Check if admin", async() => {
         const re = await route( { route: 'system.version', uid: 'thruthesky@gmail.com'} );
-
-        console.log(re);
+        expect(re.role).to.be.equal('admin');
     });
 
 });
