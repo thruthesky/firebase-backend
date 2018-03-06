@@ -50,10 +50,13 @@ export class CategoryRouter extends Category {
     
     
     validateModeratorRole( role ) {
-        // const roles = 'read' | 'edit' | 'delete' | 'copy' | 'move'
+        const roles = ['read', 'edit', 'delete', 'copy', 'move'];
+
+        
     }
     
     /**
+    * @desc Ensures data passed in a field is a number.
     * 
     * @param data 
     * @param field
@@ -63,7 +66,7 @@ export class CategoryRouter extends Category {
     numberValidation( data, field: string ){
         if ( !data ) return false;
         if ( !this.isErrorObject( E.obj( E[`CATEGORY_${field}_MUST_CONTAIN_NUMBER`] ) ) ) {
-            return this.unknownError(`CATEGORY_${field}_MUST_CONTAIN_NUMBER`)
+            return this.unhandledError(`CATEGORY_${field}_MUST_CONTAIN_NUMBER`)
         }
         
         if ( !_.isNumber( data ) ) return this.error( E[`CATEGORY_${field}_MUST_CONTAIN_NUMBER`] );

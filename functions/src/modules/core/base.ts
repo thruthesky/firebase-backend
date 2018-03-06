@@ -142,13 +142,15 @@ export class Base {
     }
 
     /**
+     * @desc Might be useful when parsing error dynamically.
+     * 
      * @returns object{ code : E.UNHANDLED, message: suggestion on which error needs to be handled }
      * 
-     * @param newError - new error variable that is not found.
+     * @param newError - new error variable name that is not yet handled.
      * 
      * @author gem
      */
-    unknownError( newError ): ROUTER_RESPONSE {
+    unhandledError( newError ): ROUTER_RESPONSE {
         return {
             code: E.UNHANDLED,
             message : `You need to handle unknown error [${newError}]`,
