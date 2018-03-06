@@ -1,30 +1,33 @@
 import * as admin from 'firebase-admin';
+import * as _ from 'lodash';
+
 import { COLLECTION_PREFIX } from './../../settings/settings';
 
 import * as E from './../core/error';
 
 
-import { ROUTER_RESPONSE, Anonymous } from './../core/defines';
+import { ROUTER_RESPONSE, Anonymous, COLLECTIONS, SYSTEM_SETTINGS } from './../core/defines';
 import { Library } from './../library/library';
 
 
 
 
-// import { Hooks } from './../../hooks';
-
-
-
+import { Hooks } from './../../hooks';
+import { USER_DATA } from '../user/user';
 
 
 
 export class Base {
-    collectionName: string = null;
-
     /**
      * If set to true, it will accept `uid` as user's verficaton instead of `ID Token`.
      * @see README.md
      */
     static useUid = false;
+
+    /**
+     * This will hold `x-settings/system` document data. This will be set on route call.
+     */
+    static systemSettings: SYSTEM_SETTINGS = null;
 
     /**
      * Firestore SDK admin object.
@@ -45,14 +48,22 @@ export class Base {
 
     static hookObj = null;
 
-
+    /**
+     * If the user logs in, it will have user data. It may have anonymous user data.
+     */
+    loginUser: USER_DATA = null;
     library: Library;
+
+    collectionName: string = null;
+
     constructor(collectionName) {
         this.collectionName = collectionName;
+        // console.log("collectionName: ", this.collectionName);
         this.library = new Library();
     }
 
     get params(): any {
+        // console.log("Base.params: ", Base.params);
         return Base.params;
     }
     get db(): admin.firestore.Firestore {
@@ -71,6 +82,16 @@ export class Base {
 
     version() {
         return '2018-03-05-7-18-pm';
+    }
+
+
+    /**
+     * Calls hook
+     */
+    hook(name, data?) {
+        const hook = new Hooks();
+        hook.collectionName = this.collectionName;
+        return hook.run(name, data);
     }
 
 
@@ -111,8 +132,8 @@ export class Base {
      * @desc the return from this method is good enough to be sent to the client for respond.
      * @param code Error Code or Firebase Error Object
      */
-    error(code): ROUTER_RESPONSE {
-        const obj = <ROUTER_RESPONSE>E.obj(code);
+    error(code, info?): ROUTER_RESPONSE {
+        const obj = <ROUTER_RESPONSE>E.obj(code, info);
         if (obj) {
             obj['route'] = this.param('route');
         }
@@ -147,7 +168,7 @@ export class Base {
      * @return class name
      */
     get routeClassName() {
-        return this.library.segment( this.param('route'), '.', 0 );
+        return this.library.segment(this.param('route'), '.', 0);
     }
 
     /**
@@ -157,7 +178,7 @@ export class Base {
      * 
      */
     get routeMethodName() {
-        return this.library.segment( this.param('route'), '.', 1 );
+        return this.library.segment(this.param('route'), '.', 1);
     }
 
     /**
@@ -165,73 +186,6 @@ export class Base {
      */
     serverTime(): admin.firestore.FieldValue {
         return admin.firestore.FieldValue.serverTimestamp();
-    }
-
-    /**
-     * Returns true if the user is properly verified.
-     * 
-     * 
-     * 
-     * @desc it sets 'null' on `Base.uid` at first.
-     * @desc it saves the user's uid at `Base.uid`. It many be Anonymous uid.
-     * @desc If no `idToken` was given by HTTP request, then Anonymous uid will be used.
-     * @desc If wrong `idToken` was give, then ErrorObject will be returned.
-     * @desc IMPORTANT:
-     *      If `idToken` is set, but falsy value was given like empty stirng, false, null, undefiend,
-     *          Then this is not an error.
-     *          The user will be logged in as Anonymous.
-     *          This is different from Unit Test with uid.
-     *      
-     * 
-     * 
-     * @desc For unit-testing, You will need to set `Base.useUid` to true in settings,
-     *          and `uid` will be accepted from HTTP request and will be used as login user's uid.
-     * 
-     * @return
-     *      - TRUE on success.
-     *      - Or ErrorObject on error.
-     * 
-     *      On unit test with uid, If there is no uid. that's NOT an error. the user will be set to Anonymous !!
-     *      If the `uid` is set but empty value, then it is an error of 'NO_UID'.
-     * 
-     *
-     * 
-     */
-    async verifyUser(): Promise<any> {
-        this.loginUid = null; // reset ( on every Router() call) before verify.
-
-
-        if (Base.useUid) {
-            // console.log("verifyUser(). Base.useUid==true. Going to use `uid` as Verified..");
-
-            const uid = this.param('uid');
-            if (uid === void 0) {
-                this.loginUid = Anonymous.uid;
-                return true;
-            }
-            else if (!uid) {
-                return this.error(E.NO_UID);
-            }
-            this.loginUid = uid;
-            return true;
-        }
-
-        const idToken = this.param('idToken');
-        if (idToken) { // token was given
-            return await this.auth.verifyIdToken(idToken)
-                .then(decodedToken => {
-                    this.loginUid = decodedToken.uid;
-                    // console.log("===== Verified UID: ", this.loginUid);
-                    return true;
-                })
-                .catch(e => {
-                    return this.error(E.FIREBASE_FAILED_TO_DECODE_ID_TOKEN);
-                });
-        }
-        else { // no token was given
-            this.loginUid = Anonymous.uid;
-            return true;
-        }
     }
 
     /**
@@ -246,6 +200,88 @@ export class Base {
     get loginUid() {
         return Base.uid
     }
+
+    get collectionUsers(): string {
+        return this.collectionNameWithPrefix(COLLECTIONS.USERS)
+    }
+    get collectionSettings(): string {
+        return this.collectionNameWithPrefix(COLLECTIONS.SETTINGS)
+    }
+
+    /**
+     * returns a promise of firestore snapshot
+     * @param collectionName collection name
+     * @param documentID document id
+     */
+    getDocument(collectionName, documentID): Promise<admin.firestore.DocumentSnapshot> {
+        return this.db.collection(collectionName).doc(documentID).get()
+    }
+    /**
+     * Returns user data or backend error object.
+     * @desc This is a simple way to get user data.
+     * @param uid User uid
+     * @return A resolved promise of User document data object or `backend error object`
+     */
+    async getUserDocument(uid): Promise<USER_DATA> {
+        return this.getDocument(this.collectionUsers, uid)
+            .then(doc => {
+                if (doc.exists) {
+                    const data = doc.data();
+                    return this.hook('base.getUserDocument_then', data);
+                }
+                else return this.error(E.USER_ID_NOT_EXISTS_IN_USER_COLLECTION, { id: uid });
+            })
+            .catch(e => this.error(e));
+    }
+
+    async getSettings(documentID): Promise<any> {
+        return this.getDocument(this.collectionSettings, documentID)
+            .then(doc => {
+                if (doc.exists) {
+                    const data = doc.data();
+                    return this.hook('base.getSettings_then', data);
+                }
+                else return this.error(E.DOCUMENT_ID_DOES_NOT_EXISTS_FOR_GET_SETTINGS_DOCUMENT);
+            })
+            .catch(e => this.error(e));
+    }
+
+    /**
+     * Load and save system settings in memory and returns the system settings.
+     * 
+     * 
+     * @code how to use
+     *          const re: SYSTEM_SETTINGS = await this.getSystemSettings()
+     *          if (this.isErrorObject(re)) return false;
+     * @endcode
+     * 
+     */
+    async loadSystemSettings() {
+        Base.systemSettings = await this.getSettings('system');
+        return Base.systemSettings;
+    }
+
+    /**
+     * Returns admin email.
+     */
+    getAdminEmail(): string {
+        return Base.systemSettings.adminEmail;
+    }
+
+    /**
+     * Returns true if the user is admin.
+     */
+    isAdmin(): boolean {
+        console.log(this.loginUid);
+        return Base.systemSettings.adminEmail === this.loginUid;
+    }
+
+    isSystemInstalled(): boolean {
+        return !!this.getAdminEmail();
+    }
+
+
+
 
     /**
      * Returns false if there is no error. Otherwise, error code will be returned.
@@ -293,6 +329,28 @@ export class Base {
 
 
 
+
+
+    /**
+     * 
+     * Removes properties with `undefined` value from the object.
+     * 
+     * You cannot set `undefiend` value into firestore `document`. It will produce a Critical error.
+     * 
+     * @param obj Object to be set into `firestore`.
+     * 
+     * @return object
+     */
+    sanitizeData(obj) {
+        if (obj) {
+            if (typeof obj === 'object') {
+                Object.keys(obj).forEach(key => obj[key] === undefined && delete obj[key]);
+            }
+        }
+
+        return this.hook('sanitizeData', obj);
+        // return obj;
+    }
 
 
 

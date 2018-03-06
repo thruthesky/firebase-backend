@@ -5,19 +5,48 @@ import { Base, E } from './../../../modules/core/core';
 import { init, route } from './../init';
 Base.admin = init();
 
-describe("System install test", () => {
-    it("Install", async () => {
-        let re = await route({ route: 'system.install' });
-        
-        // If already installed, uninstall and install again.
-        if ( re.code === E.SYSTEM_ALREADY_INSTALLED ) {
-            const un = await route({route: 'system.uninstall'} );
+describe("[ system.ts ]", () => {
+    beforeEach( () => {
+        Base.useUid = true;
+    });
 
-            expect( un.code ).to.be.equal( 0 );
+    it("Uninstall", async () => {
+        const re = await route({ route: 'system.checkInstall' });
+        // console.log('re:', re);
+        if (re.data) {
+            // console.log("Going to uninstall");
 
-            re = await route({ route: 'system.install' });
+
+        const un = await route({ route: 'system.uninstall' });
+        // console.log(un);
+        expect(un.code).to.be.equal(0);
+
+
+        }
+        else {
+            // console.log("un installed. No need to install.");
         }
 
+    });
+
+
+    it("Expect error without admin email", async () => {
+        const re = await route({ route: 'system.install' });
+        // console.log(re);
+        expect(re.code).to.be.equal(E.NO_ADMIN_EMAIL);
+    });
+
+
+    it("Expect success", async () => {
+        const re = await route({ route: 'system.install', adminEmail: 'thruthesky@gmail.com' });
+        // console.log(re);
         expect(re.code).to.be.equal(0);
     });
+
+    it("Check if admin", async() => {
+        const re = await route( { route: 'system.version', uid: 'thruthesky@gmail.com'} );
+
+        console.log(re);
+    });
+
 });

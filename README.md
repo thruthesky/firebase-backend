@@ -223,8 +223,21 @@ You can use, `db`, `collection`, `params` and all other code.
 
 
 
+# Installation
+
+
+# User Roles and Level
+
+* [User privileges - Roles and Levels](https://docs.google.com/document/d/1ncYWftCEXJBJkATExfGM2S4dzerrI_7PA_DjWjNdEmQ/edit#heading=h.gl3iv6nc39rc)
+
 
 # Protocols
+
+## Installation
+
+* `system.install`
+* `system.uninstall`
+* `system.checkInstall`.
 
 
 ## User Registration

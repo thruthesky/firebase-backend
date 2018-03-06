@@ -1,28 +1,14 @@
 import * as admin from 'firebase-admin';
 import { Base, E } from './../core/core';
-import { Hooks } from './../../hooks';
-
-
-
 
 
 export class Document extends Base {
 
 
     constructor(collectionName: string) {
-
         super(collectionName);
-
     }
 
-
-    /**
-     * Calls hook
-     */
-    hook(name, data?) {
-        const hook = new Hooks(this.collectionName);
-        return hook.run(name, data);
-    }
 
 
     /**
@@ -108,8 +94,10 @@ export class Document extends Base {
     /**
      * This updates a Document.
      * 
-     * @desc It works as `firestore.update()`. It update only some properties without overwriting the entire Document.
-     *      - It add some extra data like 'updated' stamp
+     * @desc It works as `firestore.update()`.
+     *      - It update only some properties without overwriting the entire Document.
+     *      - It does not create `path` automatically so, the document must exist to be updated.
+     *      - It adds some extra data like 'updated' stamp
      * 
      * @note Update will fail if the document does not exsits.
      * 
@@ -124,7 +112,6 @@ export class Document extends Base {
     async update(data, documentID: string): Promise<any> {
         if (!data) return null;
         data['updated'] = this.serverTime();
-        // you can chagne data before set.
         data = this.hook('document.update_before', data);
         return await this.collection.doc(documentID).update(this.sanitizeData(data))
             .then(x => {
@@ -188,28 +175,6 @@ export class Document extends Base {
             .catch(e => this.error(e));
     }
 
-
-
-    /**
-     * 
-     * Removes properties with `undefined` value from the object.
-     * 
-     * You cannot set `undefiend` value into firestore `document`. It will produce a Critical error.
-     * 
-     * @param obj Object to be set into `firestore`.
-     * 
-     * @return object
-     */
-    sanitizeData(obj) {
-        if (obj) {
-            if (typeof obj === 'object') {
-                Object.keys(obj).forEach(key => obj[key] === undefined && delete obj[key]);
-            }
-        }
-
-        return this.hook('sanitizeData', obj);
-        // return obj;
-    }
 
 
 

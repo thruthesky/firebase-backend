@@ -105,6 +105,8 @@ export class UserRouter extends User {
     async set(): Promise<ROUTER_RESPONSE | boolean> {
 
 
+        // console.log("UserRouter::set() collection name: ", this.collectionName );
+
         if (this.isAnonymous()) return this.error(E.ANONYMOUS_CANNOT_EDIT_PROFILE);
 
         //
@@ -129,6 +131,8 @@ export class UserRouter extends User {
      *      - If you want to reset the document, then use `set()`
      */
     async update(): Promise<ROUTER_RESPONSE | boolean> {
+
+        // console.log("UserRouter::update() collection name: ", this.collectionName );
         if (this.isAnonymous()) return this.error(E.ANONYMOUS_CANNOT_EDIT_PROFILE);
         if (this.validateUserData(this.params)) return this.validateUserData(this.params);
         return await super.update(this.sanitizeUserData(this.params), this.loginUid);
@@ -140,22 +144,15 @@ export class UserRouter extends User {
      * 
      * @desc Anonymous may enter this method and get the anonymous data. We allow Anonymous to get data for the basic functionality and activities.
      * 
+     * @desc One important notice is that if the document for that `this.loginUid` does not exists,
+     *          whether it is a `wrong uid` or `correct uid` is given,
+     *          it will create a new user documentation for that wrong uid.
+     *          This is because somehow it may happens that user has a record in 'Authentication' but not in 'users' collection.
+     *          There may be an Internet interruption or system rebooting.
+     * 
      */
     async get() {
-        const re = await super.get(this.loginUid);
-
-        /** @todo test more on `create on get` */
-        if (this.isErrorObject(re) && re.code === E.DOCUMENT_ID_DOES_NOT_EXISTS_FOR_GET) {
-            // console.log("user.router::get() user document does not exists. going to create one");
-            const reSet = await super.set({ createdOnGet: true }, this.loginUid);
-            if (this.isErrorObject(reSet)) return reSet;
-            else if (!reSet) return reSet;
-            else {
-                // console.log("user.router::get() user documnet has created.");
-                return await super.get(this.loginUid);
-            }
-        }
-        else return re;
+        return await super.get();
     }
 
     /** 

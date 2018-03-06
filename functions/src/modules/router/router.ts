@@ -1,3 +1,4 @@
+import { User } from './../user/user';
 import { UserRouter } from './../user/user.router';
 import { SystemRouter } from './../system/system.router';
 import { PostRouter } from "./../post/post.router";
@@ -9,20 +10,30 @@ import { ROUTER_RESPONSE } from './../core/defines';
 
 
 export class Router extends Base {
+
+    user:User;
     constructor(params) {
         super(null);
         Base.params = params;
+        this.user = new User();
         // console.log("[ params ] ", params );
     }
 
     async run(): Promise<ROUTER_RESPONSE> {
+
+
+
+
         if (!this.param('route')) {
             return this.error(E.EMPTY_ROUTE);
         }
 
         // Check router class.
         let $router = null;
-        if (this.routeClassName === 'user') $router = new UserRouter();
+        if (this.routeClassName === 'user') {
+            const userRouter = <UserRouter>(new UserRouter());
+            $router = userRouter;
+        }
         else if (this.routeClassName === 'system' ) $router = new SystemRouter();
         else if (this.routeClassName === 'post') $router = new PostRouter();
         else return this.error(E.WRONG_ROUTE);
@@ -32,28 +43,39 @@ export class Router extends Base {
         if ($router[this.routeMethodName] === void 0) return this.error(E.WRONG_METHOD);
 
 
+
+        await this.loadSystemSettings();
+        
+
         // Check user login.
-        // 
-        const reLogin = await this.verifyUser();
-        if ( reLogin !== true ) {
+        // Once user is verified, `this.loginUid` and `this.loginUser` is available.
+        const reLogin = await this.user.verify();
+        if ( this.isErrorObject( reLogin ) ) {
             return reLogin;
         }
 
+        /// get default return value
+        let returnData = { route: this.param('route'), code: 0, role: this.user.getRole() };
+
+
+        // check if system is installed.
+        if ( ! this.isSystemInstalled() ) returnData['installed'] = false;
+
+
 
         // Run router.
-        let ret = { route: this.param('route'), code: 0 };
         const result = await $router[this.routeMethodName]();
 
 
         if (  this.isErrorObject( result ) ) {
-            ret = Object.assign( ret, result );
+            returnData = Object.assign( returnData, result );
             // ret['code'] = res['code'];
             // ret['message'] = res['message'];
         }
         else {
-            ret['data'] = result;
+            returnData['data'] = result;
         }
 
-        return ret;
+        return returnData;
     }
 }
