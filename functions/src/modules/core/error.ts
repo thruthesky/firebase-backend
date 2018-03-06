@@ -14,9 +14,17 @@ export const NO_PASSWORD = -51; es[NO_PASSWORD] = 'No password.';
 export const NO_NAME = -52; es[NO_NAME] = 'No name.';
 export const NO_UID = -53; es[NO_UID] = 'No uid.';
 
+
 export const UID_TOO_LONG = -54; es[UID_TOO_LONG] = 'UID is too long. Must be less than 128 characters.';
 export const UID_CANNOT_CONTAIN_SLASH = -55; es[UID_CANNOT_CONTAIN_SLASH] = 'UID cannot contain slashes.';
 
+
+
+
+
+export const NO_DOCUMENT_ID = -40025; es[NO_DOCUMENT_ID] = 'No documnet ID';
+export const DOCUMENT_ID_TOO_LONG = -40026; es[DOCUMENT_ID_TOO_LONG] = 'Document ID is too long.';
+export const DOCUMENT_ID_CANNOT_CONTAIN_SLASH = -40027; es[DOCUMENT_ID_CANNOT_CONTAIN_SLASH] = 'Document ID cannot contain slash.';
 
 
 

@@ -50,9 +50,7 @@ export class CategoryRouter extends Category {
         if ( ! _.isNumber(data.levelOnWrite) ) return this.error(E.MUST_BE_A_NUMBER, { name: 'levelOnWrite' });
         if ( ! _.isNumber(data.levelOnRead) ) return this.error(E.MUST_BE_A_NUMBER, { name: 'levelOnRead' });
 
-        
         if (this.checkDocumentIDFormat(data.id, this.routerName)) return this.error(this.checkDocumentIDFormat(data.id, this.routerName));
-
         return false
     }
 

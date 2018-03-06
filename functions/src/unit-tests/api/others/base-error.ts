@@ -37,13 +37,13 @@ describe('base-error', () => {
         /**
          * @author gem
          */
-        it("input: handle unknown error and expects a suggestion", () => {
-            const $base = new Base('');
-            const re:ROUTER_RESPONSE = $base.unknownError( `THIS_IS_NEW_ERROR` );
-            // console.log( re.message );
-            expect(re).to.be.a('object');
-            expect( re.code ).to.be.equal( E.UNKNOWN );
-        });
+        // it("input: handle unknown error and expects a suggestion", () => {
+        //     const $base = new Base('');
+        //     const re:ROUTER_RESPONSE = $base.unknownError( `THIS_IS_NEW_ERROR` );
+        //     // console.log( re.message );
+        //     expect(re).to.be.a('object');
+        //     expect( re.code ).to.be.equal( E.UNKNOWN );
+        // });
 
         it("Check error.ts::obj() with base::error()", () => {
             const $base = new Base('');

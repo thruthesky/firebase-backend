@@ -64,19 +64,19 @@ describe('category-verify-data', () => {
 
     describe('Test category set data validation.', () => {
 
-        it(`numberValidation() must be success`, async () => {
-            const re = new CategoryRouter().numberValidation( 5, 'level on write');
-                expect(re).to.be.a('number');
-                expect(re).to.be.equal(5);
+        // it(`numberValidation() must be success`, async () => {
+        //     const re = new CategoryRouter().numberValidation( 5, 'level on write');
+        //         expect(re).to.be.a('number');
+        //         expect(re).to.be.equal(5);
 
-        });
+        // });
 
-        it(`numberValidation() must be error. we passed string`, async () => {
-            const re : any = new CategoryRouter().numberValidation( '5', 'level on read');
-                expect(re).to.be.a('object');
-                expect(re.code).to.be.equal(E.CATEGORY_LEVEL_ON_READ_MUST_CONTAIN_NUMBER);
-                // console.log(re)
-        });
+        // it(`numberValidation() must be error. we passed string`, async () => {
+        //     const re : any = new CategoryRouter().numberValidation( '5', 'level on read');
+        //         expect(re).to.be.a('object');
+        //         expect(re.code).to.be.equal(E.CATEGORY_LEVEL_ON_READ_MUST_CONTAIN_NUMBER);
+        //         // console.log(re)
+        // });
 
         
 

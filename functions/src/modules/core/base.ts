@@ -1,5 +1,5 @@
 import * as admin from 'firebase-admin';
-// import * as _ from 'lodash';
+import * as _ from 'lodash';
 
 import { COLLECTION_PREFIX } from './../../settings/settings';
 
@@ -253,6 +253,14 @@ export class Base {
             .catch(e => this.error(e));
     }
 
+
+
+    /**
+     * Returns a document under `settings` collection.
+     * @param documentID Document ID to get the settings document.
+     * @return a `settings` document object in resolved promise.
+     * @todo test
+     */
     async getSettings(documentID): Promise<any> {
         return this.getDocument(this.collectionSettings, documentID)
             .then(doc => {
@@ -332,9 +340,9 @@ export class Base {
      */
     checkDocumentIDFormat(docID, routerName: string) {
         routerName = routerName.toUpperCase();
-        if (!docID) return this.error(E[`NO_${routerName}_ID`]);
-        if (docID.length > 128) return this.error(E[`${routerName}_ID_TOO_LONG`]);
-        if (docID.indexOf('/') !== -1) return this.error(E[`${routerName}_ID_CANNOT_CONTAIN_SLASH`]);
+        if ( _.isEmpty( docID ) ) return this.error( E.NO_DOCUMENT_ID );
+        if (docID.length > 128) return this.error( E.DOCUMENT_ID_TOO_LONG );
+        if (docID.indexOf('/') !== -1) return this.error( E.DOCUMENT_ID_CANNOT_CONTAIN_SLASH );
         return false;
     }
 

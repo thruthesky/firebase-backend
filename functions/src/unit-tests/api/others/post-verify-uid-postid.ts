@@ -36,52 +36,53 @@ describe('post-verify-uid-postid', () => {
     beforeEach( () => {
         Base.useUid = true;
     });
-        describe('Validation test post request\'s UID.', () => {
 
-            it(`Should be okay with post ID and '${Anonymous.uid}' is accepted as UID`, async () => {
-                const $post = new PostRouter(); // Set input data
-                const re = await $post.validatePostRequest( {  postId: postId, uid: Anonymous.uid } );
-                expect(re).to.be.equal(false);
+        // describe('Validation test post request\'s UID.', () => {
 
-            });
+        //     it(`Should be okay with post ID and '${Anonymous.uid}' is accepted as UID`, async () => {
+        //         const $post = new PostRouter(); // Set input data
+        //         const re = await $post.validatePostRequest( {  postId: postId, uid: Anonymous.uid } );
+        //         expect(re).to.be.equal(false);
 
-            it(`UID lenght exceeds 128, Expected error: '${E.obj(E.UID_TOO_LONG).message}' `, async () => {
-                const $post = new PostRouter(); // Set input datad
-                const re = await $post.validatePostRequest( { postId: postId, uid: 'kjadfkjagfhaskfjhgaskdfhgasddkjfddhd5dgskjdfhgsakjdfhgskjfgaskjfhgaskjdfgsakjfgaskjfhgskjfgsakjdfgaskjdfgaksjdfgaksdjfgaskjdfgaskjd' } );
-                // expect(re).to.be.equal(false);
-                expect(re['code']).to.be.equal(E.UID_TOO_LONG);
-            });
+        //     });
 
-            it(`UID cannot contain slashes. Expected error: '${E.obj(E.UID_CANNOT_CONTAIN_SLASH).message}' `, async () => {
-                const $post = new PostRouter(); // Set input datad
-                const re = await $post.validatePostRequest( { postId: postId, uid: 'kjadfkjagfasjhgaskdfhg/sddjfddhd5dgskjdfhgsakjdfhgskjfgaskjfhgaskjdfgsakjfgaskjfhgskjfgsakjdfgaskjdfgaksjdfgaksdjfgaskjdfgaskjd' } );
-                // expect(re).to.be.equal(false);
-                expect(re['code']).to.be.equal(E.UID_CANNOT_CONTAIN_SLASH);
-            });
-        });
+        //     it(`UID lenght exceeds 128, Expected error: '${E.obj(E.UID_TOO_LONG).message}' `, async () => {
+        //         const $post = new PostRouter(); // Set input datad
+        //         const re = await $post.validatePostRequest( { postId: postId, uid: 'kjadfkjagfhaskfjhgaskdfhgasddkjfddhd5dgskjdfhgsakjdfhgskjfgaskjfhgaskjdfgsakjfgaskjfhgskjfgsakjdfgaskjdfgaksjdfgaksdjfgaskjdfgaskjd' } );
+        //         // expect(re).to.be.equal(false);
+        //         expect(re['code']).to.be.equal(E.UID_TOO_LONG);
+        //     });
 
-        describe('Validation test post request\'s PostID.', () => {
+        //     it(`UID cannot contain slashes. Expected error: '${E.obj(E.UID_CANNOT_CONTAIN_SLASH).message}' `, async () => {
+        //         const $post = new PostRouter(); // Set input datad
+        //         const re = await $post.validatePostRequest( { postId: postId, uid: 'kjadfkjagfasjhgaskdfhg/sddjfddhd5dgskjdfhgsakjdfhgskjfgaskjfhgaskjdfgsakjfgaskjfhgskjfgsakjdfgaskjdfgaksjdfgaksdjfgaskjdfgaskjd' } );
+        //         // expect(re).to.be.equal(false);
+        //         expect(re['code']).to.be.equal(E.UID_CANNOT_CONTAIN_SLASH);
+        //     });
+        // });
 
-            it(`Should be okay, expect 'false'`, async () => {
-                const $post = new PostRouter(); // Set input data
-                const re = await $post.validatePostRequest( {  postId: postId, uid: Anonymous.uid } );
-                if ( re ) console.log( re );
-                expect(re).to.be.equal(false);
-            });
+        // describe('Validation test post request\'s PostID.', () => {
 
-            it(`Post ID exceeds 128 length. Expected error: '${E.obj(E.POST_ID_TOO_LONG).message}' `, async () => {
-                const $post = new PostRouter(); // Set input datad
-                const re = await $post.validatePostRequest( { uid: Anonymous.uid, postId: 'kjadfasdfasfdsfaskjagfhaskffhgasddkjfddhd5dgskjdfhgsakjdfhgskjfgaskjfhgaskjdfgsakjfgaskjfhgskjfgsakjdfgaskjdfgaksjdfgaksdjfgaskjdfgaskjd' } );
-                // expect(re).to.be.equal(false);
-                expect(re['code']).to.be.equal(E.POST_ID_TOO_LONG);
-            });
+        //     it(`Should be okay, expect 'false'`, async () => {
+        //         const $post = new PostRouter(); // Set input data
+        //         const re = await $post.validatePostRequest( {  postId: postId, uid: Anonymous.uid } );
+        //         if ( re ) console.log( re );
+        //         expect(re).to.be.equal(false);
+        //     });
 
-            it(`Post id cannot contain slashes,  Expected error: '${E.obj(E.POST_ID_CANNOT_CONTAIN_SLASH).message}' `, async () => {
-                const $post = new PostRouter(); // Set input datad
-                const re = await $post.validatePostRequest( { uid: Anonymous.uid, postId: 'kjadfkjagfasjhgaskdfhg/sddjfddhd5dgskjdfhgsakjdfhgskjfgaskjfhgaskjdfgsakjfgaskjfhgskjfgsakjdfgaskjdfgaksjdfgaksdjfgaskjdfgaskjd' } );
-                // expect(re).to.be.equal(false);
-                expect(re['code']).to.be.equal(E.POST_ID_CANNOT_CONTAIN_SLASH);
-            });
-        });
+        //     it(`Post ID exceeds 128 length. Expected error: '${E.obj(E.POST_ID_TOO_LONG).message}' `, async () => {
+        //         const $post = new PostRouter(); // Set input datad
+        //         const re = await $post.validatePostRequest( { uid: Anonymous.uid, postId: 'kjadfasdfasfdsfaskjagfhaskffhgasddkjfddhd5dgskjdfhgsakjdfhgskjfgaskjfhgaskjdfgsakjfgaskjfhgskjfgsakjdfgaskjdfgaksjdfgaksdjfgaskjdfgaskjd' } );
+        //         // expect(re).to.be.equal(false);
+        //         expect(re['code']).to.be.equal(E.POST_ID_TOO_LONG);
+        //     });
+
+        //     it(`Post id cannot contain slashes,  Expected error: '${E.obj(E.POST_ID_CANNOT_CONTAIN_SLASH).message}' `, async () => {
+        //         const $post = new PostRouter(); // Set input datad
+        //         const re = await $post.validatePostRequest( { uid: Anonymous.uid, postId: 'kjadfkjagfasjhgaskdfhg/sddjfddhd5dgskjdfhgsakjdfhgskjfgaskjfhgaskjdfgsakjfgaskjfhgskjfgsakjdfgaskjdfgaksjdfgaksdjfgaskjdfgaskjd' } );
+        //         // expect(re).to.be.equal(false);
+        //         expect(re['code']).to.be.equal(E.POST_ID_CANNOT_CONTAIN_SLASH);
+        //     });
+        // });
 
 });

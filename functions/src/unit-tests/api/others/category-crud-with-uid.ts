@@ -33,13 +33,13 @@ describe('category-crud-with-uid', () => {
             // console.log(re)
         });
 
-        it('Should be success. Test with no error', async () => {
-            const re = await route({ route: 'category.set', uid: 'i-am-user', id: 'social' });
-            // if (re.code !== E.ANONYMOUS_CANNOT_SET_CATEGORY) console.log(re);
-            expect(re).to.be.a('object');
-            expect(re.code).to.be.equal(0);
+        // it('Should be success. Test with no error', async () => {
+        //     const re = await route({ route: 'category.set', uid: 'i-am-user', id: 'social' });
+        //     // if (re.code !== E.ANONYMOUS_CANNOT_SET_CATEGORY) console.log(re);
+        //     expect(re).to.be.a('object');
+        //     expect(re.code).to.be.equal(0);
 
-        });
+        // });
     });
 
 
