@@ -112,13 +112,32 @@ export class Base {
      * @param code Error Code or Firebase Error Object
      */
     error(code): ROUTER_RESPONSE {
+        
         const obj = <ROUTER_RESPONSE>E.obj(code);
+        
         if (obj) {
             obj['route'] = this.param('route');
         }
+
         return obj;
     }
 
+    /**
+     * @returns object{ code : E.UNHANDLED, message: suggestion on which error needs to be handled }
+     * 
+     * @param newError - new error variable that is not found.
+     * 
+     * @author gem
+     */
+    unknownError( newError ): ROUTER_RESPONSE {
+        return {
+            code: E.UNHANDLED,
+            message : `You need to handle unknown error [${newError}]`,
+            route: this.param('route')
+        }
+    }
+
+    
     /**
      * Returns true if the input `obj` is an Error Object.
      * 
@@ -272,12 +291,14 @@ export class Base {
      *          Hence, method name changes from `checkPostIDFormat` to `checkDocumentIDFormat`
      * 
      * @param uid User uid
+     * @param routerName Router name to distinguish which error will be returned.
      * @todo Unit test
      */
-    checkDocumentIDFormat(postId) {
-        if (!postId) return this.error(E.NO_POST_ID);
-        if (postId.length > 128) return this.error(E.POST_ID_TOO_LONG);
-        if (postId.indexOf('/') !== -1) return this.error(E.POST_ID_CANNOT_CONTAIN_SLASH);
+    checkDocumentIDFormat(docID, routerName: string) {
+        routerName = routerName.toUpperCase();
+        if (!docID) return this.error(E[`NO_${routerName}_ID`]);
+        if (docID.length > 128) return this.error(E[`${routerName}_ID_TOO_LONG`]);
+        if (docID.indexOf('/') !== -1) return this.error(E[`${routerName}_ID_CANNOT_CONTAIN_SLASH`]);
         return false;
     }
 

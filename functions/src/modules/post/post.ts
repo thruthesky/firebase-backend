@@ -35,6 +35,8 @@ export class Post extends Document {
         
     }
     
+    routerName = 'post'
+
     /**
     * Sanitizes data before pushing to firebase.
     * 

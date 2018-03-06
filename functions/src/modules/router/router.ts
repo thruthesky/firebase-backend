@@ -1,3 +1,4 @@
+import { CategoryRouter } from './../post/category.router';
 import { UserRouter } from './../user/user.router';
 import { SystemRouter } from './../system/system.router';
 import { PostRouter } from "./../post/post.router";
@@ -25,6 +26,7 @@ export class Router extends Base {
         if (this.routeClassName === 'user') $router = new UserRouter();
         else if (this.routeClassName === 'system' ) $router = new SystemRouter();
         else if (this.routeClassName === 'post') $router = new PostRouter();
+        else if (this.routeClassName === 'category') $router = new CategoryRouter();
         else return this.error(E.WRONG_ROUTE);
 
         

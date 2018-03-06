@@ -77,11 +77,7 @@ Shopping Mall Plugin
 
 ````
 $ node_modules/.bin/mocha --watch --compilers ts:ts-node/register -t 99999 src/unit-tests/api/others/*
-<<<<<<< HEAD
 $ node_modules/.bin/mocha --watch --compilers ts:ts-node/register -t 99999 src/unit-tests/api/with-id-token/user-verify-with-id-token.ts
-=======
-$ node_modules/.bin/mocha --watch --compilers ts:ts-node/register -t 99999 src/unit-tests/api/others/user-verify-with-uid.ts
->>>>>>> master
 ````
 
 #### Firebase Functions Test

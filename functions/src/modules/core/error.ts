@@ -1,6 +1,7 @@
 const es = {};
 export const TEST = -11; es[TEST] = 'Test Error';
 export const UNKNOWN = -12; es[UNKNOWN] = 'Unknown erorr.';
+export const UNHANDLED = -10; es[UNHANDLED] = 'Unhandled error message must have suggestion on which error is to be handled.'
 export const NO_EMAIL = -50; es[NO_EMAIL] = 'No email address.';
 export const NO_PASSWORD = -51; es[NO_PASSWORD] = 'No password.';
 export const NO_NAME = -52; es[NO_NAME] = 'No name.';
@@ -39,10 +40,16 @@ export const POST_HAS_NO_CATEGORY = -40302; es[POST_HAS_NO_CATEGORY] = 'Post mus
 export const NO_POST_ID = -40353; es[NO_POST_ID] = 'No post id. Post id is needed to identify the post.'
 export const POST_ID_TOO_LONG = -40354; es[POST_ID_TOO_LONG] = 'post id is too long. Must be less than 128 characters.';
 export const POST_ID_CANNOT_CONTAIN_SLASH = -40355; es[POST_ID_CANNOT_CONTAIN_SLASH] = 'post id cannot contain slashes.';
-export const POST_ID_CANNOT_SOLELY_CONSIST_DOT = -40356; es[POST_ID_CANNOT_SOLELY_CONSIST_DOT] = 'Post id or document id cannot be equal to dot [.] or double dot [..] ';
+// export const POST_ID_CANNOT_SOLELY_CONSIST_DOT = -40356; es[POST_ID_CANNOT_SOLELY_CONSIST_DOT] = 'Post id or document id cannot be equal to dot [.] or double dot [..] ';
 
 // Categories
-export const NO_CATEGORY_ID = -40360; es[NO_CATEGORY_ID] = 'Category should have an ID.';
+export const NO_CATEGORY_ID = -40460; es[NO_CATEGORY_ID] = 'Category should have an ID.';
+export const CATEGORY_ID_TOO_LONG = -40454; es[CATEGORY_ID_TOO_LONG] = 'Category id is too long. Must be less than 128 characters.';
+export const CATEGORY_ID_CANNOT_CONTAIN_SLASH = -40445; es[CATEGORY_ID_CANNOT_CONTAIN_SLASH] = 'Category id cannot contain slashes.';
+export const CATEGORY_LEVEL_ON_WRITE_MUST_CONTAIN_NUMBER = -40446; es[CATEGORY_LEVEL_ON_WRITE_MUST_CONTAIN_NUMBER] = 'Level on write field in category should be number.'
+export const CATEGORY_LEVEL_ON_READ_MUST_CONTAIN_NUMBER = -40447; es[CATEGORY_LEVEL_ON_READ_MUST_CONTAIN_NUMBER] = 'Level on read field in category should be a number.'
+export const CATEGORY_LEVEL_ON_LIST_MUST_CONTAIN_NUMBER = -40448; es[CATEGORY_LEVEL_ON_LIST_MUST_CONTAIN_NUMBER] = 'Level on list field in category should be a number.'
+export const ANONYMOUS_CANNOT_SET_CATEGORY = -40449; es[ANONYMOUS_CANNOT_SET_CATEGORY] = 'Anonymous cannot set a category';
 
 // Firebase errors.
 
