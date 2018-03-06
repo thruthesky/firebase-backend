@@ -20,9 +20,15 @@ export const COLLECTIONS = {
 };
 
 
+
 import { BACKEND_ERROR_OBJECT } from './error';
 export interface ROUTER_RESPONSE extends BACKEND_ERROR_OBJECT {
+    role?: string;
     route: string;
     data?: any;
 };
 
+
+export interface SYSTEM_SETTINGS {
+    adminEmail: string;
+}

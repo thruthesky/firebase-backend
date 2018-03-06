@@ -16,19 +16,16 @@ interface HOOK_DOCUMENT_SET {
  * 
  * 
  * 
- * @desc `Hooks` class is initialized on `Docuemnt` class with the same `collectionName`.
- *          - You can use all the functionality of the Document.
- *          - `this.db`, `this.collection`, `this.params`, etc.
+ * @desc This is being initialized and called on Base
  * 
  * 
  * 
  */
 
-export class Hooks extends Base {
+export class Hooks {
 
-    constructor(collectionName) {
-        super(collectionName);
-    }
+    collectionName;
+    
 
 
     /**

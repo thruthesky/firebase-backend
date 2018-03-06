@@ -9,7 +9,7 @@ Base.admin = init();
 
 
 
-describe('user-crud-with-uid', () => {
+describe('[ user-email-password-register.ts ]', () => {
 
     beforeEach(() => {
         Base.useUid = true;

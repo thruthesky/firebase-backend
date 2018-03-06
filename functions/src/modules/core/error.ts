@@ -1,4 +1,11 @@
 const es = {};
+
+
+/// Installation
+export const NO_ADMIN_EMAIL = -400100; es[NO_ADMIN_EMAIL] = "Please input admin email";
+
+
+/// Users
 export const TEST = -11; es[TEST] = 'Test Error';
 export const UNKNOWN = -12; es[UNKNOWN] = 'Unknown erorr.';
 export const UNHANDLED = -10; es[UNHANDLED] = 'Unhandled error message must have suggestion on which error is to be handled.'
@@ -10,6 +17,10 @@ export const NO_UID = -53; es[NO_UID] = 'No uid.';
 export const UID_TOO_LONG = -54; es[UID_TOO_LONG] = 'UID is too long. Must be less than 128 characters.';
 export const UID_CANNOT_CONTAIN_SLASH = -55; es[UID_CANNOT_CONTAIN_SLASH] = 'UID cannot contain slashes.';
 
+
+
+
+
 export const WRONG_GENDER = -40061; es[WRONG_GENDER] = 'Wrong gender.';
 export const WRONG_ROUTE = -40060; es[WRONG_ROUTE] = 'The given route is not exists. It is a wrong route.';
 export const EMPTY_ROUTE = -40063; es[EMPTY_ROUTE] = 'Empty route.';
@@ -19,20 +30,27 @@ export const ANONYMOUS_CANNOT_EDIT_PROFILE = -40070; es[ANONYMOUS_CANNOT_EDIT_PR
 
 
 
-export const DOCUMENT_ID_DOES_NOT_EXISTS_FOR_UPDATE = -40005; es[DOCUMENT_ID_DOES_NOT_EXISTS_FOR_UPDATE] = 'Document ID "#id" does not exsit for update.';
+export const USER_ID_NOT_EXISTS_IN_USER_COLLECTION = -40020; es[USER_ID_NOT_EXISTS_IN_USER_COLLECTION] = 'User UID "#id" in users collection does not exists.';
+
+
+
+
+// documnets
+
+export const DOCUMENT_ID_DOES_NOT_EXISTS_FOR_UPDATE = -400205; es[DOCUMENT_ID_DOES_NOT_EXISTS_FOR_UPDATE] = 'Document ID "#id" does not exsit for update.';
 export const DOCUMENT_ID_DOES_NOT_EXISTS_FOR_GET = -40004; es[DOCUMENT_ID_DOES_NOT_EXISTS_FOR_GET] = 'Document ID was not found or does not exist in database';
 
 
-export const USER_NOT_LOGIN = -40010; es[USER_NOT_LOGIN] = 'User has not logged in. Or maybe the has a wrong(expired) ID token.';
+export const USER_NOT_LOGIN = -400210; es[USER_NOT_LOGIN] = 'User has not logged in. Or maybe the has a wrong(expired) ID token.';
 
 
-export const NO_USER_DOCUMENT_ID = -40020; es[NO_USER_DOCUMENT_ID] = 'Empty document path for user collection.';
+export const NO_USER_DOCUMENT_ID = -400220; es[NO_USER_DOCUMENT_ID] = 'Empty document path for user collection.';
 
-export const FAILED_TO_VERIFY_USER = -40030; es[FAILED_TO_VERIFY_USER] = 'Failed to verify who you are.';
-export const FAILED_TO_CREATE_ANONYMOUS = -40032; es[FAILED_TO_CREATE_ANONYMOUS] = 'Failed to create anonymous account';
-export const SYSTEM_ALREADY_INSTALLED = -40100; es[SYSTEM_ALREADY_INSTALLED] = 'System is already installed.';
+export const FAILED_TO_VERIFY_USER = -400230; es[FAILED_TO_VERIFY_USER] = 'Failed to verify who you are.';
+export const FAILED_TO_CREATE_ANONYMOUS = -400232; es[FAILED_TO_CREATE_ANONYMOUS] = 'Failed to create anonymous account';
+export const SYSTEM_ALREADY_INSTALLED = -400240; es[SYSTEM_ALREADY_INSTALLED] = 'System is already installed.';
 
-export const COLLECTION_IS_NOT_SET = -40200; es[COLLECTION_IS_NOT_SET] = 'Collection name is set set on base class.';
+export const COLLECTION_IS_NOT_SET = -400250; es[COLLECTION_IS_NOT_SET] = 'Collection name is NOT set on base class.';
 
 // Posting errors
 export const EMPTY_POST_BODY = -40301; es[EMPTY_POST_BODY] = 'Post body can\'t be empty';
@@ -60,6 +78,10 @@ export const FIREBASE_FAILED_TO_DECODE_ID_TOKEN = -40905; es[FIREBASE_FAILED_TO_
 export const FIREBASE_INVALID_PASSWORD = -40906; es[FIREBASE_INVALID_PASSWORD] = '';
 
 
+
+// system
+export const SYSTEM_NOT_INSTALLED = -400501; es[SYSTEM_NOT_INSTALLED] = 'System is not installed.';
+export const DOCUMENT_ID_DOES_NOT_EXISTS_FOR_GET_SETTINGS_DOCUMENT = -400502; es[DOCUMENT_ID_DOES_NOT_EXISTS_FOR_GET_SETTINGS_DOCUMENT] = 'Document ID "#id" of settings does not exsits.';
 
 /**
  * 

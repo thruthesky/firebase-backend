@@ -1,4 +1,4 @@
-﻿import { ANONYMOUS_CANNOT_EDIT_PROFILE } from './../../../modules/core/error';
+﻿import { Anonymous, UID } from './../../../modules/core/defines';
 /**
  * @author gem
  */
@@ -17,12 +17,11 @@ describe('category-crud-with-uid', () => {
     });
 
     describe('Set category with UID', () => {
-        it('Set category no UID.', async () => {
-
+        it('Set category no UID. No UID will automatically set to anonymous', async () => {
             const re = await route({ route: 'category.set', uid: '', a: 'b' });
-            if (re.code !== E.NO_UID) console.log(re);
+            // if (re.code !== E.NO_UID) console.log(re);
             expect(re).to.be.a('object');
-            expect(re.code).to.be.equal(E.NO_UID);
+            expect(re.code).to.be.equal(E.ANONYMOUS_CANNOT_SET_CATEGORY);
             // console.log(re)
         });
 
