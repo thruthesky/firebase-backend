@@ -45,9 +45,9 @@ export class CategoryRouter extends Category {
         return await super.get(this.params.id);
     }
 
-    async delete(): Promise<ROUTER_RESPONSE> {
-        return await super.delete(this.params.id);
-    }
+    // async delete(): Promise<ROUTER_RESPONSE> {
+    //     return await super.delete(this.params.id);
+    // }
 
     /**
      * @return Same as `Document.update()`

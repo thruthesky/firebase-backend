@@ -60,11 +60,8 @@ export class Router extends Base {
         // check if system is installed.
         if ( ! this.isSystemInstalled() ) returnData['installed'] = false;
 
-
-
         // Run router.
         const result = await $router[this.routeMethodName]();
-
 
         if (  this.isErrorObject( result ) ) {
             returnData = Object.assign( returnData, result );
