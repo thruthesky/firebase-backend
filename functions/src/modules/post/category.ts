@@ -1,6 +1,6 @@
 // import * as admin from 'firebase-admin';
 import { Document } from './../document/document';
-import { COLLECTIONS, E } from '../core/core';
+import { COLLECTIONS, E} from '../core/core';
 import * as _ from 'lodash';
 
 
@@ -51,36 +51,39 @@ export class Category extends Document {
     /**
     * Sanitizes data before pushing to firebase.
     * 
+    * 
     * @param data Data to sanitize.
-    * 
     * @return sanitized data with hook.
-    * @author gem
     * 
+    * @author gem
     */
-    protected sanitizeCategoryData( data ): any { 
-        let obj = {
+    sanitizeCategoryData( data ): CATEGORY { 
+        let obj : CATEGORY = {
             id: data.id,
-            name: data.name || data.id, // to display.
-            description: data.description, // to display as long description.
-            header: data.header,
-            footer: data.footer,
-            numberOfPostsPerPage: data.postPerPage,
-            numberOfPagesOnNavigation: data.pageOnNavigation,
-            moderators: data.moderators,
-            moderatorRoles: data.moderatorRoles,
-            allowAttachment: data.allowAttachment, // boolean
-            levelOnList: data.levelOnList,
-            levelOnWrite:  data.levelOnWrite,
-            levelOnRead: data.levelOnWrite,
-            headerOnList: data.headerOnList,
-            footerOnList: data.footerOnList,
-            headerOnWrite: data.headerOnWrite,
-            footerOnWriter: data.footerOnWriter,
-            headerOnView: data.headerOnView,
-            footerOnView: data.footerOnView
+            name: data.name || data.id, // to display. @additional if no name passed. ID becomes the name.
+            description: data.description || 'description', // to display as long description.
+            header: data.header || 'Header',
+            footer: data.footer || 'Footer',
+            numberOfPostsPerPage: data.postPerPage || 5, // @suggest by gem must put default value in settings
+            numberOfPagesOnNavigation: data.pageOnNavigation || 5, // @suggest by gem must put default value in settings
+            moderators: data.moderators || [],
+            moderatorRoles: data.moderatorRoles || <MODERATOR_ROLES>{ read: true, write: true, edit: true, move: true }, // @suggest by gem must put default value in settings
+            allowAttachment: data.allowAttachment || true, // boolean // @suggest by gem must put default value in settings
+            levelOnList: data.levelOnList || 0, // @suggest by gem must put default value in settings
+            levelOnWrite: data.levelOnWrite || 0, // @suggest by gem must put default value in settings
+            levelOnRead:  data.levelOnRead || 0, // @suggest by gem must put default value in settings
+            headerOnList: data.headerOnList || '',
+            footerOnList: data.footerOnList || '',
+            headerOnWrite: data.headerOnWrite || '',
+            footerOnWriter: data.footerOnWriter || '',
+            headerOnView: data.headerOnView || '',
+            footerOnView: data.footerOnView || '',
+            numberOfPosts: data.numberOfPosts || 0,
+            numberOfComment: data.numberOfComment || 0
         }
         
-        return this.hook( 'post.router.sanitizePostData', obj ); // Why not hooked as boolean?
+        return this.hook( 'category.router.sanitizeCategoryData', obj ); // Why not hooked as boolean?
+
     }
 
 
