@@ -50,6 +50,9 @@ export class CategoryRouter extends Category {
     * @param data Data to validate
     */
     validateCategoryData(data: CATEGORY): ROUTER_RESPONSE | boolean {
+        
+        if (this.checkDocumentIDFormat(data.id, this.routerName)) return this.error(this.checkDocumentIDFormat(data.id, this.routerName));
+
         // Number Validation
         if ( ! _.isNumber(data.levelOnList) ) return this.error(E.MUST_BE_A_NUMBER, { name: 'levelOnList' });
         if ( ! _.isNumber(data.levelOnWrite) ) return this.error(E.MUST_BE_A_NUMBER, { name: 'levelOnWrite' });
@@ -62,9 +65,8 @@ export class CategoryRouter extends Category {
         // Array Validation
         if ( ! _.isArray(data.moderators) ) return this.error( E.MUST_BE_AN_ARRAY )
 
+        // Check undefined value
         if ( _.findKey(data, o => _.isUndefined(o)) ) return this.error(E.FIREBASE_DO_NOT_ACCEPT_UNDEFINED);
-
-        if (this.checkDocumentIDFormat(data.id, this.routerName)) return this.error(this.checkDocumentIDFormat(data.id, this.routerName));
 
 
         return false
