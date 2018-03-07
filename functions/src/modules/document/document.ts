@@ -153,6 +153,31 @@ export class Document extends Base {
     }
 
     /**
+     * Returns true if the document data for input `documentID` exists.
+     * Otherwise, it will return false.
+     * 
+     * @desc It will return false if there is any error on connecting to `Firestore`.
+     * 
+     *      - there might be a connection problem, permission problem, and other problems.
+     *      - it returns false as long as it cannot get the document.
+     * 
+     * @desc It costs. It try to get the entire data. so, do not use it when you can avoid.
+     * 
+     */
+    async exists(documentID): Promise<boolean> {
+        const re = await this.get( documentID );
+        // console.log("get: re: ", re);
+        if ( this.isErrorObject( re ) ) {
+            // if ( re['code'] === E.DOCUMENT_ID_DOES_NOT_EXISTS_FOR_GET ) return false;
+            return false;
+        }
+        else {
+            // console.log('re:', re);
+            return true;
+        }
+    }
+
+    /**
      * 
      * Deletes a document in firebase and returns timestamp of deletion.
      * 

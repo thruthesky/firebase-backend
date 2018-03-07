@@ -74,6 +74,9 @@ Shopping Mall Plugin
 
 
 
+
+
+
 ## Unit Testing
 
 * [Unit Testing](https://docs.google.com/document/d/1ncYWftCEXJBJkATExfGM2S4dzerrI_7PA_DjWjNdEmQ/edit#heading=h.tdpnuuowlpnt)
@@ -120,6 +123,21 @@ $ nodemon .\node_modules\mocha\bin\_mocha .\lib\unit-test\server\router.js --wat
 * If you would like to get document of `firebase-cms`, please follow the instruction on [Github Firebase CMS Project](https://github.com/thruthesky/firebase-cms)
 
 
+
+
+
+## Loading System Settings
+
+
+* System loading is loaded from `settings` collection in `Firestore` on `router.ts` and saves the settings statically. So, it does not need to load twice.
+
+ * If you need to use the system settings before it loads or if you are on unit test, then call `loadSystemSettings()` by yourself.
+
+* example
+````
+await (new Base).loadSystemSettings();
+console.log('adminEmail:', (new Base).getAdminEmail());
+````
 
 
 ## Documents & References

@@ -56,11 +56,14 @@ export class Base {
 
     collectionName: string = null;
 
-    constructor(collectionName) {
+    constructor(collectionName = '') {
         this.collectionName = collectionName;
         // console.log("collectionName: ", this.collectionName);
         this.library = new Library();
+
+
     }
+
 
     get params(): any {
         // console.log("Base.params: ", Base.params);
@@ -334,15 +337,13 @@ export class Base {
      *      - It should be a global method to check all the Document ID.
      *          Hence, method name changes from `checkPostIDFormat` to `checkDocumentIDFormat`
      * 
-     * @param uid User uid
-     * @param routerName Router name to distinguish which error will be returned.
+     * @param documentID Document ID
      * @todo Unit test
      */
-    checkDocumentIDFormat(docID, routerName: string) {
-        routerName = routerName.toUpperCase();
-        if ( _.isEmpty( docID ) ) return this.error( E.NO_DOCUMENT_ID );
-        if (docID.length > 128) return this.error( E.DOCUMENT_ID_TOO_LONG );
-        if (docID.indexOf('/') !== -1) return this.error( E.DOCUMENT_ID_CANNOT_CONTAIN_SLASH );
+    checkDocumentIDFormat(documentID) {
+        if ( _.isEmpty( documentID ) ) return this.error( E.NO_DOCUMENT_ID );
+        if (documentID.length > 128) return this.error( E.DOCUMENT_ID_TOO_LONG );
+        if (documentID.indexOf('/') !== -1) return this.error( E.DOCUMENT_ID_CANNOT_CONTAIN_SLASH );
         return false;
     }
 
