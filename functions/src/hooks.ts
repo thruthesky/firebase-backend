@@ -107,6 +107,33 @@ export class Hooks {
         return false;
     }
 
+    // CATEGORY HOOKS
+    
+    /**
+     * Returns Category data after sanitizing
+     * 
+     * @desc - You can add your own fields and sanitation here.
+     * 
+     * @param data - data or set of fields to be push or update in the database
+     *             - Or the content of the document to be pushed.
+     * 
+     * @returns satinzed data to be pushed in the database
+     * 
+     * @author gem
+     */
+    category_router_sanitizeCategoryData( data ){
+
+        /**
+         * Sanitation on top of default sanitation here.
+         * @code `data['field'] = 'new field'` => Good
+         *        data['illegal'] = undefined => Not accepted
+         * 
+         * @desc any value except undefined is accepted.
+         */
+        
+
+        return data;
+    }
 
     /**
      * Returns the data after sanitizing.
