@@ -44,16 +44,13 @@ export class Router extends Base {
         // Check router method.
         if ($router[this.routeMethodName] === void 0) return this.error(E.WRONG_METHOD);
 
-
-
         await this.loadSystemSettings(); // @see README.md## Load System Settings.
         
-
         // Check user login.
         // Once user is verified, `this.loginUid` and `this.loginUser` is available.
-        const reLogin = await this.user.verify();
-        if ( this.isErrorObject( reLogin ) ) {
-            return reLogin;
+        const verify = await this.user.verify();
+        if ( this.isErrorObject( verify ) ) {
+            return verify;
         }
 
         /// get default return value
