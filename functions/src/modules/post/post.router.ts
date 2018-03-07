@@ -62,7 +62,7 @@ export class PostRouter extends Post {
     * 
     * @param data Data to validate
     */
-    validatePostData(data): ROUTER_RESPONSE | boolean {
+    validatePostData(data): ROUTER_RESPONSE {
 
         if (data.uid !== void 0) {
             if (this.checkUIDFormat(data.uid)) return this.error(this.checkUIDFormat(data.uid));
@@ -70,7 +70,7 @@ export class PostRouter extends Post {
         if (!data.body) return this.error(E.EMPTY_POST_BODY);
         if (!data.category) return this.error(E.POST_HAS_NO_CATEGORY); // Or put default value "General"?
 
-        return false
+        return <any>false;
     }
 
     /**
@@ -80,14 +80,14 @@ export class PostRouter extends Post {
     * 
     * 
     */
-    validatePostRequest(data): ROUTER_RESPONSE | boolean {
+    validatePostRequest(data): ROUTER_RESPONSE {
 
         if (data.uid !== void 0 || data.postId !== void 0) {
             if (this.checkUIDFormat(data.uid)) return this.error(this.checkUIDFormat(data.uid));
             if (this.checkDocumentIDFormat(data.postId)) return this.error(this.checkDocumentIDFormat(data.postId ));
         }
 
-        return false
+        return <any>false;
     }
 
 

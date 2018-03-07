@@ -8,7 +8,7 @@ export const NO_ADMIN_EMAIL = -400100; es[NO_ADMIN_EMAIL] = "Please input admin 
 /// Users
 export const TEST = -11; es[TEST] = 'Test Error';
 export const UNKNOWN = -12; es[UNKNOWN] = 'Unknown erorr. #info';
-export const PERMISSION_DENIED_ADMIN_ONLY = -10; es[PERMISSION_DENIED_ADMIN_ONLY] = 'Permission denied. Only administrators are allowed.'
+export const PERMISSION_DENIED_ADMIN_ONLY = -10; es[PERMISSION_DENIED_ADMIN_ONLY] = 'Permission denied. Only administrators are allowed.';
 
 // export const UNHANDLED = -10; es[UNHANDLED] = 'Unhandled error message must have suggestion on which error is to be handled.'
 export const NO_EMAIL = -50; es[NO_EMAIL] = 'No email address.';
@@ -73,7 +73,7 @@ export const COLLECTION_IS_NOT_SET = -400250; es[COLLECTION_IS_NOT_SET] = 'Colle
 // Posting errors
 export const EMPTY_POST_BODY = -40301; es[EMPTY_POST_BODY] = 'Post body can\'t be empty';
 export const POST_HAS_NO_CATEGORY = -40302; es[POST_HAS_NO_CATEGORY] = 'Post must have category.';
-export const NO_POST_ID = -40353; es[NO_POST_ID] = 'No post id. Post id is needed to identify the post.'
+export const NO_POST_ID = -40353; es[NO_POST_ID] = 'No post id. Post id is needed to identify the post.';
 export const POST_ID_TOO_LONG = -40354; es[POST_ID_TOO_LONG] = 'post id is too long. Must be less than 128 characters.';
 export const POST_ID_CANNOT_CONTAIN_SLASH = -40355; es[POST_ID_CANNOT_CONTAIN_SLASH] = 'post id cannot contain slashes.';
 // export const POST_ID_CANNOT_SOLELY_CONSIST_DOT = -40356; es[POST_ID_CANNOT_SOLELY_CONSIST_DOT] = 'Post id or document id cannot be equal to dot [.] or double dot [..] ';
@@ -95,7 +95,7 @@ export const FIREBASE_AUTH_UID_ALREADY_EXISTS = -40901; es[FIREBASE_AUTH_UID_ALR
 export const FIREBASE_ID_TOKEN_EXPIRED = -40902; es[FIREBASE_ID_TOKEN_EXPIRED] = 'User ID Token has expired.';
 export const FIREBASE_FAILED_TO_DECODE_ID_TOKEN = -40905; es[FIREBASE_FAILED_TO_DECODE_ID_TOKEN] = 'Failed to verfiy who you are. The ID Token may be expired or invalid.';
 export const FIREBASE_INVALID_PASSWORD = -40906; es[FIREBASE_INVALID_PASSWORD] = '';
-export const FIREBASE_DO_NOT_ACCEPT_UNDEFINED = -40907; es[FIREBASE_DO_NOT_ACCEPT_UNDEFINED] = 'Undefined value is not accepted in firebase.'
+export const FIREBASE_DO_NOT_ACCEPT_UNDEFINED = -40907; es[FIREBASE_DO_NOT_ACCEPT_UNDEFINED] = 'Undefined value is not accepted in firebase.';
 
 
 // system
@@ -126,7 +126,7 @@ export const DOCUMENT_ID_DOES_NOT_EXISTS_FOR_GET_SETTINGS_DOCUMENT = -400502; es
 export interface BACKEND_ERROR_OBJECT {
     code: number;
     message?: string;
-};
+}
 
 
 
@@ -186,13 +186,13 @@ export function obj(code, info: object = {}): BACKEND_ERROR_OBJECT {
             return code; // just return as it is.
         }
         if (typeof eo['code'] === 'string' || (typeof eo['code'] === 'number' && eo['code'] > 0)) { // It is `Firestore` Error Object.
-            re = convertFirestoreErrorToBackendError(eo)
+            re = convertFirestoreErrorToBackendError(eo);
         }
         else {
             re = {
                 code: code['code'],
                 message: code['message']
-            }
+            };
         }
     }
     // if the input is not number or object. Just return as it was.
@@ -202,7 +202,7 @@ export function obj(code, info: object = {}): BACKEND_ERROR_OBJECT {
 
     re['message'] = patchWithMarker(re['message'], info);
     return re;
-};
+}
 
 
 /**
@@ -268,7 +268,7 @@ function convertFirestoreErrorToBackendError(FireStoreErrorObject): BACKEND_ERRO
             message = <string>FireStoreErrorObject['message'];
             break;
         default:
-            return { code: FIREBASE_CODE, message: `Firebase error code. it is not converted. code: ${FireStoreErrorObject['code']}. message: ${FireStoreErrorObject['message']}` }
+            return { code: FIREBASE_CODE, message: `Firebase error code. it is not converted. code: ${FireStoreErrorObject['code']}. message: ${FireStoreErrorObject['message']}` };
     }
 
     return {

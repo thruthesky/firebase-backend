@@ -27,7 +27,7 @@ export interface ROUTER_RESPONSE extends BACKEND_ERROR_OBJECT {
     route: string;
     data?: any;
     installed?: boolean;
-};
+}
 
 
 export interface SYSTEM_SETTINGS {

@@ -93,7 +93,7 @@ export class CategoryRouter extends Category {
         if (!_.isNumber(data.numberOfPostsPerPage)) return this.error(E.MUST_BE_A_NUMBER, { name: 'numberOfPostsPerPage' });
 
         // Array Validation
-        if (!_.isArray(data.moderators)) return this.error(E.MUST_BE_AN_ARRAY)
+        if (!_.isArray(data.moderators)) return this.error(E.MUST_BE_AN_ARRAY);
 
         return <any>false;
     }
