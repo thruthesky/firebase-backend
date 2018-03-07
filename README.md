@@ -249,7 +249,8 @@ You can use, `db`, `collection`, `params` and all other code.
 
 * `system.install`
 * `system.uninstall`
-* `system.checkInstall`.
+* `system.checkInstall`
+    * @return returned `data` should be `true` if the system is installed. Otherwise `false`.
 
 
 ## User Registration

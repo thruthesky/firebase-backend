@@ -377,8 +377,11 @@ export class Base {
             }
         }
 
+        /** Remove `idToken` */
+        if ( obj && obj['idToken'] !== void 0 ) delete obj['idToken'];
+
         return this.hook('sanitizeData', obj);
-        // return obj;
+        
     }
 
 

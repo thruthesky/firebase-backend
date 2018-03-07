@@ -26,6 +26,7 @@ export interface ROUTER_RESPONSE extends BACKEND_ERROR_OBJECT {
     role?: string;
     route: string;
     data?: any;
+    installed?: boolean;
 };
 
 
