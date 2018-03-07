@@ -39,12 +39,13 @@ describe('[ category-create.ts ]', () => {
 
     describe('Category create and overwrite test', () => {
 
-        it('With admin uid / Category id.', async () => {
+        it('Expect success. With admin uid / Category id.', async () => {
             await (new Base).loadSystemSettings();
             const adminEmail = (new Base).getAdminEmail();
             const re = await route({ route: 'category.create', uid: adminEmail, id: categoryId });
             // console.log(re);
             expect ( re.code ).to.be.equal( 0 );
+            expect ( re.data ).to.be.equal( categoryId );
         });
         it("Create a category that is already exists.", async () => {
             await (new Base).loadSystemSettings();

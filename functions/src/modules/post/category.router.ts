@@ -15,11 +15,12 @@ export class CategoryRouter extends Category {
     /** 
     * 
     * 
-    * @returns Promise of ROUTER_REPONSE
+    * @returns Promise of ROUTER_REPONSE which contains same as `Document.set()`
+    *   
+    *       - Category ID will be returned on success.
     */
     async create(): Promise<ROUTER_RESPONSE | boolean> {
 
-        /// @todo only admin/subadmin can set categories.
         if (!this.isAdmin()) return this.error(E.PERMISSION_DENIED_ADMIN_ONLY);
 
         const re = this.sanitizeCategoryData(this.params);
@@ -27,25 +28,40 @@ export class CategoryRouter extends Category {
         const validate = this.validateCategoryData(re);
         if (this.isErrorObject(validate)) return validate;
 
-
-        // const category = await this.get();
-        // if ( this.isErrorObject( category ) ) return 
-
         if (await this.exists(this.param('id'))) return this.error(E.CATEGORY_ALREADY_EXISTS, { id: this.param('id') });
 
         return await super.set(re, this.params.id);
-        // return re;
     }
 
+    /**
+     * 
+     * 
+     * @desc Users cannot read Category on `Functions`. Admin will read for users. So, no rules are needed on `Firestore` and its very much safe in many ways.
+     * 
+     * 
+     */
     async get(): Promise<ROUTER_RESPONSE> {
+        if (!this.isAdmin()) return this.error(E.PERMISSION_DENIED_ADMIN_ONLY);
         return await super.get(this.params.id);
     }
 
-    async remove(): Promise<ROUTER_RESPONSE> {
+    async delete(): Promise<ROUTER_RESPONSE> {
         return await super.delete(this.params.id);
     }
 
+    /**
+     * @return Same as `Document.update()`
+     * 
+     *      - Document ID( Category ID ) will be returned on success.
+     * 
+     */
     async update(): Promise<ROUTER_RESPONSE> {
+        if (!this.isAdmin()) return this.error(E.PERMISSION_DENIED_ADMIN_ONLY);
+        const re = this.sanitizeCategoryData(this.params);
+        const validate = this.validateCategoryData(re);
+        if (this.isErrorObject(validate)) {
+            return validate;
+        }
         return await super.update(this.params, this.params.id);
     }
 
@@ -55,7 +71,7 @@ export class CategoryRouter extends Category {
     * 
     * @param data Data to validate
     */
-    validateCategoryData(data: CATEGORY): ROUTER_RESPONSE | boolean {
+    validateCategoryData(data: CATEGORY): ROUTER_RESPONSE {
 
         if (_.isEmpty(data.id)) return this.error(E.NO_CATEGORY_ID);
 
@@ -74,11 +90,7 @@ export class CategoryRouter extends Category {
         // Array Validation
         if (!_.isArray(data.moderators)) return this.error(E.MUST_BE_AN_ARRAY)
 
-        // Check undefined value
-        // if ( _.findKey(data, o => _.isUndefined(o)) ) return this.error(E.FIREBASE_DO_NOT_ACCEPT_UNDEFINED);
-
-
-        return false
+        return <any>false;
     }
 
 

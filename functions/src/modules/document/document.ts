@@ -105,7 +105,7 @@ export class Document extends Base {
      * @param documentID Document ID to updated on
      *      
      * @return
-     *          - A Promise<WriteResult> if success.
+     *          - A Promise<DocumentID> if success.
      *          - A Promise<null> if the input data is empty.
      *          - A Promise<ErrorObject> if there is error. note: it is a promise that is being returned.
      */

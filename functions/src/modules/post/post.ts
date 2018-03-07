@@ -57,6 +57,9 @@ export class Post extends Document {
     /**
     * Sanitizes data before pushing to firebase.
     * 
+    * 
+    * 
+    * 
     * @param data Data to sanitize.
     * 
     * @return sanitized data with hook.
