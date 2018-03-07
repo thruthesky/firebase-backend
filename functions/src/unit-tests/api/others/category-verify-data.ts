@@ -20,14 +20,14 @@ describe('category-verify-data', () => {
         it(`Category with no ID. Expect error: ['${E.obj(E.NO_CATEGORY_ID).message}']`, async () => {
             const obj = new CategoryRouter().sanitizeCategoryData({});
 
-            // console.log(obj)
+            // console./log(obj)
             const re = new CategoryRouter().validateCategoryData(obj);
             if( typeof re != 'boolean' ){
                 if (re.code !== E.NO_CATEGORY_ID) console.log(re);
                 expect(re).to.be.a('object');
                 expect(re.code).to.be.equal(E.NO_CATEGORY_ID);
             }
-            else return false;
+            else console.log( 're: ', re )
         });
 
         it(`Category ID with slashes. Expect error: [${E.obj(E.CATEGORY_ID_CANNOT_CONTAIN_SLASH).message}]`, async () => {
@@ -38,7 +38,7 @@ describe('category-verify-data', () => {
                 expect(re.code).to.be.equal(E.CATEGORY_ID_CANNOT_CONTAIN_SLASH);
                 // console.log(re)
             }
-            else return false
+            else console.log( 're: ', re )
         });
 
         it(`Category ID exceeds maximum ID length. Expect error: [${E.obj(E.CATEGORY_ID_TOO_LONG).message}]`, async () => {
@@ -49,17 +49,17 @@ describe('category-verify-data', () => {
                 expect(re.code).to.be.equal(E.CATEGORY_ID_TOO_LONG);
                 // console.log(re)
             }
-            else return false
+            else console.log( 're: ', re )
         });
 
         it(`Category ID Success. Expect: false`, async () => {
-            const re: any = new CategoryRouter().validateCategoryData({ id : 'buy-and-sell' });
+            const re: any = new CategoryRouter().validateCategoryData(new CategoryRouter().sanitizeCategoryData({ id : 'buy-and-sell' }));
             // console.log('re', re);
             if( typeof re == 'boolean' ){
                 expect(re).to.be.a('boolean');
                 expect(re).to.be.equal(false);
             }
-            else return false
+            else console.log('Result: ', re)
             
         });
     });
