@@ -86,7 +86,7 @@ export class Category extends Document {
     */
     sanitizeCategoryData( data: CATEGORY ): CATEGORY { 
         data = Object.assign( this.defaultCategory, data );
-        return this.hook( 'category.router.sanitizeCategoryData', data );
+        return this.hook( 'category.sanitizeCategoryData', data );
     }
 
 

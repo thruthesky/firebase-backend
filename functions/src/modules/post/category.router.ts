@@ -12,21 +12,25 @@ export class CategoryRouter extends Category {
         super();
     }
 
-    /** 
-    * 
-    * 
-    * @returns Promise of ROUTER_REPONSE which contains same as `Document.set()`
-    *   
-    *       - Category ID will be returned on success.
-    */
-    async create(): Promise<ROUTER_RESPONSE | boolean> {
+    /**
+     * 
+     * Creates a category.
+     * 
+     * @desc only admin can create.
+     *  
+     * @returns Promise of ROUTER_REPONSE which contains same as `Document.set()`
+     *   
+     *       - Category ID will be returned on success.
+     *  
+     */
+    async create(): Promise<ROUTER_RESPONSE> {
 
         if (!this.isAdmin()) return this.error(E.PERMISSION_DENIED_ADMIN_ONLY);
 
         const re = this.sanitizeCategoryData(this.params);
 
         const validate = this.validateCategoryData(re);
-        if (this.isErrorObject(validate)) return validate;
+        if ( validate ) return validate;
 
         if (await this.exists(this.param('id'))) return this.error(E.CATEGORY_ALREADY_EXISTS, { id: this.param('id') });
 
@@ -59,17 +63,18 @@ export class CategoryRouter extends Category {
         if (!this.isAdmin()) return this.error(E.PERMISSION_DENIED_ADMIN_ONLY);
         const re = this.sanitizeCategoryData(this.params);
         const validate = this.validateCategoryData(re);
-        if (this.isErrorObject(validate)) {
-            return validate;
-        }
+        if (validate) return validate;
         return await super.update(this.params, this.params.id);
     }
 
 
     /**
+     * 
     * Validates data if applicable to firebase database
     * 
     * @param data Data to validate
+    * 
+    * @reutrn false on success.
     */
     validateCategoryData(data: CATEGORY): ROUTER_RESPONSE {
 
