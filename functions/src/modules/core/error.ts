@@ -8,6 +8,8 @@ export const NO_ADMIN_EMAIL = -400100; es[NO_ADMIN_EMAIL] = "Please input admin 
 /// Users
 export const TEST = -11; es[TEST] = 'Test Error';
 export const UNKNOWN = -12; es[UNKNOWN] = 'Unknown erorr. #info';
+export const PERMISSION_DENIED_ADMIN_ONLY = -10; es[PERMISSION_DENIED_ADMIN_ONLY] = 'Permission denied. Only administrators are allowed.'
+
 // export const UNHANDLED = -10; es[UNHANDLED] = 'Unhandled error message must have suggestion on which error is to be handled.'
 export const NO_EMAIL = -50; es[NO_EMAIL] = 'No email address.';
 export const NO_PASSWORD = -51; es[NO_PASSWORD] = 'No password.';
@@ -17,18 +19,11 @@ export const NO_UID = -53; es[NO_UID] = 'No uid.';
 export const UID_TOO_LONG = -54; es[UID_TOO_LONG] = 'UID is too long. Must be less than 128 characters.';
 export const UID_CANNOT_CONTAIN_SLASH = -55; es[UID_CANNOT_CONTAIN_SLASH] = 'UID cannot contain slashes.';
 
-
-
-
-
 export const WRONG_GENDER = -40061; es[WRONG_GENDER] = 'Wrong gender.';
 export const WRONG_ROUTE = -40060; es[WRONG_ROUTE] = 'The given route is not exists. It is a wrong route.';
 export const EMPTY_ROUTE = -40063; es[EMPTY_ROUTE] = 'Empty route.';
 export const WRONG_METHOD = -40064; es[WRONG_METHOD] = 'Wrong method.';
 export const ANONYMOUS_CANNOT_EDIT_PROFILE = -40070; es[ANONYMOUS_CANNOT_EDIT_PROFILE] = 'Anonymous cannot set/update profile.';
-
-
-
 
 export const USER_ID_NOT_EXISTS_IN_USER_COLLECTION = -40020; es[USER_ID_NOT_EXISTS_IN_USER_COLLECTION] = 'User UID "#id" in users collection does not exists.';
 
@@ -41,11 +36,14 @@ export const USER_ID_NOT_EXISTS_IN_USER_COLLECTION = -40020; es[USER_ID_NOT_EXIS
 // export const CATEGORY_LEVEL_ON_LIST_MUST_CONTAIN_NUMBER = -40448; es[CATEGORY_LEVEL_ON_LIST_MUST_CONTAIN_NUMBER] = 'Level on list field in category should be a number.'
 
 export const MUST_BE_A_NUMBER = -400204; es[MUST_BE_A_NUMBER] = 'Value must be a number with #name';
+export const MUST_BE_AN_ARRAY = -400205; es[MUST_BE_AN_ARRAY] = 'Value must be an array';
+export const MUST_BE_AN_OBJECT = -400206; es[MUST_BE_AN_OBJECT] = 'Value must be an object';
+export const MUST_BE_A_BOOLEAN = -400207; es[MUST_BE_A_BOOLEAN] = 'Value must be a boolean';
 
 
 // documnets
 
-export const DOCUMENT_ID_DOES_NOT_EXISTS_FOR_UPDATE = -400205; es[DOCUMENT_ID_DOES_NOT_EXISTS_FOR_UPDATE] = 'Document ID "#id" does not exsit for update.';
+export const DOCUMENT_ID_DOES_NOT_EXISTS_FOR_UPDATE = -40005; es[DOCUMENT_ID_DOES_NOT_EXISTS_FOR_UPDATE] = 'Document ID "#id" does not exsit for update.';
 export const DOCUMENT_ID_DOES_NOT_EXISTS_FOR_GET = -40004; es[DOCUMENT_ID_DOES_NOT_EXISTS_FOR_GET] = 'Document ID was not found or does not exist in database';
 
 
@@ -73,7 +71,7 @@ export const NO_CATEGORY_ID = -40460; es[NO_CATEGORY_ID] = 'Category should have
 export const CATEGORY_ID_TOO_LONG = -40454; es[CATEGORY_ID_TOO_LONG] = 'Category id is too long. Must be less than 128 characters.';
 export const CATEGORY_ID_CANNOT_CONTAIN_SLASH = -40445; es[CATEGORY_ID_CANNOT_CONTAIN_SLASH] = 'Category id cannot contain slashes.';
 
-export const ANONYMOUS_CANNOT_SET_CATEGORY = -40449; es[ANONYMOUS_CANNOT_SET_CATEGORY] = 'Anonymous cannot set a category';
+export const ANONYMOUS_CANNOT_CREATE_CATEGORY = -40449; es[ANONYMOUS_CANNOT_CREATE_CATEGORY] = 'Anonymous cannot set a category';
 
 
 
@@ -84,7 +82,7 @@ export const FIREBASE_AUTH_UID_ALREADY_EXISTS = -40901; es[FIREBASE_AUTH_UID_ALR
 export const FIREBASE_ID_TOKEN_EXPIRED = -40902; es[FIREBASE_ID_TOKEN_EXPIRED] = 'User ID Token has expired.';
 export const FIREBASE_FAILED_TO_DECODE_ID_TOKEN = -40905; es[FIREBASE_FAILED_TO_DECODE_ID_TOKEN] = 'Failed to verfiy who you are. The ID Token may be expired or invalid.';
 export const FIREBASE_INVALID_PASSWORD = -40906; es[FIREBASE_INVALID_PASSWORD] = '';
-
+export const FIREBASE_DO_NOT_ACCEPT_UNDEFINED = -40907; es[FIREBASE_DO_NOT_ACCEPT_UNDEFINED] = 'Undefined value is not accepted in firebase.'
 
 
 // system
