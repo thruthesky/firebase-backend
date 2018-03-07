@@ -20,14 +20,14 @@ describe('category-verify-data', () => {
         it(`Category with no ID. Expect error: ['${E.obj(E.NO_CATEGORY_ID).message}']`, async () => {
             const obj = new CategoryRouter().sanitizeCategoryData({});
 
-            console.log(obj)
+            // console.log(obj)
             const re = new CategoryRouter().validateCategoryData(obj);
             if( typeof re != 'boolean' ){
                 if (re.code !== E.NO_CATEGORY_ID) console.log(re);
                 expect(re).to.be.a('object');
                 expect(re.code).to.be.equal(E.NO_CATEGORY_ID);
             }
-            else console.log( 're: ', re )
+            else return false;
         });
 
         it(`Category ID with slashes. Expect error: [${E.obj(E.CATEGORY_ID_CANNOT_CONTAIN_SLASH).message}]`, async () => {
@@ -38,7 +38,7 @@ describe('category-verify-data', () => {
                 expect(re.code).to.be.equal(E.CATEGORY_ID_CANNOT_CONTAIN_SLASH);
                 // console.log(re)
             }
-            else console.log( 're: ', re )
+            else return false
         });
 
         it(`Category ID exceeds maximum ID length. Expect error: [${E.obj(E.CATEGORY_ID_TOO_LONG).message}]`, async () => {
@@ -49,7 +49,7 @@ describe('category-verify-data', () => {
                 expect(re.code).to.be.equal(E.CATEGORY_ID_TOO_LONG);
                 // console.log(re)
             }
-            else console.log( 're: ', re )
+            else return false
         });
 
         it(`Category ID Success. Expect: false`, async () => {
@@ -59,31 +59,31 @@ describe('category-verify-data', () => {
                 expect(re).to.be.a('boolean');
                 expect(re).to.be.equal(false);
             }
-            else console.log('Return value: ', re)
+            else return false
             
         });
     });
 
     describe('Test sanitizeCategoryData()', () => {
-        it(`Sanitize data with no name. Should be success ID becomes the name.`, async () => {
-            const id = 'buy-n-sell';
-            const re: any = new CategoryRouter().sanitizeCategoryData({ id : id });
-            // console.log(re)
-            expect(re).to.be.a('object');
-            expect(re.name).to.be.equal(id);
-        });
+        // it(`Sanitize data with no name. Should be success ID becomes the name.`, async () => {
+        //     const id = 'buy-n-sell';
+        //     const re: any = new CategoryRouter().sanitizeCategoryData({ id : id });
+        //     // console.log(re)
+        //     expect(re).to.be.a('object');
+        //     expect(re.name).to.be.equal(id);
+        // });
 
-        it(`Check for undefined fields. Should be success.`, async () => {
-            const id = 'buy-n-sell';
-            const re: any = new CategoryRouter().sanitizeCategoryData({ id : id });
-            // console.log(re)
-            expect(re).to.be.a('object');
-            let key;
-            for( key in re ){
-                expect(re[key]).to.not.be.an('undefined');
-            }
-            console.log(re)
-        });
+        // it(`Check for undefined fields. Should be success.`, async () => {
+        //     const id = 'buy-n-sell';
+        //     const re: any = new CategoryRouter().sanitizeCategoryData({ id : id });
+        //     // console.log(re)
+        //     expect(re).to.be.a('object');
+        //     let key;
+        //     for( key in re ){
+        //         expect(re[key]).to.not.be.an('undefined');
+        //     }
+        //     // console.log(re)
+        // });
 
     });
 
