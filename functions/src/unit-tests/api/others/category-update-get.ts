@@ -2,7 +2,7 @@
  * @author jaeho
  */
 import * as chai from 'chai';
-import * as _ from 'lodash';
+// import * as _ from 'lodash';
 const expect = chai.expect;
 import { Base, E } from './../../../modules/core/core';
 import { init, route } from './../init';
@@ -11,7 +11,7 @@ Base.admin = init();
 
 
 
-const $base = new Base('');
+// const $base = new Base('');
 
 const categoryId = "test-" + (new Date).getTime();
 

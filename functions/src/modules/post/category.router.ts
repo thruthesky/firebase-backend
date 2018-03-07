@@ -1,6 +1,6 @@
-﻿import { FIREBASE_DO_NOT_ACCEPT_UNDEFINED } from './../core/error';
+﻿// import { FIREBASE_DO_NOT_ACCEPT_UNDEFINED } from './../core/error';
 
-import { ROUTER_RESPONSE, E, Anonymous } from '../core/core';
+import { ROUTER_RESPONSE, E } from '../core/core';
 import { Category, CATEGORY } from './category';
 import * as _ from 'lodash';
 

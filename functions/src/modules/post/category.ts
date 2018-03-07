@@ -1,7 +1,7 @@
 // import * as admin from 'firebase-admin';
 import { Document } from './../document/document';
-import { COLLECTIONS, E} from '../core/core';
-import * as _ from 'lodash';
+import { COLLECTIONS } from '../core/core';
+// import * as _ from 'lodash';
 
 
 

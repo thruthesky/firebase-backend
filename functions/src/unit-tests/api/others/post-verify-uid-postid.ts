@@ -2,11 +2,11 @@
 /**
  * @author Gem
  */
-import * as chai from 'chai';
-const expect = chai.expect;
+// import * as chai from 'chai';
+// const expect = chai.expect;
 // import * as _ from 'lodash';
-import { Base, E, Anonymous } from './../../../modules/core/core';
-import { PostRouter } from './../../../modules/post/post.router';
+import { Base } from './../../../modules/core/core';
+// import { PostRouter } from './../../../modules/post/post.router';
 // import { Document } from './../../../modules/document/document';
 import { init } from './../init';
 Base.admin = init();
@@ -31,7 +31,7 @@ Base.admin = init();
 // if ( uid.indexOf('/') !== -1 ) return this.error(E.UID_CANNOT_CONTAIN_SLASH);
 
 describe('post-verify-uid-postid', () => {
-    const postId = '4LNEQ5sNcazSiAv4TcjX';
+    // const postId = '4LNEQ5sNcazSiAv4TcjX';
     // const postId = '..';
     beforeEach( () => {
         Base.useUid = true;
