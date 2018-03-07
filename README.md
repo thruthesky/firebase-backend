@@ -248,6 +248,8 @@ You can use, `db`, `collection`, `params` and all other code.
 ## Installation
 
 * `system.install`
+    * @return if `code` is set to 0, then it is installed successfully.
+    `installed` may be `false` on response but it is installed as long as `code` is 0.
 * `system.uninstall`
 * `system.checkInstall`
     * @return returned `data` should be `true` if the system is installed. Otherwise `false`.
