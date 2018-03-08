@@ -40,23 +40,23 @@ describe('[ post-verify-data.ts ]', () => {
             //     // expect(re).to.be.equal(false);
             // });
 
-            it(`Error Test on String Fields`, () => {
-                const data = (new PostRouter).sanitizePostData(<any>{ id : 'this-is-my-post', uid: 'I-am-poster', content: 12 })
-                const re =  (new PostRouter).validatePostData( data );
-                expect(re.code).to.be.equal(E.MUST_BE_A_STRING);
-            });
+            // it(`Error Test on String Fields`, () => {
+            //     const data = (new PostRouter).sanitizePostData(<any>{ id : 'this-is-my-post', uid: 'I-am-poster', content: 12 });
+            //     const re =  (new PostRouter).validatePostData( data );
+            //     expect(re.code).to.be.equal(E.MUST_BE_A_STRING);
+            // });
 
-            it(`Error Test on Number Fields`,  () => {
-                const data = (new PostRouter).sanitizePostData(<any>{ id : 'this-is-my-post', uid: 'I-am-poster', noOfComments: 'five' })
-                const re =  (new PostRouter).validatePostData( data );
-                expect(re.code).to.be.equal(E.MUST_BE_A_NUMBER);
-            });
+            // it(`Error Test on Number Fields`,  () => {
+            //     const data = (new PostRouter).sanitizePostData(<any>{ id : 'this-is-my-post', uid: 'I-am-poster', noOfComments: 'five' });
+            //     const re =  (new PostRouter).validatePostData( data );
+            //     expect(re.code).to.be.equal(E.MUST_BE_A_NUMBER);
+            // });
 
-            it(`Error Test on Boolean Fields`,  () => {
-                const data = (new PostRouter).sanitizePostData(<any>{ id : 'this-is-my-post', uid: 'I-am-poster', private: 'im not boolean' })
-                const re =  (new PostRouter).validatePostData( data );
-                expect(re.code).to.be.equal(E.MUST_BE_A_BOOLEAN);
-            });
+            // it(`Error Test on Boolean Fields`,  () => {
+            //     const data = (new PostRouter).sanitizePostData(<any>{ id : 'this-is-my-post', uid: 'I-am-poster', private: 'im not boolean' });
+            //     const re =  (new PostRouter).validatePostData( data );
+            //     expect(re.code).to.be.equal(E.MUST_BE_A_BOOLEAN);
+            // });
         });
 
         // describe('Validation test post request\'s PostID.', () => {

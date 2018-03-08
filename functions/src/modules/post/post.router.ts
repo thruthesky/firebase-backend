@@ -2,7 +2,7 @@
 * @author Gem
 */
 import * as E from '../core/error';
-import { ROUTER_RESPONSE, COLLECTIONS } from '../core/core';
+import { ROUTER_RESPONSE, COLLECTIONS, Anonymous } from '../core/core';
 // import { Base } from '../core/base';
 import { Post, POST_DATA } from './post';
 import * as _ from 'lodash';
@@ -61,7 +61,44 @@ export class PostRouter extends Post {
     }
     
     async edit() {
-        return 'i am edit';
+        const params:POST_DATA = this.params;
+        if ( _.isEmpty( params.id ) ) return this.error(E.NO_DOCUMENT_ID);
+        const post:POST_DATA = await super.get( params.id );
+
+        // console.log("-- params: ", params);
+        // console.log("--- loginUid: ", this.loginUid);
+        // console.log("--post ", post);
+        
+        if ( this.isAnonymous() ) { // Logged in as anonymous.
+            if ( post.uid !== Anonymous.uid ) { // Owned by a user. Not anonymous.
+                return this.error( E.NOT_OWNED_BY_ANONYMOUS );
+            }
+            if ( _.isEmpty(params.password) ) { // No password
+                return this.error( E.ANONYMOUS_PASSWORD_IS_EMPTY );
+            }
+            if ( post.password !== params.password ) { // Wrong password
+                return this.error( E.ANONYMOUS_WRONG_PASSWORD );
+            }
+            // Okay.
+            // The post is owned by anonymous and correct password was given.
+
+        }
+        else if ( this.isAdmin() ) {
+            // Okay.
+            // Admin can edit.
+        }
+        else if ( post.uid === this.loginUid ) {
+            // Okay.
+            // The post is owned by user and the user is editing.
+        }
+        else {
+            // Wrong.
+            // This is an error. Failed to verify.
+            return this.error( E.NOT_YOUR_POST );
+        }
+
+        const id = params.id;
+        return await super.update(this.sanitizePostData(params), id);
     }
     
     // async delete() {

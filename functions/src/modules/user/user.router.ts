@@ -60,7 +60,7 @@ export class UserRouter extends User {
 
 
         const data: USER_REGISTER = {
-            uid: user.email,
+            uid: user.email,                        // No good for security. Make it optinal.
             email: user.email,
             password: user.password
         };

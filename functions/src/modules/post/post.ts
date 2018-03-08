@@ -13,6 +13,7 @@ import { COLLECTIONS } from '../core/core';
 * 
 */
 export interface POST_DATA {
+    id?: string;                    // Document ID. This is needed only on accessing. It does not need to be saved.
     uid: string;                    // author
     title?: string;
     content?: string;
@@ -94,6 +95,9 @@ export class Post extends Document {
     */
     sanitizePostData(data: POST_DATA): POST_DATA {
         data = Object.assign(this.defaultPostData, data);
+        
+        if ( data.id !== void 0 ) delete data.id; // delete `id` if ever there exists.
+
         data.uid = this.loginUid;
         // console.log('----this.loginUser', this.loginUser);
         data.displayName = this.loginUser.displayName;

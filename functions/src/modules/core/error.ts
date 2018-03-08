@@ -83,6 +83,11 @@ export const POST_ID_CANNOT_CONTAIN_SLASH = -40355; es[POST_ID_CANNOT_CONTAIN_SL
 // export const POST_ID_CANNOT_SOLELY_CONSIST_DOT = -40356; es[POST_ID_CANNOT_SOLELY_CONSIST_DOT] = 'Post id or document id cannot be equal to dot [.] or double dot [..] ';
 export const POST_ALREADY_EXISTS = -40357; es[POST_ALREADY_EXISTS] = 'Post ID already exists.';
 
+export const ANONYMOUS_PASSWORD_IS_EMPTY = -40356; es[ANONYMOUS_PASSWORD_IS_EMPTY] = 'Anonymous must send a psassword to edit a post';
+export const ANONYMOUS_WRONG_PASSWORD = -40357; es[ANONYMOUS_WRONG_PASSWORD] = 'Anonymous sent a wrong password.';
+export const NOT_YOUR_POST = -40358; es[NOT_YOUR_POST] = 'This is not your post.';
+export const NOT_OWNED_BY_ANONYMOUS = -40359; es[NOT_OWNED_BY_ANONYMOUS] = 'This is not owned by Anonymous. But you are Anonymous.';
+
 // Categories
 export const CATEGORY_ID_CANNOT_CONTAIN_SLASH = -40445; es[CATEGORY_ID_CANNOT_CONTAIN_SLASH] = 'Category id cannot contain slashes.';
 

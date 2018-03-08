@@ -7,6 +7,9 @@ And yet, we didn't decide it what to call.
 # TODO List
 
 
+* Options to use `Firebase Authentication Default UID` as uid instead of email for security reason.
+ * email as uid is good to develop but not good for security.
+ @see `user.router.ts::register`
 
 * Unit test on post edit.
 
@@ -305,9 +308,13 @@ You can use, `db`, `collection`, `params` and all other code.
 * `category.list`
 * `category.delete`
 * `post.create`
+* `post.edit`
+ * Anonymous can create/edit a post with password. If Anonymous forgets the password, he can no longer edit/delete the post.
+ * User can create/edit without password.
+ * Admin can edit any post.
+ * @see unit test files. `post-create.ts`, `post-edit.ts`.
 * `post.list`
 * `post.view`
-* `post.edit`
 * `post.delete`
 * `post.report`
 * `post.block` - Block the user with `WebbrowserID`, `IP`
