@@ -1,76 +1,53 @@
-﻿
 /**
-* @author Gem
-*/
-import * as _ from 'lodash';
+ * @author jaeho
+ */
 import * as chai from 'chai';
 const expect = chai.expect;
-import { Base, E, COLLECTIONS } from './../../../modules/core/core';
-import { PostRouter } from './../../../modules/post/post.router';
+import { Base, E } from './../../../modules/core/core';
 import { init, route } from './../init';
 Base.admin = init();
 
+const categoryId = "test-" + (new Date).getTime();
 
-/**
-* 
-* 
-* 
-* 
-*      WARNING.        YOU ARE TESTING WITH UID.
-* 
-* 
-* 
-* 
-* 
-*/
 
-const postID = 'post-' + (new Date).getTime();
 
 describe('[ post-create.ts ]', () => {
-    beforeEach( () => {
+
+    beforeEach(() => {
         Base.useUid = true;
     });
-    describe('Test Post Create', () => {
-        
-        it(`No UID/Anonymous can't create post.`, async () => {
-            await (new Base).loadSystemSettings();
-            const re = await route({ route: 'post.create', id: 'Anonymous-post', uid: '', content: 'I am Anonymous, I\'m not allowed to post.' })
-            if ( ! (new Base).isErrorObject(re) ) console.log(re)
-            expect(re).to.be.a('object');
-            expect(re.code).to.be.equal(E.USER_NOT_LOGIN);
-        });
-        
-        it(`Should be okay, no errors`, async () => {
-            await (new Base).loadSystemSettings();
-            const data = ( new PostRouter ).sanitizePostData( {id: postID, uid: 'I-am-a-test-user-with-UID', content: 'This should be fine' } )
-            const re = await route(Object.assign({route: 'post.create'}, data));
-            if ( (new Base).isErrorObject(re) ) console.log(re)
-            expect(re).to.be.a('object');
-            expect(re.code).to.be.equal(0); 
-        });
-        
-        it(`Test post, get created post.`, async () => {
-            await (new Base).loadSystemSettings();
-            const data = ( new PostRouter ).sanitizePostData( {id: postID, uid: 'I-am-a-test-user-with-UID', content: 'I overwrite this document' } )
-            const re = await route(Object.assign({route: 'post.get'}, data));
-            if ( (new Base).isErrorObject(re) ) console.log(re) 
-            expect(re).to.be.a('object');
-            expect(re.code).to.be.equal(0);
-        });
-        
-        it(`Test post create overwrite is prohibited`, async () => {
-            await (new Base).loadSystemSettings();
-            const data = ( new PostRouter ).sanitizePostData( {id: postID, uid: 'I-am-a-test-user-with-UID', content: 'I overwrite this document' } )
-            const re = await route(Object.assign({route: 'post.create'}, data));
-            if ( !(new Base).isErrorObject(re) ) console.log(re)
-            expect(re).to.be.a('object');
-            expect(re.code).to.be.equal(E.POST_ALREADY_EXISTS);
-        });
-        
-        // it(`Error Test on Boolean Fields`, async () => {
-        
-        //     // expect(re.code).to.be.equal(E.MUST_BE_A_BOOLEAN);
+
+    describe('Error tests on creating a post.', () => {
+        // it('No category id', async () => {
+        //     const re = await route({ route: 'post.create' });
+        //     expect(re.code).to.be.equal(E.NO_CATEGORY_ID);
         // });
+        it('Wrong category id', async () => {
+            const re = await route({ route: 'post.create', categoryId: 'wrong-category-id' });
+            // console.log(re);
+            expect ( re.code ).to.be.equal( E.POST_CATEGORY_DOES_NOT_EXIST );
+        });
     });
-    
+
+
+
+    // describe('Category create and overwrite test', () => {
+
+    //     it('Expect success. With admin uid / Category id', async () => {
+    //         await (new Base).loadSystemSettings();
+    //         const adminEmail = (new Base).getAdminEmail();
+    //         const re = await route({ route: 'category.create', uid: adminEmail, id: categoryId });
+    //         // console.log(re);
+    //         expect ( re.code ).to.be.equal( 0 );
+    //         expect ( re.data ).to.be.equal( categoryId );
+    //     });
+    //     it("Create a category that is already exists.", async () => {
+    //         await (new Base).loadSystemSettings();
+    //         const adminEmail = (new Base).getAdminEmail();
+    //         const re = await route({ route: 'category.create', uid: adminEmail, id: categoryId });
+    //         // console.log(re);
+    //         expect ( re.code ).to.be.equal( E.CATEGORY_ALREADY_EXISTS ); 
+    //     });
+    // });
+
 });

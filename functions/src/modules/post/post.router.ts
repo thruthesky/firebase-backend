@@ -2,10 +2,11 @@
 * @author Gem
 */
 import * as E from '../core/error';
-import * as _ from 'lodash';
-import { ROUTER_RESPONSE } from '../core/core';
+import { ROUTER_RESPONSE, COLLECTIONS } from '../core/core';
 // import { Base } from '../core/base';
 import { Post, POST_DATA } from './post';
+import * as _ from 'lodash';
+
 
 export class PostRouter extends Post {
     
@@ -14,22 +15,25 @@ export class PostRouter extends Post {
     * 
     * @desc - Checks user if logged in and then calls super.set() tp push data.
     * 
+    * @desc Empty data is allowed to create a post.
+    * 
     * @author gem
     */
-    async create(): Promise<ROUTER_RESPONSE | boolean> {
-        if (this.isAnonymous()) return this.error(E.USER_NOT_LOGIN); // On Unit Test, it will be set with `uid`
-        if (this.validatePostData(this.params)) return this.validatePostData(this.params);
+    async create(): Promise<ROUTER_RESPONSE> {
 
-        if (await this.exists(this.param('id'))) return this.error(E.POST_ALREADY_EXISTS, { id: this.param('id') });
-        
-        const re = this.hook('post.create');
-        if (this.isErrorObject(re)) return re;
-        
-        const post = this.sanitizePostData(this.params)
-
-        // new code
-        return await super.set( post, post.id, this.collectionName);
-        
+        let data: POST_DATA = this.hook('post.create', this.params)
+        data = this.sanitizePostData(data)
+        const validate = this.validatePostData(data);
+        if ( validate ) {
+            // console.log("---- validate: ", validate);
+            return validate;
+        }
+        if ( await this.exists( data.categoryId ) ) {
+            return await super.set(data);
+        }
+        else {
+            return this.error( E.POST_CATEGORY_DOES_NOT_EXIST, { categoryId: data.categoryId} );
+        }
     }
     
     /** 
@@ -39,12 +43,14 @@ export class PostRouter extends Post {
     * 
     */
     async get(): Promise<ROUTER_RESPONSE | boolean> {
+        // console.log("----------- This shouldn't come here!");
+        if (!this.loginUid) return this.error(E.USER_NOT_LOGIN); // On Unit Test, it will be set with `uid`
         if (this.validatePostRequest(this.params)) return this.validatePostRequest(this.params);
         
         const re = this.hook('post.get');
         if (this.isErrorObject(re)) return re;
         
-        return await super.get(this.param('id'));
+        return await super.get(re);
         // return 'I am get';
     }
     
@@ -69,20 +75,13 @@ export class PostRouter extends Post {
     */
     validatePostData(data: POST_DATA): ROUTER_RESPONSE {
         
-        if (_.isEmpty( data.id )) return this.error(E.NO_POST_ID);
         
-        /**@desc Do code below if post is allowed without ID */
-        // if (! _.isEmpty(data.id) ){
         // if (this.checkDocumentIDFormat(data.id)) return this.error(this.checkDocumentIDFormat(data.id)); 
-        // if (! _.isString( data.id ) ) return this.error( E.MUST_BE_A_STRING, { value: 'Post ID' } );
-        // }
-        
-        if (this.checkDocumentIDFormat(data.id)) return this.error(this.checkDocumentIDFormat(data.id)); 
         
         /** @todo Make shorter code for field type checking. */
         // Type checking -> Must be string
-        if (! _.isString( data.id ) ) return this.error( E.MUST_BE_A_STRING, { value: 'Post ID' } );
-        if (! _.isString( data.uid ) ) return this.error( E.MUST_BE_A_STRING, { value: 'Post UID' } );
+        // if (! _.isString( data.id ) ) return this.error( E.MUST_BE_A_STRING, { value: 'Post ID' } );
+        // if (! _.isString( data.uid ) ) return this.error( E.MUST_BE_A_STRING, { value: 'Post UID' } );
         if (! _.isString( data.title ) ) return this.error( E.MUST_BE_A_STRING, { value: 'Post title' } );
         if (! _.isString( data.content ) ) return this.error( E.MUST_BE_A_STRING, { value: 'Post content' } );
         if (! _.isString( data.categoryId ) ) return this.error( E.MUST_BE_A_STRING, { value: 'Post categoryID' } );
@@ -115,9 +114,10 @@ export class PostRouter extends Post {
     * 
     */
     validatePostRequest(data): ROUTER_RESPONSE {
-        
-        if (data.postId !== void 0) {
-            if (this.checkDocumentIDFormat(data.postId)) return this.error(this.checkDocumentIDFormat(data.postId ));
+
+        if (data.uid !== void 0 || data.postId !== void 0) {
+            if (this.checkUIDFormat(data.uid)) return this.error(this.checkUIDFormat(data.uid));
+            if (this.checkDocumentIDFormat(data.postId)) return this.error(this.checkDocumentIDFormat(data.postId));
         }
         
         return <any>false;

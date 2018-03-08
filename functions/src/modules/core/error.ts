@@ -56,8 +56,10 @@ export const MUST_BE_A_STRING = -400208; es[MUST_BE_A_STRING] = '#value must be 
 
 // documnets
 
-export const DOCUMENT_ID_DOES_NOT_EXISTS_FOR_UPDATE = -40005; es[DOCUMENT_ID_DOES_NOT_EXISTS_FOR_UPDATE] = 'Document ID "#id" does not exsit for update.';
-export const DOCUMENT_ID_DOES_NOT_EXISTS_FOR_GET = -40004; es[DOCUMENT_ID_DOES_NOT_EXISTS_FOR_GET] = 'Document ID was not found or does not exist in database';
+export const DOCUMENT_ID_DOES_NOT_EXISTS_FOR_GET = -40004; es[DOCUMENT_ID_DOES_NOT_EXISTS_FOR_GET] = 'Document ID to get a data does not exist in database. collection: #collectionName, documentID: #documentID';
+export const DOCUMENT_ID_DOES_NOT_EXISTS_FOR_GET_IN_TRANSACTION = -40006; es[DOCUMENT_ID_DOES_NOT_EXISTS_FOR_GET_IN_TRANSACTION] = 'Document ID to get a data in transaction does not exist in database. collection: #collectionName, documentID: #documentID';
+
+export const DOCUMENT_ID_DOES_NOT_EXISTS_FOR_UPDATE = -40008; es[DOCUMENT_ID_DOES_NOT_EXISTS_FOR_UPDATE] = 'Document ID "#id" does not exsit for update.';
 
 
 export const USER_NOT_LOGIN = -400210; es[USER_NOT_LOGIN] = 'User has not logged in. Or maybe the has a wrong(expired) ID token.';
@@ -73,7 +75,7 @@ export const COLLECTION_IS_NOT_SET = -400250; es[COLLECTION_IS_NOT_SET] = 'Colle
 
 // Posting errors
 export const EMPTY_POST_BODY = -40301; es[EMPTY_POST_BODY] = 'Post body can\'t be empty';
-export const POST_HAS_NO_CATEGORY = -40302; es[POST_HAS_NO_CATEGORY] = 'Post must have category.';
+// export const POST_HAS_NO_CATEGORY = -40302; es[POST_HAS_NO_CATEGORY] = 'Post must have category.';
 export const NO_POST_ID = -40353; es[NO_POST_ID] = 'No post id. Post id is needed to identify the post.';
 export const POST_ID_TOO_LONG = -40354; es[POST_ID_TOO_LONG] = 'post id is too long. Must be less than 128 characters.';
 export const POST_ID_CANNOT_CONTAIN_SLASH = -40355; es[POST_ID_CANNOT_CONTAIN_SLASH] = 'post id cannot contain slashes.';
@@ -81,13 +83,15 @@ export const POST_ID_CANNOT_CONTAIN_SLASH = -40355; es[POST_ID_CANNOT_CONTAIN_SL
 export const POST_ALREADY_EXISTS = -40357; es[POST_ALREADY_EXISTS] = 'Post ID already exists.';
 
 // Categories
-export const NO_CATEGORY_ID = -40460; es[NO_CATEGORY_ID] = 'No Category ID';
-export const CATEGORY_ID_TOO_LONG = -40454; es[CATEGORY_ID_TOO_LONG] = 'Category id is too long. Must be less than 128 characters.';
 export const CATEGORY_ID_CANNOT_CONTAIN_SLASH = -40445; es[CATEGORY_ID_CANNOT_CONTAIN_SLASH] = 'Category id cannot contain slashes.';
 
 export const ANONYMOUS_CANNOT_CREATE_CATEGORY = -40449; es[ANONYMOUS_CANNOT_CREATE_CATEGORY] = 'Anonymous cannot set a category';
 
 export const CATEGORY_ALREADY_EXISTS = -40450; es[CATEGORY_ALREADY_EXISTS] = 'Category already exists. Category ID: #id';
+export const CATEGORY_ID_TOO_LONG = -40454; es[CATEGORY_ID_TOO_LONG] = 'Category id is too long. Must be less than 128 characters.';
+export const NO_CATEGORY_ID = -40460; es[NO_CATEGORY_ID] = 'No Category ID';
+export const WRONG_CATEGORY_ID = -40462; es[WRONG_CATEGORY_ID] = 'Wrong Category ID. The Category may not exists. categoryId: "#categoryId"';
+export const POST_CATEGORY_DOES_NOT_EXIST = -40464; es[POST_CATEGORY_DOES_NOT_EXIST] = 'Post category does not exists. categoryId: #categoryId';
 
 
 // Firebase errors.
