@@ -44,7 +44,7 @@ export class PostRouter extends Post {
     * 
     */
     async get(): Promise<ROUTER_RESPONSE | boolean> {
-        console.log("----------- This shouldn't come here!");
+        // console.log("----------- This shouldn't come here!");
         if (!this.loginUid) return this.error(E.USER_NOT_LOGIN); // On Unit Test, it will be set with `uid`
         if (this.validatePostRequest(this.params)) return this.validatePostRequest(this.params);
 
