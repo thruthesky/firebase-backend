@@ -58,7 +58,7 @@ export class Category extends Document {
             numberOfPostsPerPage: 5, // @suggest by gem must put default value in settings
             numberOfPagesOnNavigation: 5, // @suggest by gem must put default value in settings
             moderators: [],
-            moderatorRoles: { read: true, edit: true, delete: true, copy: true, move: true, reminder: true }, // @suggest by gem must put default value in settings
+            moderatorRoles: { read: true, edit: false, delete: false, copy: true, move: true, reminder: true }, // @suggest by gem must put default value in settings
             allowAttachment: true, // boolean // @suggest by gem must put default value in settings
             levelOnList: 0, // @suggest by gem must put default value in settings
             levelOnWrite: 0, // @suggest by gem must put default value in settings

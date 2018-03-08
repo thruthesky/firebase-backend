@@ -1,4 +1,5 @@
-﻿// import * as admin from 'firebase-admin';
+﻿import { UID } from './../core/defines';
+// import * as admin from 'firebase-admin';
 import { Document } from './../document/document';
 import { COLLECTIONS } from '../core/core';
 
@@ -20,7 +21,7 @@ export interface POST_DATA {
     email?: string;
     phoneNumber?: string;
     country?: string;
-    provice?: string;
+    province?: string;
     city?: string;
     address?: string;
     zipCode?: string;
@@ -52,9 +53,8 @@ export class Post extends Document {
     }
 
 
-    get defaultPostData() {
+    get defaultPostData() : POST_DATA {
         return {
-            id: '',
             uid: '',
             title: '',
             content: '',

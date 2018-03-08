@@ -24,7 +24,7 @@ describe('[ post-create.ts ]', () => {
         });
         it('Wrong category id', async () => {
             const re = await route({ route: 'post.create', categoryId: 'wrong-category-id' });
-            console.log(re);
+            // console.log(re);
             expect ( re.code ).to.be.equal( E.POST_CATEGORY_DOES_NOT_EXIST );
         });
     });
@@ -52,7 +52,6 @@ describe('[ post-create.ts ]', () => {
     //         // console.log(re);
     //         expect ( re.code ).to.be.equal( E.CATEGORY_ALREADY_EXISTS ); 
     //     });
-
     // });
 
 });
