@@ -47,10 +47,11 @@ export const USER_ID_NOT_EXISTS_IN_USER_COLLECTION = -40020; es[USER_ID_NOT_EXIS
 // export const CATEGORY_LEVEL_ON_READ_MUST_CONTAIN_NUMBER = -40447; es[CATEGORY_LEVEL_ON_READ_MUST_CONTAIN_NUMBER] = 'Level on read field in category should be a number.'
 // export const CATEGORY_LEVEL_ON_LIST_MUST_CONTAIN_NUMBER = -40448; es[CATEGORY_LEVEL_ON_LIST_MUST_CONTAIN_NUMBER] = 'Level on list field in category should be a number.'
 
-export const MUST_BE_A_NUMBER = -400204; es[MUST_BE_A_NUMBER] = 'Value must be a number with #name';
-export const MUST_BE_AN_ARRAY = -400205; es[MUST_BE_AN_ARRAY] = 'Value must be an array';
-export const MUST_BE_AN_OBJECT = -400206; es[MUST_BE_AN_OBJECT] = 'Value must be an object';
-export const MUST_BE_A_BOOLEAN = -400207; es[MUST_BE_A_BOOLEAN] = 'Value must be a boolean';
+export const MUST_BE_A_NUMBER = -400204; es[MUST_BE_A_NUMBER] = '#value must be a number';
+export const MUST_BE_AN_ARRAY = -400205; es[MUST_BE_AN_ARRAY] = '#value must be an array';
+export const MUST_BE_AN_OBJECT = -400206; es[MUST_BE_AN_OBJECT] = '#value must be an object';
+export const MUST_BE_A_BOOLEAN = -400207; es[MUST_BE_A_BOOLEAN] = '#value must be a boolean';
+export const MUST_BE_A_STRING = -400208; es[MUST_BE_A_STRING] = '#value must be a string';
 
 
 // documnets
@@ -77,6 +78,7 @@ export const NO_POST_ID = -40353; es[NO_POST_ID] = 'No post id. Post id is neede
 export const POST_ID_TOO_LONG = -40354; es[POST_ID_TOO_LONG] = 'post id is too long. Must be less than 128 characters.';
 export const POST_ID_CANNOT_CONTAIN_SLASH = -40355; es[POST_ID_CANNOT_CONTAIN_SLASH] = 'post id cannot contain slashes.';
 // export const POST_ID_CANNOT_SOLELY_CONSIST_DOT = -40356; es[POST_ID_CANNOT_SOLELY_CONSIST_DOT] = 'Post id or document id cannot be equal to dot [.] or double dot [..] ';
+export const POST_ALREADY_EXISTS = -40357; es[POST_ALREADY_EXISTS] = 'Post ID already exists.';
 
 // Categories
 export const NO_CATEGORY_ID = -40460; es[NO_CATEGORY_ID] = 'No Category ID';
