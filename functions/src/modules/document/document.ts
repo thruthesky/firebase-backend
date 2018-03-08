@@ -1,5 +1,6 @@
 import * as admin from 'firebase-admin';
 import { Base, E } from './../core/core';
+import { document } from 'firebase-functions/lib/providers/firestore';
 
 
 export class Document extends Base {
@@ -16,6 +17,7 @@ export class Document extends Base {
      * Sets data on Document and Returns a Promise.
      * 
      * @desc When you set on a Document, you MUST use this method. You must NOT set Documents in other way.
+     * @desc This create a document if it does not exists. If the document is already exists, then it updates.
      * 
      * @param data - data to be set.
      * @param documentID - Document ID. If not set, automatically generated.
@@ -23,6 +25,7 @@ export class Document extends Base {
      * 
      * 
      * @since 2018-02-25. It accepts third parameter as collection name.
+     * @since 2018-03-08. It does not overwrite the entire document. It merges with existing properties.
      * 
      * 
      * @code
@@ -75,7 +78,7 @@ export class Document extends Base {
 
         // you can chagne data before set.
         data = this.hook('document_set_before', data);
-        return await documentRef.set(this.sanitizeData(data))
+        return await documentRef.set(this.sanitizeData(data), { merge: true })
             .then(writeResult => {
                 let id = documentRef.id;
                 // you can do something after the document is set.
@@ -84,7 +87,7 @@ export class Document extends Base {
                     data: data,
                     documentRef: documentRef,
                     collectionRef: collectionRef
-                })
+                });
                 return id;
             })
             .catch(e => this.error(e));
@@ -101,6 +104,8 @@ export class Document extends Base {
      * 
      * @note Update will fail if the document does not exsits.
      * 
+     * @since 2018-03-08. It accepts third parameter as collection name.
+     * 
      * @param data data to update
      * @param documentID Document ID to updated on
      *      
@@ -109,18 +114,41 @@ export class Document extends Base {
      *          - A Promise<null> if the input data is empty.
      *          - A Promise<ErrorObject> if there is error. note: it is a promise that is being returned.
      */
-    async update(data, documentID: string): Promise<any> {
+    async update(data, documentID: string, collectionName?: string): Promise<any> {
         if (!data) return null;
         data['updated'] = this.serverTime();
         data = this.hook('document.update_before', data);
-        return await this.collection.doc(documentID).update(this.sanitizeData(data))
+
+
+
+
+        let collectionRef;
+        if (collectionName) {
+            collectionRef = this.db.collection(this.collectionNameWithPrefix(collectionName));
+        }
+        else {
+            if (this.collectionName) {
+                collectionName = this.collectionName;
+                collectionRef = this.collection;
+            }
+            else {
+                return this.error(E.COLLECTION_IS_NOT_SET);
+            }
+        }
+
+        // you can change collectionRef
+        collectionRef = this.hook('document.get_collectionRef', collectionRef);
+
+
+
+        return await collectionRef.doc(documentID).update(this.sanitizeData(data))
             .then(x => {
                 let id = documentID;
                 id = this.hook('document_update_then', {
                     id: id,
                     data: data,
                     collectionRef: this.collection
-                })
+                });
                 return id;
             })
             .catch(e => this.error(e));
@@ -131,6 +159,9 @@ export class Document extends Base {
      * 
      * Returns a documentation on the currently selected collection
      * 
+     * 
+     * @since 2018-03-08. It accepts collection name.
+     * 
      * @return A Promise of
      *          - Document data
      *          - null if Documnet ID is empty.
@@ -138,16 +169,37 @@ export class Document extends Base {
      *          - ErrorObject. note: it is a promise that is being returned.
      *          
      */
-    async get(documentID): Promise<any> {
+    async get(documentID, collectionName?: string): Promise<any> {
         if (!documentID) return null;
         documentID = this.hook('document.get_before', documentID);
-        return await this.collection.doc(documentID).get()
+
+
+
+        let collectionRef;
+        if (collectionName) {
+            collectionRef = this.db.collection(this.collectionNameWithPrefix(collectionName));
+        }
+        else {
+            if (this.collectionName) {
+                collectionName = this.collectionName;
+                collectionRef = this.collection;
+            }
+            else {
+                return this.error(E.COLLECTION_IS_NOT_SET);
+            }
+        }
+
+        // you can change collectionRef
+        collectionRef = this.hook('document.get_collectionRef', collectionRef);
+
+
+        return await collectionRef.doc(documentID).get()
             .then(doc => {
                 if (doc.exists) {
                     const data = doc.data();
                     return this.hook('document.get_then', data);
                 }
-                else return this.error(E.DOCUMENT_ID_DOES_NOT_EXISTS_FOR_GET);
+                else return this.error(E.DOCUMENT_ID_DOES_NOT_EXISTS_FOR_GET, { 'collectionName': collectionName, 'documentID': documentID });
             })
             .catch(e => this.error(e));
     }
@@ -165,9 +217,9 @@ export class Document extends Base {
      * 
      */
     async exists(documentID): Promise<boolean> {
-        const re = await this.get( documentID );
+        const re = await this.get(documentID);
         // console.log("get: re: ", re);
-        if ( this.isErrorObject( re ) ) {
+        if (this.isErrorObject(re)) {
             // if ( re['code'] === E.DOCUMENT_ID_DOES_NOT_EXISTS_FOR_GET ) return false;
             return false;
         }
@@ -200,6 +252,79 @@ export class Document extends Base {
             .catch(e => this.error(e));
     }
 
+
+
+    /**
+     * 
+     * Add number to a property in a document of a collection.
+     * 
+     * @desc It does transaction to safely add number on a crowded network.
+     * 
+     * @param params is an arry of information to add a value onto a property of a document in a collection.
+     *      - The sequence of arrays are:
+     *          `collectionName, documentID, property, vlaue`
+     *          or
+     *          `documentID, property, value`
+     *          When documentName is missing, it will use `this.collectionName`
+     * 
+     *      - value must be integer or float.
+     * 
+     * @desc If the property does not exists, it creates one with the value.
+     * @desc Document must exists.
+     * @desc You can do `substract` by giving minus values and `increase by 1`, `decrease by 1`
+     * 
+     * @return
+     *      - `BACKEND_ERROR` Object on error.
+     *      - The value after added if success.
+     * 
+     */
+    async add(...params) {
+        let collectionName = null;
+        let documentID = null;
+        let property = null;
+        let value = 0;
+        if (params.length === 3) {
+            [documentID, property, value] = params;
+            collectionName = this.collectionName;
+        }
+        else if (params.length === 4) {
+            [collectionName, documentID, property, value] = params;
+        }
+        else return 0;
+
+        if (typeof value !== 'number') {
+            return this.error(E.MUST_BE_A_NUMBER, { name: 'value' });
+        }
+
+        let num;
+
+        const docRef = this.db.collection(this.collectionNameWithPrefix(collectionName)).doc(documentID);
+
+        return await this.db.runTransaction(async t => {
+            const oldData = await t.get(docRef)
+                .then(doc => {
+                    if (doc.exists) {
+                        return doc.data();
+                    }
+                    else return this.error(E.DOCUMENT_ID_DOES_NOT_EXISTS_FOR_GET_IN_TRANSACTION, { 'collectionName': collectionName, 'documentID': documentID });
+                });
+
+            const data = {};
+            if (oldData[property] === void 0) data[property] = value;
+            else data[property] = oldData[property] + value;
+
+            num = data[property];
+
+            t.update(docRef, data); // @note `.update()` does not return Promise. It returns the Transaction for chaining.
+
+
+            // return re;
+        })
+            .then(() => num)
+            .catch(e => this.error(e));
+    }
+
+    
 
 
 

@@ -55,8 +55,10 @@ export const MUST_BE_A_BOOLEAN = -400207; es[MUST_BE_A_BOOLEAN] = 'Value must be
 
 // documnets
 
-export const DOCUMENT_ID_DOES_NOT_EXISTS_FOR_UPDATE = -40005; es[DOCUMENT_ID_DOES_NOT_EXISTS_FOR_UPDATE] = 'Document ID "#id" does not exsit for update.';
-export const DOCUMENT_ID_DOES_NOT_EXISTS_FOR_GET = -40004; es[DOCUMENT_ID_DOES_NOT_EXISTS_FOR_GET] = 'Document ID was not found or does not exist in database';
+export const DOCUMENT_ID_DOES_NOT_EXISTS_FOR_GET = -40004; es[DOCUMENT_ID_DOES_NOT_EXISTS_FOR_GET] = 'Document ID to get a data does not exist in database. collection: #collectionName, documentID: #documentID';
+export const DOCUMENT_ID_DOES_NOT_EXISTS_FOR_GET_IN_TRANSACTION = -40006; es[DOCUMENT_ID_DOES_NOT_EXISTS_FOR_GET_IN_TRANSACTION] = 'Document ID to get a data in transaction does not exist in database. collection: #collectionName, documentID: #documentID';
+
+export const DOCUMENT_ID_DOES_NOT_EXISTS_FOR_UPDATE = -40008; es[DOCUMENT_ID_DOES_NOT_EXISTS_FOR_UPDATE] = 'Document ID "#id" does not exsit for update.';
 
 
 export const USER_NOT_LOGIN = -400210; es[USER_NOT_LOGIN] = 'User has not logged in. Or maybe the has a wrong(expired) ID token.';

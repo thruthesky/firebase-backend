@@ -39,7 +39,7 @@ describe('[ category-create.ts ]', () => {
 
     describe('Category create and overwrite test', () => {
 
-        it('Expect success. With admin uid / Category id.', async () => {
+        it('Expect success. With admin uid / Category id', async () => {
             await (new Base).loadSystemSettings();
             const adminEmail = (new Base).getAdminEmail();
             const re = await route({ route: 'category.create', uid: adminEmail, id: categoryId });

@@ -234,15 +234,22 @@ export class Base {
      * returns a promise of firestore snapshot
      * @param collectionName collection name
      * @param documentID document id
+     * 
+     * @todo move this to `document.ts`
      */
     getDocument(collectionName, documentID): Promise<admin.firestore.DocumentSnapshot> {
         return this.db.collection(collectionName).doc(documentID).get();
     }
+
+
+
     /**
      * Returns user data or backend error object.
      * @desc This is a simple way to get user data.
      * @param uid User uid
      * @return A resolved promise of User document data object or `backend error object`
+     * 
+     * @todo move this to `user.ts` class.
      */
     async getUserDocument(uid): Promise<USER_DATA> {
         return this.getDocument(this.collectionUsers, uid)
