@@ -65,9 +65,15 @@ export class Post extends Document {
     * @author gem
     * 
     */
-    sanitizePostData( data ): POST_DATA {
+    sanitizePostData( data: POST_DATA ): POST_DATA {
 
-        return this.hook( 'post.sanitizePostData', data ); // Why not hooked as boolean?
+        data = Object.assign( this.defaultPostData, data );
+        return this.hook( 'post.sanitizePostData', data );
     }
+
+
+    
+
+
     
 }
