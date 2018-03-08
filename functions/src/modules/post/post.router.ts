@@ -15,15 +15,14 @@ export class PostRouter extends Post {
     * 
     * @author gem
     */
-    async create(): Promise<ROUTER_RESPONSE | boolean> {
-        if (!this.loginUid) return this.error(E.USER_NOT_LOGIN); // On Unit Test, it will be set with `uid`
-        if (this.validatePostData(this.params)) return this.validatePostData(this.params);
+    async create(): Promise<ROUTER_RESPONSE> {
 
-        const re = this.hook('post.create');
-        if (this.isErrorObject(re)) return re;
+        let params = this.hook('post.create', this.params);
+        const validate = this.validatePostData(params);
+        if ( validate ) return validate;
 
-        // new code
-        return await super.set(this.sanitizePostData(this.params), null, this.collectionName);
+
+        return await super.set(this.sanitizePostData(params));
     }
 
     /** 
@@ -84,7 +83,7 @@ export class PostRouter extends Post {
 
         if (data.uid !== void 0 || data.postId !== void 0) {
             if (this.checkUIDFormat(data.uid)) return this.error(this.checkUIDFormat(data.uid));
-            if (this.checkDocumentIDFormat(data.postId)) return this.error(this.checkDocumentIDFormat(data.postId ));
+            if (this.checkDocumentIDFormat(data.postId)) return this.error(this.checkDocumentIDFormat(data.postId));
         }
 
         return <any>false;
