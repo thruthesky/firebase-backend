@@ -18,14 +18,14 @@ describe('[ post-create.ts ]', () => {
     });
 
     describe('Error tests on creating a post.', () => {
-        it('No category id', async () => {
-            const re = await route({ route: 'post.create' });
-            expect(re.code).to.be.equal(E.NO_CATEGORY_ID);
-        });
+        // it('No category id', async () => {
+        //     const re = await route({ route: 'post.create' });
+        //     expect(re.code).to.be.equal(E.NO_CATEGORY_ID);
+        // });
         it('Wrong category id', async () => {
             const re = await route({ route: 'post.create', categoryId: 'wrong-category-id' });
             console.log(re);
-            expect ( re.code ).to.be.equal( E.WRONG_CATEGORY_ID );
+            expect ( re.code ).to.be.equal( E.POST_CATEGORY_DOES_NOT_EXIST );
         });
     });
 

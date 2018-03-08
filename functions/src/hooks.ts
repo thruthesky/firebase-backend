@@ -10,7 +10,7 @@ interface HOOK_DOCUMENT_SET {
     collectionRef: any;
     documentRef: admin.firestore.DocumentReference;
     data: any;
-};
+}
 
 /**
  * 
@@ -25,7 +25,7 @@ interface HOOK_DOCUMENT_SET {
 export class Hooks {
 
     collectionName;
-    
+
 
 
     /**
@@ -39,8 +39,8 @@ export class Hooks {
     run(name, data) {
         // console.log("Hooks::run with : ", this.collectionName );
         const hookName = name.replace(/\./g, '_');      // Translate `.` into `_` to call the method.
-        if ( this[hookName] ) {                  // If method exists
-            return this[hookName]( data );
+        if (this[hookName]) {                  // If method exists
+            return this[hookName](data);
         }
         else return data;
     }
@@ -55,7 +55,7 @@ export class Hooks {
 
         // Uncomment below if you want to accept all the input from the user.
         // But becareful on what you are doing. You should be some validation.
-        
+
         // const newData = this.params;
         // newData['hooked'] = 'yes';
         // return newData;
@@ -87,28 +87,19 @@ export class Hooks {
         return data;
     }
 
-    post_create() {
-        // Work on hook
-        return false;
+
+    /**
+     * 
+     * 
+     * 
+     */
+    post_create(params) {
+        return params;
     }
 
-    post_get() {
-        // Work on hook
-        return false;
-    }
-
-    post_update() {
-        // Work on hook
-        return false;
-    }
-
-    post_delete() {
-        // Work on hook
-        return false;
-    }
 
     // CATEGORY HOOKS
-    
+
     /**
      * Returns Category data after sanitizing
      * 
@@ -121,7 +112,7 @@ export class Hooks {
      * 
      * @author gem
      */
-    category_router_sanitizeCategoryData( data ){
+    category_router_sanitizeCategoryData(data) {
 
         /**
          * Sanitation on top of default sanitation here.
@@ -130,7 +121,7 @@ export class Hooks {
          * 
          * @desc any value except undefined is accepted.
          */
-        
+
 
         return data;
     }
@@ -143,7 +134,7 @@ export class Hooks {
      * @return data to be set on document.
      * 
      */
-    sanitizeData( obj ) {
+    sanitizeData(obj) {
         return obj;
     }
 
@@ -154,7 +145,7 @@ export class Hooks {
      * 
      * @return (new or unchanged) collectionRef must be returned.
      */
-    document_set_collectionRef( collectionRef ) {
+    document_set_collectionRef(collectionRef) {
         return collectionRef;
     }
     /**
@@ -163,7 +154,7 @@ export class Hooks {
      * @param documentRef Document Reference
      * @return (new or unchanged) documentRef must be returned.
      */
-    document_set_documentRef( documentRef ) {
+    document_set_documentRef(documentRef) {
         return documentRef;
     }
 
@@ -173,7 +164,7 @@ export class Hooks {
      * It can be a user collection or post collection or any collection.
      * @param data data to be set on a Document
      */
-    document_set_before( data ) {
+    document_set_before(data) {
         return data;
     }
 
@@ -183,8 +174,8 @@ export class Hooks {
      * 
      * @return the Document ID must be returned.
      */
-    document_set_then( obj:HOOK_DOCUMENT_SET ): string {
-        
+    document_set_then(obj: HOOK_DOCUMENT_SET): string {
+
         return obj.id;
     }
 
@@ -199,7 +190,7 @@ export class Hooks {
      * 
      * @param data Data to be updated on a Document.
      */
-    document_update_before( data ) {
+    document_update_before(data) {
         // console.log('document_update_before. collectionName: ', this.collectionName);
         return data;
     }
@@ -211,7 +202,7 @@ export class Hooks {
      * @param obj Object of doucment.update() properties.
      * @return Documnet ID must be returned.
      */
-    document_update_then( obj: { id: string, data: any, collectionRef: any } ) {
+    document_update_then(obj: { id: string, data: any, collectionRef: any }) {
         return obj.id;
     }
 
@@ -223,7 +214,7 @@ export class Hooks {
      * 
      * @param documentID Document ID to retrieve data from that Docuemnt
      */
-    document_get_before( documentID ) {
+    document_get_before(documentID) {
         return documentID;
     }
     /**
@@ -231,7 +222,7 @@ export class Hooks {
      * @desc This method is invoked from the inside of `.then()`
      * @param data Data retrieved from a Docuemnt
      */
-    document_get_then( data ) {
+    document_get_then(data) {
         return data;
     }
 
@@ -244,7 +235,7 @@ export class Hooks {
      * 
      * @param documentID Document ID to delete that Docuemnt
      */
-    document_delete_before( documentID ) {
+    document_delete_before(documentID) {
         return documentID;
     }
     /**
@@ -252,11 +243,11 @@ export class Hooks {
      * @desc This method is invoked from the inside of `.then()`
      * @param DocumentID that was deleted just a while ago.
      */
-    document_delete_then( documentID ) {
+    document_delete_then(documentID) {
         return documentID;
     }
 
-    
+
 }
 
 

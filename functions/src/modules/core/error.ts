@@ -88,8 +88,8 @@ export const ANONYMOUS_CANNOT_CREATE_CATEGORY = -40449; es[ANONYMOUS_CANNOT_CREA
 export const CATEGORY_ALREADY_EXISTS = -40450; es[CATEGORY_ALREADY_EXISTS] = 'Category already exists. Category ID: #id';
 export const CATEGORY_ID_TOO_LONG = -40454; es[CATEGORY_ID_TOO_LONG] = 'Category id is too long. Must be less than 128 characters.';
 export const NO_CATEGORY_ID = -40460; es[NO_CATEGORY_ID] = 'No Category ID';
-export const WRONG_CATEGORY_ID = -40460; es[WRONG_CATEGORY_ID] = 'Wrong Category ID. The Category may not exists. categoryId: "#categoryId"';
-
+export const WRONG_CATEGORY_ID = -40462; es[WRONG_CATEGORY_ID] = 'Wrong Category ID. The Category may not exists. categoryId: "#categoryId"';
+export const POST_CATEGORY_DOES_NOT_EXIST = -40464; es[POST_CATEGORY_DOES_NOT_EXIST] = 'Post category does not exists. categoryId: #categoryId';
 
 
 // Firebase errors.

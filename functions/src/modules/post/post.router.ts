@@ -2,9 +2,11 @@
 * @author Gem
 */
 import * as E from '../core/error';
-import { ROUTER_RESPONSE } from '../core/core';
+import { ROUTER_RESPONSE, COLLECTIONS } from '../core/core';
 // import { Base } from '../core/base';
 import { Post, POST_DATA } from './post';
+import * as _ from 'lodash';
+
 
 export class PostRouter extends Post {
 
@@ -21,12 +23,18 @@ export class PostRouter extends Post {
 
         const data: POST_DATA = this.hook('post.create', this.params);
         const validate = this.validatePostData(data);
-        if ( validate ) return validate;
+        if ( validate ) {
+            // console.log("---- validate: ", validate);
+            return validate;
+        }
 
         console.log('---------- data:', data);
-        // if ( ! await this.exists( data.categoryId ) ) return this.error( E.WRONG_CATEGORY_ID, { categoryId: data.categoryId} );
-
-        // return await super.set(this.sanitizePostData(data));
+        if ( await this.exists( data.categoryId, COLLECTIONS.CATEGORIES ) ) {
+            return await super.set(this.sanitizePostData(data));
+        }
+        else {
+            return this.error( E.POST_CATEGORY_DOES_NOT_EXIST, { categoryId: data.categoryId} );
+        }
     }
 
     /** 
@@ -67,7 +75,8 @@ export class PostRouter extends Post {
     */
     validatePostData(data: POST_DATA): ROUTER_RESPONSE {
 
-        if (!data.categoryId) return this.error(E.NO_CATEGORY_ID); //
+        // console.log("------ validatePostData", data);
+        if ( _.isEmpty(data.categoryId) ) return this.error(E.NO_CATEGORY_ID); //
         
         return <any>false;
     }

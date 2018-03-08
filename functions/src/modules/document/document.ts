@@ -170,7 +170,8 @@ export class Document extends Base {
      *          
      */
     async get(documentID, collectionName?: string): Promise<any> {
-        if (!documentID) return null;
+        console.log("-- get() ==> documentID: ", documentID, "collectionName: ", collectionName);
+        if (!documentID) return this.error(E.NO_DOCUMENT_ID);
         documentID = this.hook('document.get_before', documentID);
 
 
@@ -215,10 +216,16 @@ export class Document extends Base {
      * 
      * @desc It costs. It try to get the entire data. so, do not use it when you can avoid.
      * 
+     * @since 2018-03-08. It accepts collection name.
+     * 
+     * @return
+     *      - true if the document is exist
+     *      - false if not.
      */
-    async exists(documentID): Promise<boolean> {
-        const re = await this.get(documentID);
-        // console.log("get: re: ", re);
+    async exists(documentID, collectionName?: string): Promise<boolean> {
+        console.log("--- documentID", documentID, "---collectionName:", collectionName);
+        const re = await this.get(documentID, collectionName);
+        console.log("get: re: ", re);
         if (this.isErrorObject(re)) {
             // if ( re['code'] === E.DOCUMENT_ID_DOES_NOT_EXISTS_FOR_GET ) return false;
             return false;
