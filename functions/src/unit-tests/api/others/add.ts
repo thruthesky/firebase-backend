@@ -24,7 +24,7 @@ describe("[ add.ts ] - Transaction Testing.", () => {
     });
 
     it("Error test. Wrong document ID.", async () => {
-        const re = await $document.add('wrong-collection', 'wrong-document-id', 'prop', 3);
+        const re = await $document.increase('wrong-collection', 'wrong-document-id', 'prop', 3);
         expect( re.code ).to.be.equal( E.DOCUMENT_ID_DOES_NOT_EXISTS_FOR_UPDATE );
     });
 
@@ -33,7 +33,7 @@ describe("[ add.ts ] - Transaction Testing.", () => {
         const oldData = await $document.get( 'add-test', 'test' );
         const ps = [];
         for( let i = 0; i < 5; i ++ ) {
-            const r = $document.add( 'test', 'add-test', 'num', 1);
+            const r = $document.increase( 'test', 'add-test', 'num', 1);
             ps.push( r );
         }
         await Promise.all( ps );

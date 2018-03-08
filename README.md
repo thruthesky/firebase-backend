@@ -6,8 +6,15 @@ And yet, we didn't decide it what to call.
 
 # TODO List
 
-* Install on web.
 
+
+* Unit test on post edit.
+
+    * member can edit his own post.
+    * admin can edit all the post.
+    * Anonymous can edit if they know password of the post.
+
+    * Don't do moderator permission at this time.
 
 * Unit test for category.
  * Category crud test.
@@ -35,6 +42,8 @@ And yet, we didn't decide it what to call.
     - Web based intsallation build with `capacitor`.
     - get admin email address and put it /x-settings/admins as an array.
 
+
+* Do moderator permission functionality.
 
 
 * Do not nest too much methods. It is extreamly difficult to debug.

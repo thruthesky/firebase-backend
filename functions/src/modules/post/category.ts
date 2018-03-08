@@ -25,9 +25,10 @@ export interface CATEGORY {
     moderators?: Array<string>;
     moderatorRoles?: MODERATOR_ROLES;
     allowAttachment?: boolean;
-    levelOnList?: number;
-    levelOnWrite?: number;
-    levelOnRead?: number;
+    levelOnList?: number; // if set to 0, Anonymous can list
+    levelOnRead?: number; // if set to 0, Anonymous can read
+    levelOnWrite?: number;  // if set to 1, Only member can create/edit/delete. Anonymous cannot.
+    disableDeleteWithDependant?: boolean; // if set to true, author cannot edit/delete when there is any comments.
     headerOnList?: string;
     footerOnList?: string;
     headerOnWrite?: string;

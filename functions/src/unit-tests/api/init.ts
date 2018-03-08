@@ -6,6 +6,8 @@
  */
 import * as admin from 'firebase-admin';
 import { serviceAccount } from './../../settings/serviceAccountKey';
+import { Base} from './../../modules/core/base';
+
 
 export function init(): any {
     try {
@@ -25,5 +27,13 @@ export async function route(data) {
     return await (new Router(data)).run();
 }
 
+
+/**
+ * Returns admin email.
+ */
+export async function adminEmail() {
+    await (new Base).loadSystemSettings();
+    return (new Base).getAdminEmail();
+}
 
 

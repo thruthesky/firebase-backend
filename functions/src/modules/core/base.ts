@@ -51,7 +51,8 @@ export class Base {
     /**
      * If the user logs in, it will have user data. It may have anonymous user data.
      */
-    loginUser: USER_DATA = null;
+    static loginUser: USER_DATA = null;
+
     library: Library;
 
     collectionName: string = null;
@@ -222,6 +223,9 @@ export class Base {
     get loginUid() {
         return Base.uid;
     }
+    get loginUser() {
+        return Base.loginUser;
+    }
 
     get collectionUsers(): string {
         return this.collectionNameWithPrefix(COLLECTIONS.USERS);
@@ -310,7 +314,7 @@ export class Base {
      */
     isAdmin(): boolean {
         // console.log(this.loginUid);
-        return Base.systemSettings.adminEmail === this.loginUid;
+        return this.getAdminEmail() === this.loginUid;
     }
 
     isSystemInstalled(): boolean {
@@ -393,5 +397,16 @@ export class Base {
     }
 
 
+
+    typeChecker( objectA, objectB ): ROUTER_RESPONSE {
+        for( const i of Object( objectA ).keys() ) {
+            if ( objectB[i] ) {
+                if ( typeof objectA[i] !== typeof objectB[i] ) {
+                    return this.error( E.TYPE_CHECK, { name: i, type: typeof objectA[i] });
+                }
+            }
+        }
+        return <any>false;
+    }
 
 }

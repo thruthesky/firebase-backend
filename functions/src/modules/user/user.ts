@@ -138,7 +138,7 @@ export class User extends Document {
             }
         }
 
-        this.loginUser = await this.get( 'createOnVerify' );
+        Base.loginUser = await this.get( 'createOnVerify' );
         // console.log( this.loginUser );
         return this.loginUser;
     }

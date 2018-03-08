@@ -17,8 +17,9 @@ export interface POST_DATA {
     title?: string;
     content?: string;
     categoryId?: string;
-    author?: string;
+    displayName?: string;
     email?: string;
+    password?: string;              // Anonymous need to put a password to update/delete.
     phoneNumber?: string;
     country?: string;
     province?: string;
@@ -26,10 +27,10 @@ export interface POST_DATA {
     address?: string;
     zipCode?: string;
     files?: Array<string>;
-    noOfComments?: number;
-    noOfLikes?: number;
-    noOfDislikes?: number;
-    noOfViews?: number;
+    numberOfComments?: number;
+    numberOfLikes?: number;
+    numberOfDislikes?: number;
+    numberOfViews?: number;
     private?: boolean;
     reminder?: number; // higher number will be listed on top.
 }
@@ -59,7 +60,7 @@ export class Post extends Document {
             title: '',
             content: '',
             categoryId: '',
-            author: '',
+            displayName: '',
             email: '',
             phoneNumber: '',
             country: '',
@@ -68,10 +69,10 @@ export class Post extends Document {
             address: '',
             zipCode: '',
             files: [''],
-            noOfComments: 0,
-            noOfLikes: 0,
-            noOfDislikes: 0,
-            noOfViews: 0,
+            numberOfComments: 0,
+            numberOfLikes: 0,
+            numberOfDislikes: 0,
+            numberOfViews: 0,
             private: false,
             reminder: 0
         };
@@ -93,6 +94,10 @@ export class Post extends Document {
     */
     sanitizePostData(data: POST_DATA): POST_DATA {
         data = Object.assign(this.defaultPostData, data);
+        data.uid = this.loginUid;
+        // console.log('----this.loginUser', this.loginUser);
+        data.displayName = this.loginUser.displayName;
+        data.email = this.loginUser.email;
         return this.hook('post.sanitizePostData', data);
     }
 

@@ -21,15 +21,19 @@ export class PostRouter extends Post {
     */
     async create(): Promise<ROUTER_RESPONSE> {
 
-        let data: POST_DATA = this.hook('post.create', this.params)
-        data = this.sanitizePostData(data)
+        let data: POST_DATA = this.hook('post.create', this.params);
+        data = this.sanitizePostData(data);
         const validate = this.validatePostData(data);
         if ( validate ) {
-            // console.log("---- validate: ", validate);
             return validate;
         }
-        if ( await this.exists( data.categoryId ) ) {
-            return await super.set(data);
+        if ( await this.exists( data.categoryId, COLLECTIONS.CATEGORIES ) ) {
+            const re = await super.set(data);
+            if ( this.isErrorObject(re) ) return re;
+            const increase = await this.increase( COLLECTIONS.CATEGORIES, data.categoryId, 'numberOfPosts', 1 );
+            // console.log("---- increase: ", increase);
+            if ( this.isErrorObject( increase ) ) return increase;
+            return re;
         }
         else {
             return this.error( E.POST_CATEGORY_DOES_NOT_EXIST, { categoryId: data.categoryId} );
@@ -42,15 +46,17 @@ export class PostRouter extends Post {
     * 
     * 
     */
-    async get(): Promise<ROUTER_RESPONSE | boolean> {
+    async get(): Promise<ROUTER_RESPONSE> {
         // console.log("----------- This shouldn't come here!");
-        if (!this.loginUid) return this.error(E.USER_NOT_LOGIN); // On Unit Test, it will be set with `uid`
+        // if (!this.loginUid) return this.error(E.USER_NOT_LOGIN); // On Unit Test, it will be set with `uid`
         if (this.validatePostRequest(this.params)) return this.validatePostRequest(this.params);
         
-        const re = this.hook('post.get');
-        if (this.isErrorObject(re)) return re;
+        let id = this.param('id');
+        if ( _.isEmpty(id) ) return this.error(E.NO_DOCUMENT_ID);
+        id = this.hook('post.get', id);
+        if (this.isErrorObject(id)) return id;
         
-        return await super.get(re);
+        return await super.get(id);
         // return 'I am get';
     }
     
@@ -74,6 +80,13 @@ export class PostRouter extends Post {
     * @param data Data to validate
     */
     validatePostData(data: POST_DATA): ROUTER_RESPONSE {
+
+        if ( _.isEmpty( data.categoryId ) ) return this.error( E.NO_CATEGORY_ID );
+
+        // const typeCheck = this.typeChecker( data, this.defaultPostData );
+        // if ( typeCheck ) return typeCheck;
+
+        // console.log( data );
         
         
         // if (this.checkDocumentIDFormat(data.id)) return this.error(this.checkDocumentIDFormat(data.id)); 
@@ -82,26 +95,26 @@ export class PostRouter extends Post {
         // Type checking -> Must be string
         // if (! _.isString( data.id ) ) return this.error( E.MUST_BE_A_STRING, { value: 'Post ID' } );
         // if (! _.isString( data.uid ) ) return this.error( E.MUST_BE_A_STRING, { value: 'Post UID' } );
-        if (! _.isString( data.title ) ) return this.error( E.MUST_BE_A_STRING, { value: 'Post title' } );
-        if (! _.isString( data.content ) ) return this.error( E.MUST_BE_A_STRING, { value: 'Post content' } );
-        if (! _.isString( data.categoryId ) ) return this.error( E.MUST_BE_A_STRING, { value: 'Post categoryID' } );
-        if (! _.isString( data.author ) ) return this.error( E.MUST_BE_A_STRING, { value: 'Post author' } );
-        if (! _.isString( data.email ) ) return this.error( E.MUST_BE_A_STRING, { value: 'Post email' } );
-        if (! _.isString( data.phoneNumber ) ) return this.error( E.MUST_BE_A_STRING, { value: 'Post phone number' } );
-        if (! _.isString( data.country ) ) return this.error( E.MUST_BE_A_STRING, { value: 'Post country' } );
-        if (! _.isString( data.province ) ) return this.error( E.MUST_BE_A_STRING, { value: 'Post province' } );
-        if (! _.isString( data.city ) ) return this.error( E.MUST_BE_A_STRING, { value: 'Post city' } );
-        if (! _.isString( data.address ) ) return this.error( E.MUST_BE_A_STRING, { value: 'Post address' } );
-        if (! _.isString( data.zipCode ) ) return this.error( E.MUST_BE_A_STRING, { value: 'Post zip code' } );
+        // if (! _.isString( data.title ) ) return this.error( E.MUST_BE_A_STRING, { value: 'Post title' } );
+        // if (! _.isString( data.content ) ) return this.error( E.MUST_BE_A_STRING, { value: 'Post content' } );
+        // if (! _.isString( data.categoryId ) ) return this.error( E.MUST_BE_A_STRING, { value: 'Post categoryID' } );
+        // if (! _.isString( data.displayName ) ) return this.error( E.MUST_BE_A_STRING, { value: 'Post displayName' } );
+        // if (! _.isString( data.email ) ) return this.error( E.MUST_BE_A_STRING, { value: 'Post email' } );
+        // if (! _.isString( data.phoneNumber ) ) return this.error( E.MUST_BE_A_STRING, { value: 'Post phone number' } );
+        // if (! _.isString( data.country ) ) return this.error( E.MUST_BE_A_STRING, { value: 'Post country' } );
+        // if (! _.isString( data.province ) ) return this.error( E.MUST_BE_A_STRING, { value: 'Post province' } );
+        // if (! _.isString( data.city ) ) return this.error( E.MUST_BE_A_STRING, { value: 'Post city' } );
+        // if (! _.isString( data.address ) ) return this.error( E.MUST_BE_A_STRING, { value: 'Post address' } );
+        // if (! _.isString( data.zipCode ) ) return this.error( E.MUST_BE_A_STRING, { value: 'Post zip code' } );
         
         // Type Checking -> Must be number
-        if (! _.isNumber( data.noOfComments ) ) return this.error( E.MUST_BE_A_NUMBER, { value: 'Post noOfComments' } );        
-        if (! _.isNumber( data.noOfLikes ) ) return this.error( E.MUST_BE_A_NUMBER, { value: 'Post noOfLikes' } );        
-        if (! _.isNumber( data.noOfDislikes ) ) return this.error( E.MUST_BE_A_NUMBER, { value: 'Post noOfDislikes'} );        
-        if (! _.isNumber( data.noOfViews ) ) return this.error( E.MUST_BE_A_NUMBER, { value: 'Post noOfViews' } );        
-        if (! _.isNumber( data.reminder ) ) return this.error( E.MUST_BE_A_NUMBER, { value: 'Post reminder' } );        
+        // if (! _.isNumber( data.noOfComments ) ) return this.error( E.MUST_BE_A_NUMBER, { value: 'Post noOfComments' } );        
+        // if (! _.isNumber( data.noOfLikes ) ) return this.error( E.MUST_BE_A_NUMBER, { value: 'Post noOfLikes' } );        
+        // if (! _.isNumber( data.noOfDislikes ) ) return this.error( E.MUST_BE_A_NUMBER, { value: 'Post noOfDislikes'} );        
+        // if (! _.isNumber( data.noOfViews ) ) return this.error( E.MUST_BE_A_NUMBER, { value: 'Post noOfViews' } );        
+        // if (! _.isNumber( data.reminder ) ) return this.error( E.MUST_BE_A_NUMBER, { value: 'Post reminder' } );        
         
-        if (! _.isBoolean(data.private)) return this.error( E.MUST_BE_A_BOOLEAN, { value: 'Post data private' } )
+        // if (! _.isBoolean(data.private)) return this.error( E.MUST_BE_A_BOOLEAN, { value: 'Post data private' } );
         
         return <any>false;
     }

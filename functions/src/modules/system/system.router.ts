@@ -1,6 +1,6 @@
 // import * as admin from 'firebase-admin';
 import { Anonymous, E } from '../core/core';
-// import { User } from '../user/user';
+import { USER_DATA } from '../user/user';
 import { System } from './system';
 // import { Base } from './../core/base';
 
@@ -58,8 +58,12 @@ export class SystemRouter extends System {
             if ( user['code'] !== E.FIREBASE_AUTH_UID_ALREADY_EXISTS ) return this.error( E.SYSTEM_ALREADY_INSTALLED );
         }
 
-        // Anonymouse created.
-        const setResult = await this.set({name: Anonymous.displayName}, Anonymous.uid, 'users');
+        // Anonymouse created. set it under 'users'.
+        const data: USER_DATA = {
+            email: Anonymous.email,
+            displayName: Anonymous.displayName
+        };
+        const setResult = await this.set( data, Anonymous.uid, 'users');
         // console.log('collectionName: ', this.collectionName, setResult);
         if ( this.isErrorObject( setResult ) ) {
             return setResult;

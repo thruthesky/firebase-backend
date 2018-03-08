@@ -22,6 +22,7 @@ export const UID_CANNOT_CONTAIN_SLASH = -55; es[UID_CANNOT_CONTAIN_SLASH] = 'UID
 
 
 
+export const TYPE_CHECK = -40010; es[TYPE_CHECK] = 'Type check error. name: #name, type should be #type';
 
 
 export const NO_DOCUMENT_ID = -40025; es[NO_DOCUMENT_ID] = 'No documnet ID';

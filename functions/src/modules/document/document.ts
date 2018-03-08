@@ -283,7 +283,7 @@ async delete(documentID): Promise<any> {
 *      - The value after added if success.
 * 
 */
-async add(...params) {
+async increase(...params) {
     let collectionName = null;
     let documentID = null;
     let property = null;

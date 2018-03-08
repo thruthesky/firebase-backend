@@ -3,6 +3,7 @@
 import { ROUTER_RESPONSE, E } from '../core/core';
 import { Category, CATEGORY } from './category';
 import * as _ from 'lodash';
+import { POST_DATA } from './post';
 
 /**
 * @Attention All the validity, permission check must be done before this class.
@@ -27,12 +28,16 @@ export class CategoryRouter extends Category {
 
         if (!this.isAdmin()) return this.error(E.PERMISSION_DENIED_ADMIN_ONLY);
 
-        const re = this.sanitizeCategoryData(this.params);
+        // console.log("params: ", this.params);
+        const re: CATEGORY = this.sanitizeCategoryData(this.params);
 
         const validate = this.validateCategoryData(re);
         if ( validate ) return validate;
 
-        if (await this.exists(this.param('id'))) return this.error(E.CATEGORY_ALREADY_EXISTS, { id: this.param('id') });
+
+        // console.log("re: ", re);
+
+        if (await this.exists( re.id )) return this.error(E.CATEGORY_ALREADY_EXISTS, { id: re.id });
 
         return await super.set(re, this.params.id);
     }
@@ -40,12 +45,12 @@ export class CategoryRouter extends Category {
     /**
      * 
      * 
-     * @desc Users cannot read Category on `Functions`. Admin will read for users. So, no rules are needed on `Firestore` and its very much safe in many ways.
+     * @desc Users cannot read Category on `Functions`.
+     * Admin will read for users. So, no rules are needed on `Firestore` and its very much safe in many ways.
      * 
      * 
      */
     async get(): Promise<ROUTER_RESPONSE> {
-        if (!this.isAdmin()) return this.error(E.PERMISSION_DENIED_ADMIN_ONLY);
         return await super.get(this.params.id);
     }
 
