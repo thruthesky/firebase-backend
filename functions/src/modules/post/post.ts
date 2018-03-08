@@ -1,4 +1,5 @@
-﻿// import * as admin from 'firebase-admin';
+﻿import { UID } from './../core/defines';
+// import * as admin from 'firebase-admin';
 import { Document } from './../document/document';
 import { COLLECTIONS } from '../core/core';
 
@@ -21,7 +22,7 @@ export interface POST_DATA {
     email?: string;
     phoneNumber?: string;
     country?: string;
-    provice?: string;
+    province?: string;
     city?: string;
     address?: string;
     zipCode?: string;
@@ -52,7 +53,30 @@ export class Post extends Document {
         
     }
     
-    routerName = 'post'
+    get defaultPostData() {
+        return {
+            id: '',
+            uid: '',
+            title: '',
+            content: '',
+            categoryId: '',
+            author: '',
+            email: '',
+            phoneNumber: '',
+            country: '',
+            province: '',
+            city: '',
+            address: '',
+            zipCode: '',
+            files: [''],
+            noOfComments: 0,
+            noOfLikes: 0,
+            noOfDislikes: 0,
+            noOfViews: 0,
+            private: false,
+            reminder: 0
+        }
+    }
 
     /**
     * Sanitizes data before pushing to firebase.
@@ -66,14 +90,9 @@ export class Post extends Document {
     * @author gem
     * 
     */
-    sanitizePostData( data ): POST_DATA { 
-        const re = {
-            category : data.category,
-            body : data.body,
-            author : data.uid
-        }
-        
-        return this.hook( 'post.router.sanitizePostData', re ); // Why not hooked as boolean?
+    sanitizePostData( data: POST_DATA ): POST_DATA { 
+        data = Object.assign( this.defaultPostData, data );
+        return this.hook( 'post.router.sanitizePostData', data ); // Why not hooked as boolean?
     }
     
 }
