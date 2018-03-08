@@ -22,7 +22,7 @@ export function init(): any {
 
 import { Router } from './../../modules/router/router';
 export async function route(data) {
-    return await (new Router(data)).run()
+    return await (new Router(data)).run();
 }
 
 

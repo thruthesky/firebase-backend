@@ -57,30 +57,4 @@ describe('[ category-create.ts ]', () => {
 
     });
 
-
-
-
-
-
-
-
-    // describe('Create category with UID', () => {
-
-
-    //     it('Should be error field moderator is not an array', async () => {
-    //         const re = await route({ route: 'category.create', uid: 'i-am-user', id: 'news', moderators:'mod@sample.com'});
-    //         // console.log(re)
-    //         expect(re).to.be.a('object');
-    //         expect(re.code).to.be.equal(E.MUST_BE_AN_ARRAY);
-    //     });
-
-    //     it('Should be success. Test with no error', async () => {
-    //         const re = await route({ route: 'categroy.create', uid: 'i-am-user', id: 'news', name: 'NBA' });
-    //         // console.log(re)
-    //         expect(re).to.be.a('object');
-    //         expect(re.code).to.be.equal(0);
-    //     });
-
-    // });
-
 });

@@ -4,7 +4,7 @@
 import * as E from '../core/error';
 import { ROUTER_RESPONSE } from '../core/core';
 // import { Base } from '../core/base';
-import { Post } from './post';
+import { Post, POST_DATA } from './post';
 
 export class PostRouter extends Post {
 
@@ -13,16 +13,20 @@ export class PostRouter extends Post {
     * 
     * @desc - Checks user if logged in and then calls super.set() tp push data.
     * 
+    * @desc Empty data is allowed to create a post.
+    * 
     * @author gem
     */
     async create(): Promise<ROUTER_RESPONSE> {
 
-        let params = this.hook('post.create', this.params);
-        const validate = this.validatePostData(params);
+        const data: POST_DATA = this.hook('post.create', this.params);
+        const validate = this.validatePostData(data);
         if ( validate ) return validate;
 
+        console.log('---------- data:', data);
+        // if ( ! await this.exists( data.categoryId ) ) return this.error( E.WRONG_CATEGORY_ID, { categoryId: data.categoryId} );
 
-        return await super.set(this.sanitizePostData(params));
+        // return await super.set(this.sanitizePostData(data));
     }
 
     /** 
@@ -61,14 +65,10 @@ export class PostRouter extends Post {
     * 
     * @param data Data to validate
     */
-    validatePostData(data): ROUTER_RESPONSE {
+    validatePostData(data: POST_DATA): ROUTER_RESPONSE {
 
-        if (data.uid !== void 0) {
-            if (this.checkUIDFormat(data.uid)) return this.error(this.checkUIDFormat(data.uid));
-        }
-        if (!data.body) return this.error(E.EMPTY_POST_BODY);
-        if (!data.category) return this.error(E.POST_HAS_NO_CATEGORY); // Or put default value "General"?
-
+        if (!data.categoryId) return this.error(E.NO_CATEGORY_ID); //
+        
         return <any>false;
     }
 
