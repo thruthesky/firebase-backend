@@ -1,14 +1,12 @@
-﻿
-/**
+﻿/**
  * @author Gem
  */
-// import * as chai from 'chai';
-// const expect = chai.expect;
+import * as chai from 'chai';
+const expect = chai.expect;
 // import * as _ from 'lodash';
-import { Base } from './../../../modules/core/core';
-// import { PostRouter } from './../../../modules/post/post.router';
-// import { Document } from './../../../modules/document/document';
+import { Base, E } from './../../../modules/core/core';
 import { init } from './../init';
+import { PostRouter } from '../../../modules/post/post.router';
 Base.admin = init();
 
 
@@ -24,42 +22,42 @@ Base.admin = init();
  * 
  * 
  */
-
-
 // if ( !uid ) return this.error(E.NO_UID);
 // if ( uid.length > 128 ) return this.error(E.UID_TOO_LONG);
 // if ( uid.indexOf('/') !== -1 ) return this.error(E.UID_CANNOT_CONTAIN_SLASH);
 
-describe('post-verify-uid-postid', () => {
-    // const postId = '4LNEQ5sNcazSiAv4TcjX';
-    // const postId = '..';
+describe('[ post-verify-data.ts ]', () => {
     beforeEach( () => {
         Base.useUid = true;
     });
 
-        // describe('Validation test post request\'s UID.', () => {
+        describe('Error Test Post Data Validation', () => {
 
-        //     it(`Should be okay with post ID and '${Anonymous.uid}' is accepted as UID`, async () => {
-        //         const $post = new PostRouter(); // Set input data
-        //         const re = await $post.validatePostRequest( {  postId: postId, uid: Anonymous.uid } );
-        //         expect(re).to.be.equal(false);
+            // it(`Test sanitize post data with empty fields`, async () => {
+            //     const re = (new PostRouter).sanitizePostData(<any>{ id : 'this-is-my-post', uid: 'I-am-poster', content: '12' })
+            //     // const re = await (new PostRouter).validatePostData( data );
+            //     console.log(re)
+            //     // expect(re).to.be.equal(false);
+            // });
 
-        //     });
+            it(`Error Test on String Fields`, () => {
+                const data = (new PostRouter).sanitizePostData(<any>{ id : 'this-is-my-post', uid: 'I-am-poster', content: 12 })
+                const re =  (new PostRouter).validatePostData( data );
+                expect(re.code).to.be.equal(E.MUST_BE_A_STRING);
+            });
 
-        //     it(`UID lenght exceeds 128, Expected error: '${E.obj(E.UID_TOO_LONG).message}' `, async () => {
-        //         const $post = new PostRouter(); // Set input datad
-        //         const re = await $post.validatePostRequest( { postId: postId, uid: 'kjadfkjagfhaskfjhgaskdfhgasddkjfddhd5dgskjdfhgsakjdfhgskjfgaskjfhgaskjdfgsakjfgaskjfhgskjfgsakjdfgaskjdfgaksjdfgaksdjfgaskjdfgaskjd' } );
-        //         // expect(re).to.be.equal(false);
-        //         expect(re['code']).to.be.equal(E.UID_TOO_LONG);
-        //     });
+            it(`Error Test on Number Fields`,  () => {
+                const data = (new PostRouter).sanitizePostData(<any>{ id : 'this-is-my-post', uid: 'I-am-poster', noOfComments: 'five' })
+                const re =  (new PostRouter).validatePostData( data );
+                expect(re.code).to.be.equal(E.MUST_BE_A_NUMBER);
+            });
 
-        //     it(`UID cannot contain slashes. Expected error: '${E.obj(E.UID_CANNOT_CONTAIN_SLASH).message}' `, async () => {
-        //         const $post = new PostRouter(); // Set input datad
-        //         const re = await $post.validatePostRequest( { postId: postId, uid: 'kjadfkjagfasjhgaskdfhg/sddjfddhd5dgskjdfhgsakjdfhgskjfgaskjfhgaskjdfgsakjfgaskjfhgskjfgsakjdfgaskjdfgaksjdfgaksdjfgaskjdfgaskjd' } );
-        //         // expect(re).to.be.equal(false);
-        //         expect(re['code']).to.be.equal(E.UID_CANNOT_CONTAIN_SLASH);
-        //     });
-        // });
+            it(`Error Test on Boolean Fields`,  () => {
+                const data = (new PostRouter).sanitizePostData(<any>{ id : 'this-is-my-post', uid: 'I-am-poster', private: 'im not boolean' })
+                const re =  (new PostRouter).validatePostData( data );
+                expect(re.code).to.be.equal(E.MUST_BE_A_BOOLEAN);
+            });
+        });
 
         // describe('Validation test post request\'s PostID.', () => {
 
