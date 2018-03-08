@@ -169,8 +169,9 @@ export class Document extends Base {
      *          - ErrorObject. note: it is a promise that is being returned.
      *          
      */
-    async get(documentID, collectionName?: string): Promise<any> {
-        console.log("-- get() ==> documentID: ", documentID, "collectionName: ", collectionName);
+    async get(documentID: string, collectionName?: string): Promise<any> {
+        // console.log("--- get() ==> documentID: ", documentID, "collectionName: ", collectionName);
+        // console.log( new Error( documentID) );
         if (!documentID) return this.error(E.NO_DOCUMENT_ID);
         documentID = this.hook('document.get_before', documentID);
 
@@ -204,6 +205,7 @@ export class Document extends Base {
             })
             .catch(e => this.error(e));
     }
+    
 
     /**
      * Returns true if the document data for input `documentID` exists.
@@ -222,10 +224,10 @@ export class Document extends Base {
      *      - true if the document is exist
      *      - false if not.
      */
-    async exists(documentID, collectionName?: string): Promise<boolean> {
-        console.log("--- documentID", documentID, "---collectionName:", collectionName);
-        const re = await this.get(documentID, collectionName);
-        console.log("get: re: ", re);
+    async exists(documentID: string, collectionName?: string): Promise<boolean> {
+        const $document = new Document( this.collectionName );
+        const re = await $document.get(documentID, collectionName);
+        // console.log("get: re: ", re);
         if (this.isErrorObject(re)) {
             // if ( re['code'] === E.DOCUMENT_ID_DOES_NOT_EXISTS_FOR_GET ) return false;
             return false;

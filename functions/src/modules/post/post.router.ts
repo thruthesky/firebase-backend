@@ -28,7 +28,7 @@ export class PostRouter extends Post {
             return validate;
         }
 
-        console.log('---------- data:', data);
+        
         if ( await this.exists( data.categoryId, COLLECTIONS.CATEGORIES ) ) {
             return await super.set(this.sanitizePostData(data));
         }
@@ -44,6 +44,7 @@ export class PostRouter extends Post {
     * 
     */
     async get(): Promise<ROUTER_RESPONSE | boolean> {
+        console.log("----------- This shouldn't come here!");
         if (!this.loginUid) return this.error(E.USER_NOT_LOGIN); // On Unit Test, it will be set with `uid`
         if (this.validatePostRequest(this.params)) return this.validatePostRequest(this.params);
 
