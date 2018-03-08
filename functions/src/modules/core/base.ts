@@ -220,14 +220,14 @@ export class Base {
      * Gets login user's `uid`
      */
     get loginUid() {
-        return Base.uid
+        return Base.uid;
     }
 
     get collectionUsers(): string {
-        return this.collectionNameWithPrefix(COLLECTIONS.USERS)
+        return this.collectionNameWithPrefix(COLLECTIONS.USERS);
     }
     get collectionSettings(): string {
-        return this.collectionNameWithPrefix(COLLECTIONS.SETTINGS)
+        return this.collectionNameWithPrefix(COLLECTIONS.SETTINGS);
     }
 
     /**
@@ -236,7 +236,7 @@ export class Base {
      * @param documentID document id
      */
     getDocument(collectionName, documentID): Promise<admin.firestore.DocumentSnapshot> {
-        return this.db.collection(collectionName).doc(documentID).get()
+        return this.db.collection(collectionName).doc(documentID).get();
     }
     /**
      * Returns user data or backend error object.
