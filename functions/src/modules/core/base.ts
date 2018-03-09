@@ -46,7 +46,7 @@ export class Base {
      */
     static uid: string = null;
 
-    static hookObj = null;
+    // static hookObj = null;
 
     /**
      * If the user logs in, it will have user data. It may have anonymous user data.
@@ -247,25 +247,25 @@ export class Base {
 
 
 
-    /**
-     * Returns user data or backend error object.
-     * @desc This is a simple way to get user data.
-     * @param uid User uid
-     * @return A resolved promise of User document data object or `backend error object`
-     * 
-     * @todo move this to `user.ts` class.
-     */
-    async getUserDocument(uid): Promise<USER_DATA> {
-        return this.getDocument(this.collectionUsers, uid)
-            .then(doc => {
-                if (doc.exists) {
-                    const data = doc.data();
-                    return this.hook('base.getUserDocument_then', data);
-                }
-                else return this.error(E.USER_ID_NOT_EXISTS_IN_USER_COLLECTION, { id: uid });
-            })
-            .catch(e => this.error(e));
-    }
+    // /**
+    //  * Returns user data or backend error object.
+    //  * @desc This is a simple way to get user data.
+    //  * @param uid User uid
+    //  * @return A resolved promise of User document data object or `backend error object`
+    //  * 
+    //  * @todo move this to `user.ts` class.
+    //  */
+    // async getUserDocument(uid): Promise<USER_DATA> {
+    //     return await this.getDocument(this.collectionUsers, uid)
+    //         .then(doc => {
+    //             if (doc.exists) {
+    //                 const data = doc.data();
+    //                 return this.hook('base.getUserDocument_then', data);
+    //             }
+    //             else return this.error(E.USER_ID_NOT_EXISTS_IN_USER_COLLECTION, { id: uid });
+    //         })
+    //         .catch(e => this.error(e));
+    // }
 
 
 
@@ -275,7 +275,7 @@ export class Base {
      * @return a `settings` document object in resolved promise.
      * @todo test
      */
-    async getSettings(documentID): Promise<any> {
+    getSettings(documentID): Promise<any> {
         return this.getDocument(this.collectionSettings, documentID)
             .then(doc => {
                 if (doc.exists) {
