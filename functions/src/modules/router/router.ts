@@ -17,19 +17,20 @@ export class Router extends Base {
         super(null);
         Base.params = params;
         this.user = new User();
-        // console.log("[ params ] ", params );
     }
 
+    /**
+     * Runs the router.
+     */
     async run(): Promise<ROUTER_RESPONSE> {
-
-
-
 
         if (!this.param('route')) {
             return this.error(E.EMPTY_ROUTE);
         }
 
-        // Check router class.
+        /**
+         * Check router class name.
+         */
         let $router = null;
         if (this.routeClassName === 'user') {
             const userRouter = new UserRouter();
@@ -40,9 +41,11 @@ export class Router extends Base {
         else if (this.routeClassName === 'category') $router = new CategoryRouter();
         else return this.error(E.WRONG_ROUTE);
 
-        
-        // Check router method.
+        /**
+         * Check router method name.
+         */
         if ($router[this.routeMethodName] === void 0) return this.error(E.WRONG_METHOD);
+
 
         await this.loadSystemSettings(); // @see README.md## Load System Settings.
         
@@ -53,20 +56,18 @@ export class Router extends Base {
             return verify;
         }
 
-        /// get default return value
-        let returnData = { route: this.param('route'), code: 0, role: this.user.getRole() };
+        /// Initialize default return value to response to client.
+        let returnData:ROUTER_RESPONSE = { route: this.param('route'), code: 0, role: this.user.getRole() };
 
 
         // check if system is installed.
         if ( ! this.isSystemInstalled() ) returnData['installed'] = false;
 
-        // Run router.
+        // Run the router.
         const result = await $router[this.routeMethodName]();
 
         if (  this.isErrorObject( result ) ) {
             returnData = Object.assign( returnData, result );
-            // ret['code'] = res['code'];
-            // ret['message'] = res['message'];
         }
         else {
             returnData['data'] = result;

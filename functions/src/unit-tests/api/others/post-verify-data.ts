@@ -5,9 +5,8 @@
 // const expect = chai.expect;
 // import * as _ from 'lodash';
 import { Base } from './../../../modules/core/core';
-import { init } from './../init';
 // import { PostRouter } from '../../../modules/post/post.router';
-Base.admin = init();
+
 
 
 /**

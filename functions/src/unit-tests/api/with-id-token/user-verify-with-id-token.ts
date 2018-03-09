@@ -2,13 +2,11 @@ import * as chai from 'chai';
 const expect = chai.expect;
 import { Base } from './../../../modules/core/core';
 import { Router } from './../../../modules/router/router';
-import { init } from './../init';
 import { User } from './../../../modules/user/user';
 
 import { idToken } from '../../test-data';
 
 const $user: User = new User();
-Base.admin = init();
 
 
 /**

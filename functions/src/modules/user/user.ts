@@ -80,6 +80,7 @@ export class User extends Document {
      * 
      * @desc it sets 'null' on `Base.uid` at first.
      * @desc it saves the user's uid at `Base.uid`. It may be Anonymous uid.
+     * @desc It saves the user data into `this.loginUser`
      * @desc If no `idToken` was given by HTTP request, then Anonymous uid will be used.
      * @desc IMPORTANT:
      *      `Anonymous` will be used if `idToken` is set to falsy like empty string, undefined, null.
@@ -92,13 +93,14 @@ export class User extends Document {
      * 
      * 
      * @desc IMPORTANT: If wrong `UID` or idToken` was give, then new user document will be created.
-     * @see 
+     * 
      * 
      *      
      * 
      * @return
-     *      - User Document Object on right `UID` or `ID Token` and if they are falsy.
-     *      - User Document on Wrong UID or `ID Token` whose user document does not exists.
+     *      - User Document Object of the `UID` or `ID Token.` If those are falsy, then it returns Anonymous document data.
+     *      - User Document on Wrong `UID` or `ID Token` whose user document does not exists.
+     *          - IMPORTANT: Even if `UID` is wrong, it still return user document data for that wrong `UID`. It will create user document in 'users' collection and return it.
      * 
      *      - Or ErrorObject on error like failed to decode `ID Token`
      * 
