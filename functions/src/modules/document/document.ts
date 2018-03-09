@@ -1,6 +1,6 @@
 import * as admin from 'firebase-admin';
 import { Base, E } from './../core/core';
-import { document } from 'firebase-functions/lib/providers/firestore';
+// import { document } from 'firebase-functions/lib/providers/firestore';
 
 
 export class Document extends Base {

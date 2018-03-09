@@ -1,4 +1,4 @@
-﻿import { UID, Anonymous, ROUTER_RESPONSE } from './../core/defines';
+﻿import { Anonymous, ROUTER_RESPONSE } from './../core/defines';
 // import * as admin from 'firebase-admin';
 import { Document } from './../document/document';
 import { COLLECTIONS, E } from '../core/core';

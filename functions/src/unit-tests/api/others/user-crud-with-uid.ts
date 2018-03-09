@@ -26,27 +26,27 @@ describe('[ user-crud-with-uid.ts ]', () => {
             // if (got && got.code) console.log(got);
             expect(got).to.be.a('object');
             expect(got['data']['name']).to.be.equal('name-b');
-        })
+        });
 
 
         it(`Should failed on update because emtpy uid`, async () => {
-            const re = await route({ route: 'user.update', uid: '', name: 'name-b-updated' }) // TEST with UID.
+            const re = await route({ route: 'user.update', uid: '', name: 'name-b-updated' }); // TEST with UID.
             // const re = await route({ route: 'user.update', idToken: '', name: 'name-b-updated' })
             // console.log("=============== re: ", re);
             expect(re.code).to.be.equal(E.ANONYMOUS_CANNOT_EDIT_PROFILE);
-        })
+        });
 
         
         it(`Should failed on update because wrong gender.`, async () => {
             const re = await route({ route: 'user.update', uid: 'user-b', gender: 'D' });
             expect(re.code).to.be.equal(E.WRONG_GENDER);
-        })
+        });
 
         it(`Should be success on update name to name-updated.`, async () => {
             const re = await route({ route: 'user.update', uid: 'user-b', name: 'name-updated' });
             expect(re.code).to.be.equal(0);
-        })
-    })
+        });
+    });
 
 
 
