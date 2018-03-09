@@ -137,6 +137,18 @@ $ nodemon .\node_modules\mocha\bin\_mocha .\lib\unit-test\server\router.js --wat
 
 
 
+## No validator() and sanitizer() accessories.
+
+* It may be a good way to put a `validator` and `sanitizer` class or method for each `router`.
+ In this way, we can make more structured and clean code.
+
+* But we decided not to separate them from the router class/method itself.
+
+ * The code may look dirty but it is more easy to understand since everything is in one class method.
+
+ * And we are using `NoSQL`. Developers can expand the document fields freely. We will put a less restriction on sanitizing. This is one reason why we do not make a separate sanitizing funtion.
+
+
 
 ## Loading System Settings
 

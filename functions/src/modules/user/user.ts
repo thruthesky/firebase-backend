@@ -62,14 +62,14 @@ export class User extends Document {
     }
 
 
-    /**
-     * It sanitize user data to set/update.
-     * 
-     * @param data User data 
-     */
-    sanitizeUserData(data: USER_DATA) {
-        return this.hook( 'user.router.sanitizeUserData', data );
-    }
+    // /**
+    //  * It sanitize user data to set/update.
+    //  * 
+    //  * @param data User data 
+    //  */
+    // sanitizeUserData(data: USER_DATA) {
+    //     return this.hook( 'user.router.sanitizeUserData', data );
+    // }
 
     
 

@@ -61,55 +61,55 @@ export class Post extends Document {
     }
 
 
-    get defaultPostData() : POST_DATA {
-        return {
-            uid: '',
-            title: '',
-            content: '',
-            categoryId: '',
-            displayName: '',
-            email: '',
-            phoneNumber: '',
-            country: '',
-            province: '',
-            city: '',
-            address: '',
-            zipCode: '',
-            files: [''],
-            numberOfComments: 0,
-            numberOfLikes: 0,
-            numberOfDislikes: 0,
-            numberOfViews: 0,
-            private: false,
-            reminder: 0
-        };
-    }
+    // get defaultPostData() : POST_DATA {
+    //     return {
+    //         uid: '',
+    //         title: '',
+    //         content: '',
+    //         categoryId: '',
+    //         displayName: '',
+    //         email: '',
+    //         phoneNumber: '',
+    //         country: '',
+    //         province: '',
+    //         city: '',
+    //         address: '',
+    //         zipCode: '',
+    //         files: [''],
+    //         numberOfComments: 0,
+    //         numberOfLikes: 0,
+    //         numberOfDislikes: 0,
+    //         numberOfViews: 0,
+    //         private: false,
+    //         reminder: 0
+    //     };
+    // }
 
 
 
-    /**
-    * Sanitizes data before pushing to firebase.
-    * 
-    * 
-    * 
-    * 
-    * @param data Data to sanitize.
-    * 
-    * @return sanitized data with hook.
-    * @author gem
-    * 
-    */
-    sanitizePostData(data: POST_DATA): POST_DATA {
-        data = Object.assign(this.defaultPostData, data);
+    // /**
+    // * Sanitizes data before pushing to firebase.
+    // * 
+    // * 
+    // * 
+    // * 
+    // * @param data Data to sanitize.
+    // * 
+    // * @return sanitized data with hook.
+    // * @author gem
+    // * 
+    // */
+    // sanitizePostData(data: POST_DATA): POST_DATA {
+    //     data = Object.assign(this.defaultPostData, data);
         
-        if ( data.id !== void 0 ) delete data.id; // delete `id` if ever there exists.
+    //     if ( data.id !== void 0 ) delete data.id; // delete `id` if ever there exists.
 
-        data.uid = this.loginUid;
-        // console.log('----this.loginUser', this.loginUser);
-        data.displayName = this.loginUser.displayName;
-        data.email = this.loginUser.email;
-        return this.hook('post.sanitizePostData', data);
-    }
+    //     data.uid = this.loginUid;
+    //     // console.log('----this.loginUser', this.loginUser);
+    //     data.displayName = this.loginUser.displayName;
+    //     data.email = this.loginUser.email;
+    //     return this.hook('post.sanitizePostData', data);
+    // }
 
 
 

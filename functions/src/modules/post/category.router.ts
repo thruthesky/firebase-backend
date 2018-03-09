@@ -28,11 +28,11 @@ export class CategoryRouter extends Category {
 
         if (!this.isAdmin()) return this.error(E.PERMISSION_DENIED_ADMIN_ONLY);
 
-        // console.log("params: ", this.params);
-        const re: CATEGORY = this.sanitizeCategoryData(this.params);
+        
+        const re: CATEGORY = this.hook('category.router.create', this.params);
 
-        const validate = this.validateCategoryData(re);
-        if ( validate ) return validate;
+        // const validate = this.validateCategoryData(re);
+        // if ( validate ) return validate;
 
 
         // console.log("re: ", re);
@@ -66,42 +66,40 @@ export class CategoryRouter extends Category {
      */
     async update(): Promise<ROUTER_RESPONSE> {
         if (!this.isAdmin()) return this.error(E.PERMISSION_DENIED_ADMIN_ONLY);
-        const re = this.sanitizeCategoryData(this.params);
-        const validate = this.validateCategoryData(re);
-        if (validate) return validate;
+        const re = this.hook('category.router.update', this.params);
         return await super.update(this.params, this.params.id);
     }
 
 
-    /**
-     * 
-    * Validates data if applicable to firebase database
-    * 
-    * @param data Data to validate
-    * 
-     * @returns null if there is no problem. Otherwise `Router Response Error Object`
-    */
-    validateCategoryData(data: CATEGORY): ROUTER_RESPONSE {
+    // /**
+    //  * 
+    // * Validates data if applicable to firebase database
+    // * 
+    // * @param data Data to validate
+    // * 
+    //  * @returns null if there is no problem. Otherwise `Router Response Error Object`
+    // */
+    // validateCategoryData(data: CATEGORY): ROUTER_RESPONSE {
 
-        if (_.isEmpty(data.id)) return this.error(E.NO_CATEGORY_ID);
+    //     if (_.isEmpty(data.id)) return this.error(E.NO_CATEGORY_ID);
 
-        if (this.checkDocumentIDFormat(data.id)) return this.error(this.checkDocumentIDFormat(data.id));
+    //     if (this.checkDocumentIDFormat(data.id)) return this.error(this.checkDocumentIDFormat(data.id));
 
-        // Number Validation
-        if (!_.isNumber(data.levelOnList)) return this.error(E.MUST_BE_A_NUMBER, { name: 'levelOnList' });
-        if (!_.isNumber(data.levelOnWrite)) return this.error(E.MUST_BE_A_NUMBER, { name: 'levelOnWrite' });
-        if (!_.isNumber(data.levelOnRead)) return this.error(E.MUST_BE_A_NUMBER, { name: 'levelOnRead' });
+    //     // Number Validation
+    //     if (!_.isNumber(data.levelOnList)) return this.error(E.MUST_BE_A_NUMBER, { name: 'levelOnList' });
+    //     if (!_.isNumber(data.levelOnWrite)) return this.error(E.MUST_BE_A_NUMBER, { name: 'levelOnWrite' });
+    //     if (!_.isNumber(data.levelOnRead)) return this.error(E.MUST_BE_A_NUMBER, { name: 'levelOnRead' });
 
-        if (!_.isNumber(data.numberOfComment)) return this.error(E.MUST_BE_A_NUMBER, { name: 'numberOfComments' });
-        if (!_.isNumber(data.numberOfPosts)) return this.error(E.MUST_BE_A_NUMBER, { name: 'numberOfPosts' });
-        if (!_.isNumber(data.numberOfPagesOnNavigation)) return this.error(E.MUST_BE_A_NUMBER, { name: 'numberOfPagesOnNavigation' });
-        if (!_.isNumber(data.numberOfPostsPerPage)) return this.error(E.MUST_BE_A_NUMBER, { name: 'numberOfPostsPerPage' });
+    //     if (!_.isNumber(data.numberOfComment)) return this.error(E.MUST_BE_A_NUMBER, { name: 'numberOfComments' });
+    //     if (!_.isNumber(data.numberOfPosts)) return this.error(E.MUST_BE_A_NUMBER, { name: 'numberOfPosts' });
+    //     if (!_.isNumber(data.numberOfPagesOnNavigation)) return this.error(E.MUST_BE_A_NUMBER, { name: 'numberOfPagesOnNavigation' });
+    //     if (!_.isNumber(data.numberOfPostsPerPage)) return this.error(E.MUST_BE_A_NUMBER, { name: 'numberOfPostsPerPage' });
 
-        // Array Validation
-        if (!_.isArray(data.moderators)) return this.error(E.MUST_BE_AN_ARRAY);
+    //     // Array Validation
+    //     if (!_.isArray(data.moderators)) return this.error(E.MUST_BE_AN_ARRAY);
 
-        return null;
-    }
+    //     return null;
+    // }
 
 
 

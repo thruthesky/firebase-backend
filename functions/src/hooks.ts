@@ -20,6 +20,7 @@ interface HOOK_DOCUMENT_SET {
  * 
  * 
  * 
+ * 
  */
 
 export class Hooks {
@@ -35,6 +36,10 @@ export class Hooks {
      * 
      * @param name Hook name.
      * @param data Hook data. `data` may be passed by refereced. But must be returned.
+     * 
+     * @returns
+     *      - input data. It returns exactly the same input data if the hook method does not exist.
+     *      - Otherwise, It is update the hooks. But mostly the hook returns the data with some fix by the hook.
      */
     run(name, data) {
         // console.log("Hooks::run with : ", this.collectionName );
@@ -46,23 +51,23 @@ export class Hooks {
     }
 
 
-    /**
-     * Returns user data after sanitizing.
-     * @param data user data
-     * @return data to be used after sanitizing
-     */
-    user_router_sanitizeUserData(data) {
+    // /**
+    //  * Returns user data after sanitizing.
+    //  * @param data user data
+    //  * @return data to be used after sanitizing
+    //  */
+    // user_router_sanitizeUserData(data) {
 
-        // Uncomment below if you want to accept all the input from the user.
-        // But becareful on what you are doing. You should be some validation.
+    //     // Uncomment below if you want to accept all the input from the user.
+    //     // But becareful on what you are doing. You should be some validation.
 
-        // const newData = this.params;
-        // newData['hooked'] = 'yes';
-        // return newData;
+    //     // const newData = this.params;
+    //     // newData['hooked'] = 'yes';
+    //     // return newData;
 
-        return data;
+    //     return data;
 
-    }
+    // }
 
     /**
      * 
@@ -72,20 +77,20 @@ export class Hooks {
      *          `UserRouter::set()` will set data normally.
      * 
      */
-    user_set() {
-        return false;
+    user_router_set(params) {
+        return params;
         // return this.error( E.TEST );
     }
 
-    post_router_sanitizePostData(data) {
+    // post_router_sanitizePostData(data) {
 
-        // console.log("db: ", this.db);
-        // console.log("collection: ", this.collection);
-        // console.log("params: ", this.params);
+    //     // console.log("db: ", this.db);
+    //     // console.log("collection: ", this.collection);
+    //     // console.log("params: ", this.params);
 
-        data['hooked'] = 'yes';
-        return data;
-    }
+    //     data['hooked'] = 'yes';
+    //     return data;
+    // }
 
 
     /**
@@ -112,19 +117,19 @@ export class Hooks {
      * 
      * @author gem
      */
-    category_router_sanitizeCategoryData(data) {
+    // category_router_sanitizeCategoryData(data) {
 
-        /**
-         * Sanitation on top of default sanitation here.
-         * @code `data['field'] = 'new field'` => Good
-         *        data['illegal'] = undefined => Not accepted
-         * 
-         * @desc any value except undefined is accepted.
-         */
+    //     /**
+    //      * Sanitation on top of default sanitation here.
+    //      * @code `data['field'] = 'new field'` => Good
+    //      *        data['illegal'] = undefined => Not accepted
+    //      * 
+    //      * @desc any value except undefined is accepted.
+    //      */
 
 
-        return data;
-    }
+    //     return data;
+    // }
 
     /**
      * Returns the data after sanitizing.
@@ -148,6 +153,7 @@ export class Hooks {
     document_set_collectionRef(collectionRef) {
         return collectionRef;
     }
+
     /**
      * You can change the docuemnt.
      * 

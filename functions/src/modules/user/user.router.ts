@@ -112,14 +112,14 @@ export class UserRouter extends User {
         //
         if (this.validateUserData(this.params)) return this.validateUserData(this.params);
 
-        const re = this.hook('user.set');
-        if (this.isErrorObject(re)) return re;
+        const params = this.hook('user.router.set', this.params);
+        if (this.isErrorObject(params)) return params;
 
         // console.log("Goint to set with UID: " + this.loginUid);
         // console.log("Data: ", this.params);
 
         // new code
-        return await super.set(this.sanitizeUserData(this.params), this.loginUid);
+        return await super.set( params, this.loginUid);
     }
 
     /**
@@ -137,7 +137,7 @@ export class UserRouter extends User {
         // console.log("UserRouter::update() collection name: ", this.collectionName );
         if (this.isAnonymous()) return this.error(E.ANONYMOUS_CANNOT_EDIT_PROFILE);
         if (this.validateUserData(this.params)) return this.validateUserData(this.params);
-        return await super.update(this.sanitizeUserData(this.params), this.loginUid);
+        return await super.update(this.hook('user.router.update', this.params), this.loginUid);
     }
 
 

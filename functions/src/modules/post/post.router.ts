@@ -20,18 +20,12 @@ export class PostRouter extends Post {
     * @author gem
     */
     async create(): Promise<ROUTER_RESPONSE> {
-        
-        let data: POST_DATA = this.hook('post.create', this.params);
-        data = this.sanitizePostData(data);
-        const validate = this.validatePostData(data);
-        if (validate) {
-            return validate;
-        }
+        const data: POST_DATA = this.hook('post.router.create', this.params);
+        if (_.isEmpty(data.categoryId)) return this.error(E.NO_CATEGORY_ID);
         if (await this.exists(data.categoryId, COLLECTIONS.CATEGORIES)) {
             const re = await super.set(data);
             if (this.isErrorObject(re)) return re;
             const increase = await this.increase(COLLECTIONS.CATEGORIES, data.categoryId, 'numberOfPosts', 1);
-            // console.log("---- increase: ", increase);
             if (this.isErrorObject(increase)) return increase;
             return re;
         }
@@ -67,7 +61,7 @@ export class PostRouter extends Post {
      * 
      */
     async edit() {
-        const params: POST_DATA = this.params;
+        const params: POST_DATA = this.hook('post.router.edit', this.params);
         if (_.isEmpty(params.id)) return this.error(E.NO_DOCUMENT_ID);
         const post: POST_DATA = await super.get(params.id);
 
@@ -76,7 +70,7 @@ export class PostRouter extends Post {
 
         Object.assign( post, params );  // added by gem, merge post and params. sanitizePostData might return default values merged with incomplete param fields. 
         let id = post.id;             // post is already merged in param.
-        return await super.update(this.sanitizePostData(post), id);
+        return await super.update(post, id);
 
         // const id = params.id;
         // return await super.update(this.sanitizePostData(params), id);
@@ -108,52 +102,52 @@ export class PostRouter extends Post {
 
 
 
-    /**
-     * Returns null if there is no problem.
-     *
-     * Validates data if applicable to firebase database
-     * 
-     * @param data Data to validate
-     */
-    validatePostData(data: POST_DATA): ROUTER_RESPONSE {
+    // /**
+    //  * Returns null if there is no problem.
+    //  *
+    //  * Validates data if applicable to firebase database
+    //  * 
+    //  * @param data Data to validate
+    //  */
+    // validatePostData(data: POST_DATA): ROUTER_RESPONSE {
 
-        if (_.isEmpty(data.categoryId)) return this.error(E.NO_CATEGORY_ID);
+    //     if (_.isEmpty(data.categoryId)) return this.error(E.NO_CATEGORY_ID);
 
-        // const typeCheck = this.typeChecker( data, this.defaultPostData );
-        // if ( typeCheck ) return typeCheck;
+    //     // const typeCheck = this.typeChecker( data, this.defaultPostData );
+    //     // if ( typeCheck ) return typeCheck;
         
-        // console.log( data );
+    //     // console.log( data );
 
 
-        // if (this.checkDocumentIDFormat(data.id)) return this.error(this.checkDocumentIDFormat(data.id)); 
+    //     // if (this.checkDocumentIDFormat(data.id)) return this.error(this.checkDocumentIDFormat(data.id)); 
 
-        /** @todo Make shorter code for field type checking. */
-        // Type checking -> Must be string
-        // if (! _.isString( data.id ) ) return this.error( E.MUST_BE_A_STRING, { value: 'Post ID' } );
-        // if (! _.isString( data.uid ) ) return this.error( E.MUST_BE_A_STRING, { value: 'Post UID' } );
-        // if (! _.isString( data.title ) ) return this.error( E.MUST_BE_A_STRING, { value: 'Post title' } );
-        // if (! _.isString( data.content ) ) return this.error( E.MUST_BE_A_STRING, { value: 'Post content' } );
-        // if (! _.isString( data.categoryId ) ) return this.error( E.MUST_BE_A_STRING, { value: 'Post categoryID' } );
-        // if (! _.isString( data.displayName ) ) return this.error( E.MUST_BE_A_STRING, { value: 'Post displayName' } );
-        // if (! _.isString( data.email ) ) return this.error( E.MUST_BE_A_STRING, { value: 'Post email' } );
-        // if (! _.isString( data.phoneNumber ) ) return this.error( E.MUST_BE_A_STRING, { value: 'Post phone number' } );
-        // if (! _.isString( data.country ) ) return this.error( E.MUST_BE_A_STRING, { value: 'Post country' } );
-        // if (! _.isString( data.province ) ) return this.error( E.MUST_BE_A_STRING, { value: 'Post province' } );
-        // if (! _.isString( data.city ) ) return this.error( E.MUST_BE_A_STRING, { value: 'Post city' } );
-        // if (! _.isString( data.address ) ) return this.error( E.MUST_BE_A_STRING, { value: 'Post address' } );
-        // if (! _.isString( data.zipCode ) ) return this.error( E.MUST_BE_A_STRING, { value: 'Post zip code' } );
+    //     /** @todo Make shorter code for field type checking. */
+    //     // Type checking -> Must be string
+    //     // if (! _.isString( data.id ) ) return this.error( E.MUST_BE_A_STRING, { value: 'Post ID' } );
+    //     // if (! _.isString( data.uid ) ) return this.error( E.MUST_BE_A_STRING, { value: 'Post UID' } );
+    //     // if (! _.isString( data.title ) ) return this.error( E.MUST_BE_A_STRING, { value: 'Post title' } );
+    //     // if (! _.isString( data.content ) ) return this.error( E.MUST_BE_A_STRING, { value: 'Post content' } );
+    //     // if (! _.isString( data.categoryId ) ) return this.error( E.MUST_BE_A_STRING, { value: 'Post categoryID' } );
+    //     // if (! _.isString( data.displayName ) ) return this.error( E.MUST_BE_A_STRING, { value: 'Post displayName' } );
+    //     // if (! _.isString( data.email ) ) return this.error( E.MUST_BE_A_STRING, { value: 'Post email' } );
+    //     // if (! _.isString( data.phoneNumber ) ) return this.error( E.MUST_BE_A_STRING, { value: 'Post phone number' } );
+    //     // if (! _.isString( data.country ) ) return this.error( E.MUST_BE_A_STRING, { value: 'Post country' } );
+    //     // if (! _.isString( data.province ) ) return this.error( E.MUST_BE_A_STRING, { value: 'Post province' } );
+    //     // if (! _.isString( data.city ) ) return this.error( E.MUST_BE_A_STRING, { value: 'Post city' } );
+    //     // if (! _.isString( data.address ) ) return this.error( E.MUST_BE_A_STRING, { value: 'Post address' } );
+    //     // if (! _.isString( data.zipCode ) ) return this.error( E.MUST_BE_A_STRING, { value: 'Post zip code' } );
 
-        // Type Checking -> Must be number
-        // if (! _.isNumber( data.noOfComments ) ) return this.error( E.MUST_BE_A_NUMBER, { value: 'Post noOfComments' } );        
-        // if (! _.isNumber( data.noOfLikes ) ) return this.error( E.MUST_BE_A_NUMBER, { value: 'Post noOfLikes' } );        
-        // if (! _.isNumber( data.noOfDislikes ) ) return this.error( E.MUST_BE_A_NUMBER, { value: 'Post noOfDislikes'} );        
-        // if (! _.isNumber( data.noOfViews ) ) return this.error( E.MUST_BE_A_NUMBER, { value: 'Post noOfViews' } );        
-        // if (! _.isNumber( data.reminder ) ) return this.error( E.MUST_BE_A_NUMBER, { value: 'Post reminder' } );        
+    //     // Type Checking -> Must be number
+    //     // if (! _.isNumber( data.noOfComments ) ) return this.error( E.MUST_BE_A_NUMBER, { value: 'Post noOfComments' } );        
+    //     // if (! _.isNumber( data.noOfLikes ) ) return this.error( E.MUST_BE_A_NUMBER, { value: 'Post noOfLikes' } );        
+    //     // if (! _.isNumber( data.noOfDislikes ) ) return this.error( E.MUST_BE_A_NUMBER, { value: 'Post noOfDislikes'} );        
+    //     // if (! _.isNumber( data.noOfViews ) ) return this.error( E.MUST_BE_A_NUMBER, { value: 'Post noOfViews' } );        
+    //     // if (! _.isNumber( data.reminder ) ) return this.error( E.MUST_BE_A_NUMBER, { value: 'Post reminder' } );        
 
-        // if (! _.isBoolean(data.private)) return this.error( E.MUST_BE_A_BOOLEAN, { value: 'Post data private' } );
+    //     // if (! _.isBoolean(data.private)) return this.error( E.MUST_BE_A_BOOLEAN, { value: 'Post data private' } );
 
-        return null;
-    }
+    //     return null;
+    // }
 
     /**
      * 
