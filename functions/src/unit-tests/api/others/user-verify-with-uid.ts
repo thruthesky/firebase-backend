@@ -3,8 +3,6 @@ const expect = chai.expect;
 import { Base, Anonymous } from './../../../modules/core/core';
 import { User } from './../../../modules/user/user';
 import { Router } from './../../../modules/router/router';
-import { init } from './../init';
-Base.admin = init();
 
 
 const $base = new Base('');

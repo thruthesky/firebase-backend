@@ -4,9 +4,7 @@
 import * as chai from 'chai';
 const expect = chai.expect;
 import { Base, E } from './../../../modules/core/core';
-import { init, route } from './../init';
-Base.admin = init();
-
+import { route } from './../init';
 
 
 describe('[ user-email-password-register.ts ]', () => {

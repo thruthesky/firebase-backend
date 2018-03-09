@@ -22,6 +22,9 @@ export function init(): any {
     }
 }
 
+if ( Base.admin === null ) Base.admin = init();
+
+
 import { Router } from './../../modules/router/router';
 export async function route(data) {
     return await (new Router(data)).run();

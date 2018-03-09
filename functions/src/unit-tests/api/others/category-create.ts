@@ -5,8 +5,8 @@ import * as chai from 'chai';
 // import * as _ from 'lodash';
 const expect = chai.expect;
 import { Base, E } from './../../../modules/core/core';
-import { init, route } from './../init';
-Base.admin = init();
+import { route } from './../init';
+
 
 
 

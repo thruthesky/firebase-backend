@@ -3,8 +3,8 @@ const expect = chai.expect;
 import * as _ from 'lodash';
 import { Base } from './../../../modules/core/core';
 import { Document } from './../../../modules/document/document';
-import { init } from './../init';
-Base.admin = init();
+
+
 
 
 

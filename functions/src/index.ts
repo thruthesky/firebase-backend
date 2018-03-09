@@ -13,15 +13,15 @@ const cors = corsOptions({ origin: true });
 /**
  * Production Initialization code.
  */
-// admin.initializeApp(functions.config().firebase);
+admin.initializeApp(functions.config().firebase);
 
 /**
  * Development Intialization code.
  */
-import { serviceAccount } from './settings/serviceAccountKey';
-admin.initializeApp({ // Enable on development.
-    credential: admin.credential.cert(<any>serviceAccount)
-});
+// import { serviceAccount } from './settings/serviceAccountKey';
+// admin.initializeApp({ // Enable on development.
+//     credential: admin.credential.cert(<any>serviceAccount)
+// });
 
 Base.admin = admin;
 

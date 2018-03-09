@@ -41,7 +41,7 @@ export class Base {
     /**
      * Firestore SDK admin object.
      */
-    static admin;
+    static admin = null;
 
     /**
      * HTTP Request parameters.
