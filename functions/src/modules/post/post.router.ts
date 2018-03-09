@@ -41,17 +41,7 @@ export class PostRouter extends Post {
     * 
     */
     async get(): Promise<ROUTER_RESPONSE> {
-        // console.log("----------- This shouldn't come here!");
-        // if (!this.loginUid) return this.error(E.USER_NOT_LOGIN); // On Unit Test, it will be set with `uid`
-        if (this.validatePostRequest(this.params)) return this.validatePostRequest(this.params);
-
-        let id = this.param('id');
-        if (_.isEmpty(id)) return this.error(E.NO_DOCUMENT_ID);
-        id = this.hook('post.get', id);
-        if (this.isErrorObject(id)) return id;
-
-        return await super.get(id);
-        // return 'I am get';
+        return await super.get(this.hook('post.router.get', this.param('id')));
     }
 
 
@@ -62,18 +52,17 @@ export class PostRouter extends Post {
      */
     async edit() {
         const params: POST_DATA = this.hook('post.router.edit', this.params);
-        if (_.isEmpty(params.id)) return this.error(E.NO_DOCUMENT_ID);
-        const post: POST_DATA = await super.get(params.id);
+        const id = params.id;
+
+        const post: POST_DATA = await super.get(id); // get post
+        if ( this.isErrorObject(post) ) return post;
+
+        delete params.id; // delete id. no need to save.
 
         const permission = this.permission(params, post);
         if (permission) return permission;
 
-        Object.assign( post, params );  // added by gem, merge post and params. sanitizePostData might return default values merged with incomplete param fields. 
-        let id = post.id;             // post is already merged in param.
-        return await super.update(post, id);
-
-        // const id = params.id;
-        // return await super.update(this.sanitizePostData(params), id);
+        return await super.update(params, id);
     }
 
     /**
@@ -84,8 +73,9 @@ export class PostRouter extends Post {
     async delete() {
         
         const params: POST_PERMISSION = this.params;
-        if (_.isEmpty(params.id)) return this.error(E.NO_DOCUMENT_ID);
+        // if (_.isEmpty(params.id)) return this.error(E.NO_DOCUMENT_ID);
         const post: POST_DATA = await super.get(params.id);
+        if ( this.isErrorObject(post) ) return post;
         
         const permission = this.permission(params, post);
         if (permission) return permission;
@@ -161,15 +151,15 @@ export class PostRouter extends Post {
      * 
      * 
      */
-    validatePostRequest(data): ROUTER_RESPONSE {
+    // validatePostRequest(data): ROUTER_RESPONSE {
         
-        if (data.uid !== void 0 || data.postId !== void 0) {
-            if (this.checkUIDFormat(data.uid)) return this.error(this.checkUIDFormat(data.uid));
-            if (this.checkDocumentIDFormat(data.postId)) return this.error(this.checkDocumentIDFormat(data.postId));
-        }
+    //     if (data.uid !== void 0 || data.postId !== void 0) {
+    //         if (this.checkUIDFormat(data.uid)) return this.error(this.checkUIDFormat(data.uid));
+    //         if (this.checkDocumentIDFormat(data.postId)) return this.error(this.checkDocumentIDFormat(data.postId));
+    //     }
 
-        return null;
-    }
+    //     return null;
+    // }
 
 
 }
