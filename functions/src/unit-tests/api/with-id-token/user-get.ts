@@ -24,7 +24,7 @@ describe('user-crud-with-id-token', () => {
             // console.log(re);
             expect(re.code).to.be.equal(0);
 
-        })
+        });
     });
 
 

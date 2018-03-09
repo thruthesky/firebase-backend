@@ -43,27 +43,27 @@ describe('user-crud-with-id-token', () => {
             // if (got && got.code) console.log(got);
             expect(got).to.be.a('object');
             expect(got['data']['name']).to.be.equal('name-b');
-        })
+        });
 
         it(`Should failed on update because wrong ID Token.`, async () => {
             // const re = await route({ route: 'user.update', uid: 'wrong-user-id' }); //
             const re = await route({ route: 'user.update', idToken: 'wrong-user-id' });
             // console.log(re);
             expect(re.code).to.be.equal(E.FIREBASE_FAILED_TO_DECODE_ID_TOKEN);
-        })
+        });
 
 
         it(`Should failed on update because wrong gender.`, async () => {
             const re = await route({ route: 'user.update', idToken, gender: 'D' });
             expect(re.code).to.be.equal(E.WRONG_GENDER);
-        })
+        });
 
         it(`Should be success on update name to name-updated.`, async () => {
             const re = await route({ route: 'user.update', idToken: idToken, name: 'name-updated' });
             expect(re.code).to.be.equal(0);
-        })
+        });
 
-    })
+    });
     
 
 });

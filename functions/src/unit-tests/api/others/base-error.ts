@@ -43,4 +43,5 @@ describe('base-error', () => {
         });
     });
     
-})
+});
+

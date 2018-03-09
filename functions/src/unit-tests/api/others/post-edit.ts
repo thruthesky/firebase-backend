@@ -3,10 +3,10 @@
  */
 import * as chai from 'chai';
 const expect = chai.expect;
-import { Base, E, Anonymous } from './../../../modules/core/core';
+import { Base, E } from './../../../modules/core/core';
 import { init, route, adminEmail } from './../init';
-import { CATEGORY } from '../../../modules/post/category';
-import { POST_DATA } from '../../../modules/post/post';
+// import { CATEGORY } from '../../../modules/post/category';
+// import { POST_DATA } from '../../../modules/post/post';
 Base.admin = init();
 
 const categoryId = "test-" + (new Date).getTime();

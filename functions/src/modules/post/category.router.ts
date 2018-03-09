@@ -3,7 +3,7 @@
 import { ROUTER_RESPONSE, E } from '../core/core';
 import { Category, CATEGORY } from './category';
 import * as _ from 'lodash';
-import { POST_DATA } from './post';
+// import { POST_DATA } from './post';
 
 /**
 * @Attention All the validity, permission check must be done before this class.

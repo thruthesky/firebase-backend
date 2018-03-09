@@ -2,7 +2,7 @@
 * @author Gem
 */
 import * as E from '../core/error';
-import { ROUTER_RESPONSE, COLLECTIONS, Anonymous } from '../core/core';
+import { ROUTER_RESPONSE, COLLECTIONS } from '../core/core';
 // import { Base } from '../core/base';
 import { Post, POST_DATA, POST_PERMISSION } from './post';
 import * as _ from 'lodash';
