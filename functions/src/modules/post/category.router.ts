@@ -29,7 +29,9 @@ export class CategoryRouter extends Category {
         if (!this.isAdmin()) return this.error(E.PERMISSION_DENIED_ADMIN_ONLY);
 
         
-        const re: CATEGORY = this.hook('category.router.create', this.params);
+        const category: CATEGORY = this.hook('category.router.create', this.params);
+
+        if (_.isEmpty(category.id)) return this.error(E.NO_CATEGORY_ID);
 
         // const validate = this.validateCategoryData(re);
         // if ( validate ) return validate;
@@ -37,9 +39,9 @@ export class CategoryRouter extends Category {
 
         // console.log("re: ", re);
 
-        if (await this.exists( re.id )) return this.error(E.CATEGORY_ALREADY_EXISTS, { id: re.id });
+        if (await this.exists( category.id )) return this.error(E.CATEGORY_ALREADY_EXISTS, { id: category.id });
 
-        return await super.set(re, this.params.id);
+        return await super.set(category, this.params.id);
     }
 
     /**
@@ -66,8 +68,8 @@ export class CategoryRouter extends Category {
      */
     async update(): Promise<ROUTER_RESPONSE> {
         if (!this.isAdmin()) return this.error(E.PERMISSION_DENIED_ADMIN_ONLY);
-        const re = this.hook('category.router.update', this.params);
-        return await super.update(this.params, this.params.id);
+        const category = this.hook('category.router.update', this.params);
+        return await super.update(category, category.id);
     }
 
 

@@ -116,6 +116,7 @@ export class Document extends Base {
 */
 async update(data, documentID: string, collectionName?: string): Promise<any> {
     if (!data) return null;
+    if ( ! documentID ) return this.error( E.NO_DOCUMENT_ID );
     data['updated'] = this.serverTime();
     data = this.hook('document.update_before', data);
     

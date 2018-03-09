@@ -5,7 +5,7 @@ import * as chai from 'chai';
 // import * as _ from 'lodash';
 const expect = chai.expect;
 import { Base, E } from './../../../modules/core/core';
-import { route } from './../init';
+import { route, adminEmail } from './../init';
 
 
 
@@ -28,9 +28,8 @@ describe('[ category-create.ts ]', () => {
             expect(re.code).to.be.equal(E.PERMISSION_DENIED_ADMIN_ONLY);
         });
         it('With admin uid. without Category id', async () => {
-            await (new Base).loadSystemSettings();
-            const adminEmail = (new Base).getAdminEmail();
-            const re = await route({ route: 'category.create', uid: adminEmail });
+            const re = await route({ route: 'category.create', uid: await adminEmail() });
+            // console.log(re);
             expect ( re.code ).to.be.equal( E.NO_CATEGORY_ID );
         });
     });
@@ -40,17 +39,13 @@ describe('[ category-create.ts ]', () => {
     describe('Category create and overwrite test', () => {
 
         it('Expect success. With admin uid / Category id', async () => {
-            await (new Base).loadSystemSettings();
-            const adminEmail = (new Base).getAdminEmail();
-            const re = await route({ route: 'category.create', uid: adminEmail, id: categoryId });
+            const re = await route({ route: 'category.create', uid: await adminEmail(), id: categoryId });
             // console.log(re);
             expect ( re.code ).to.be.equal( 0 );
             expect ( re.data ).to.be.equal( categoryId );
         });
         it("Create a category that is already exists.", async () => {
-            await (new Base).loadSystemSettings();
-            const adminEmail = (new Base).getAdminEmail();
-            const re = await route({ route: 'category.create', uid: adminEmail, id: categoryId });
+            const re = await route({ route: 'category.create', uid: await adminEmail(), id: categoryId });
             // console.log(re);
             expect ( re.code ).to.be.equal( E.CATEGORY_ALREADY_EXISTS ); 
         });

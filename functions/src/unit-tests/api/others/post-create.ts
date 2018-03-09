@@ -26,7 +26,7 @@ describe('[ post-create.ts ]', () => {
         it('Expect error with E.POST_CATEGORY_DOES_NOT_EXIST', async () => {
             const re = await route({ route: 'post.create', categoryId: 'wrong-category-id' });
             // console.log(re);
-            expect ( re.code ).to.be.equal( E.POST_CATEGORY_DOES_NOT_EXIST );
+            expect(re.code).to.be.equal(E.POST_CATEGORY_DOES_NOT_EXIST);
         });
     });
 
@@ -44,7 +44,7 @@ describe('[ post-create.ts ]', () => {
         });
         it("numberOfPosts test. Should be 1.", async () => {
             const re: CATEGORY = (await route({ route: 'category.get', id: categoryId })).data;
-            expect( re.numberOfPosts ).to.be.equal(1);
+            expect(re.numberOfPosts).to.be.equal(1);
         });
         it("Create second post", async () => {
             const re = await route({ route: 'post.create', categoryId: categoryId, title: 'second post' });
@@ -52,29 +52,31 @@ describe('[ post-create.ts ]', () => {
         });
         it("numberOfPosts test. Should be 2.", async () => {
             const re: CATEGORY = (await route({ route: 'category.get', id: categoryId })).data;
-            expect( re.numberOfPosts ).to.be.equal(2);
+            expect(re.numberOfPosts).to.be.equal(2);
         });
         it("Post content check", async () => {
-            
-            const re = await route({ route: 'post.create', categoryId: categoryId, title: 'third post' });
+
+            const title = "This is for writing and reading check.";
+
+            const re = await route({ route: 'post.create', categoryId: categoryId, title: title });
             expect(re.code).to.be.equal(0);
 
             // console.log(re);
 
-            const res = await route({route: 'post.get', id: re.data});
-            // console.log('-- data: ', post);
+            const ret = await route({ route: 'post.get', id: re.data });
+            // console.log('-- data: ', ret);
 
-            const post = res.data;
+            const post = ret.data;
 
-            expect( post.displayName ).to.be.equal( Anonymous.displayName );
-            expect( post.title ).to.be.equal( 'third post' );
+            expect(post.displayName).to.be.equal(Anonymous.displayName);
+            expect(post.title).to.be.equal(title);
 
-        
+
 
         });
     });
 
 
-    
+
 
 });

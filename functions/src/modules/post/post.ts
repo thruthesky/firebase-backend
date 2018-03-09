@@ -87,29 +87,29 @@ export class Post extends Document {
 
 
 
-    // /**
-    // * Sanitizes data before pushing to firebase.
-    // * 
-    // * 
-    // * 
-    // * 
-    // * @param data Data to sanitize.
-    // * 
-    // * @return sanitized data with hook.
-    // * @author gem
-    // * 
-    // */
-    // sanitizePostData(data: POST_DATA): POST_DATA {
-    //     data = Object.assign(this.defaultPostData, data);
+    /**
+    * Sanitizes data before pushing to firebase.
+    * 
+    * 
+    * 
+    * 
+    * @param data Data to sanitize.
+    * 
+    * @return sanitized data with hook.
+    * @author gem
+    * 
+    */
+    sanitizePostData(data: POST_DATA): POST_DATA {
+        // data = Object.assign(this.defaultPostData, data);
         
-    //     if ( data.id !== void 0 ) delete data.id; // delete `id` if ever there exists.
+        if ( data.id !== void 0 ) delete data.id; // delete `id` if ever there exists.
 
-    //     data.uid = this.loginUid;
-    //     // console.log('----this.loginUser', this.loginUser);
-    //     data.displayName = this.loginUser.displayName;
-    //     data.email = this.loginUser.email;
-    //     return this.hook('post.sanitizePostData', data);
-    // }
+        data.uid = this.loginUid;
+        // console.log('----this.loginUser', this.loginUser);
+        data.displayName = this.loginUser.displayName;
+        data.email = this.loginUser.email;
+        return this.hook('post.sanitizePostData', data);
+    }
 
 
 

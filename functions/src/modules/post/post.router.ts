@@ -20,7 +20,7 @@ export class PostRouter extends Post {
     * @author gem
     */
     async create(): Promise<ROUTER_RESPONSE> {
-        const data: POST_DATA = this.hook('post.router.create', this.params);
+        const data: POST_DATA = this.hook('post.router.create', this.sanitizePostData(this.params));
         if (_.isEmpty(data.categoryId)) return this.error(E.NO_CATEGORY_ID);
         if (await this.exists(data.categoryId, COLLECTIONS.CATEGORIES)) {
             const re = await super.set(data);

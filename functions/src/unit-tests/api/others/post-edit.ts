@@ -122,13 +122,13 @@ describe('[ post-edit.ts ]', () => {
                 numberOfViews: 0,
                 private: false,
                 reminder: 0
-            }
+            };
             // console.log('CategoryID: ', categoryId);
             // console.log('PostID: ', postId);
-            Object.assign(post, { route: 'post.create' } ) 
+            Object.assign(post, { route: 'post.create' } );
             const re = await route(await post);
-            postId = re.data
-            expect(re.code).to.be.equal(0)
+            postId = re.data;
+            expect(re.code).to.be.equal(0);
         });
         
         it("Edit the post with incomplete Data.", async () => {

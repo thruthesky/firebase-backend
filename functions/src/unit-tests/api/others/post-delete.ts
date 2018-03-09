@@ -51,37 +51,4 @@ describe('[ post-delete.ts ]', () => {
             expect(got.code).to.be.equal( E.DOCUMENT_ID_DOES_NOT_EXISTS_FOR_GET );
         });
     });
-
-    // describe('Edit test as a user', () => {
-    //     it("Create a post with user - " + userId, async () => {
-    //         const re = await route({ route: 'post.create', categoryId: categoryId, uid: userId, title: 'AAA' });
-    //         expect(re.code).to.be.equal(0);
-    //         postId = re.data;
-    //     });
-    //     it("Edit the post without uid ( as anoymous )", async () => {
-    //         const re = await route({ route: 'post.edit', id: postId, title: 'BBB' });
-    //         expect(re.code).to.be.equal(E.NOT_OWNED_BY_ANONYMOUS);
-    //         expect((await route({ route: 'post.get', id: postId })).data.title).to.be.equal('AAA');
-    //     });
-    //     it("Edit the post as wrong user", async () => {
-    //         const re = await route({ route: 'post.edit', id: postId, uid: 'wrong-user-id', title: 'CCC' });
-    //         // console.log("--- re: ", re);
-    //         expect(re.code).to.be.equal(E.NOT_YOUR_POST);
-    //         expect((await route({ route: 'post.get', id: postId })).data.title).to.be.equal('AAA');
-    //     });
-    //     it("Edit the post", async () => {
-    //         const re = await route({ route: 'post.edit', id: postId, uid: userId, title: 'DDD' });
-    //         expect(re.code).to.be.equal(0);
-    //         expect((await route({ route: 'post.get', id: postId })).data.title).to.be.equal('DDD');
-    //     });
-    // });
-
-    // describe('Edit as admin', () => {
-    //     it("Admin edits the post", async () => {
-    //         const re = await route({ route: 'post.edit', id: postId, uid: await adminEmail(), title: 'EEE' });
-    //         // console.log(re);
-    //         expect(re.code).to.be.equal(0);
-    //         expect((await route({ route: 'post.get', id: postId })).data.title).to.be.equal('EEE');
-    //     });
-    // });
 });
