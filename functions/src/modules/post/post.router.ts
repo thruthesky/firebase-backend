@@ -4,12 +4,12 @@
 import * as E from '../core/error';
 import { ROUTER_RESPONSE, COLLECTIONS, Anonymous } from '../core/core';
 // import { Base } from '../core/base';
-import { Post, POST_DATA } from './post';
+import { Post, POST_DATA, POST_PERMISSION } from './post';
 import * as _ from 'lodash';
 
 
 export class PostRouter extends Post {
-    
+
     /** 
     * Pushes data to firebase
     * 
@@ -24,22 +24,22 @@ export class PostRouter extends Post {
         let data: POST_DATA = this.hook('post.create', this.params);
         data = this.sanitizePostData(data);
         const validate = this.validatePostData(data);
-        if ( validate ) {
+        if (validate) {
             return validate;
         }
-        if ( await this.exists( data.categoryId, COLLECTIONS.CATEGORIES ) ) {
+        if (await this.exists(data.categoryId, COLLECTIONS.CATEGORIES)) {
             const re = await super.set(data);
-            if ( this.isErrorObject(re) ) return re;
-            const increase = await this.increase( COLLECTIONS.CATEGORIES, data.categoryId, 'numberOfPosts', 1 );
+            if (this.isErrorObject(re)) return re;
+            const increase = await this.increase(COLLECTIONS.CATEGORIES, data.categoryId, 'numberOfPosts', 1);
             // console.log("---- increase: ", increase);
-            if ( this.isErrorObject( increase ) ) return increase;
+            if (this.isErrorObject(increase)) return increase;
             return re;
         }
         else {
-            return this.error( E.POST_CATEGORY_DOES_NOT_EXIST, { categoryId: data.categoryId} );
+            return this.error(E.POST_CATEGORY_DOES_NOT_EXIST, { categoryId: data.categoryId });
         }
     }
-    
+
     /** 
     * Gets data from firebase based on document id.
     * @desc - get() checks if user is logged in and then passed document ID and TokenID( in production ) in super.get() to get data from firebase.
@@ -50,92 +50,83 @@ export class PostRouter extends Post {
         // console.log("----------- This shouldn't come here!");
         // if (!this.loginUid) return this.error(E.USER_NOT_LOGIN); // On Unit Test, it will be set with `uid`
         if (this.validatePostRequest(this.params)) return this.validatePostRequest(this.params);
-        
+
         let id = this.param('id');
-        if ( _.isEmpty(id) ) return this.error(E.NO_DOCUMENT_ID);
+        if (_.isEmpty(id)) return this.error(E.NO_DOCUMENT_ID);
         id = this.hook('post.get', id);
         if (this.isErrorObject(id)) return id;
-        
+
         return await super.get(id);
         // return 'I am get';
     }
-    
-    /** 
-    * Updates post from firebase based on documentID
-    * @desc - 
-    *       - Anonymous can edit password-protected anonymous post.
-    *       - Users can edit or delete his own post only.
-    *       - Users cannot touch other user's post. but can comment.
-    */
-    async edit() {
-        const params:POST_DATA = this.params;
-        if ( _.isEmpty( params.id ) ) return this.error(E.NO_DOCUMENT_ID);
-        const post:POST_DATA = await super.get( params.id );
 
-        // console.log("-- params: ", params);
-        // console.log("--- loginUid: ", this.loginUid);
-        // console.log("--post ", post);
-        
-        if ( this.isAnonymous() ) { // Logged in as anonymous.
-            if ( post.uid !== Anonymous.uid ) { // Owned by a user. Not anonymous.
-                return this.error( E.NOT_OWNED_BY_ANONYMOUS );
-            }
-            if ( _.isEmpty(params.password) ) { // No password
-                return this.error( E.ANONYMOUS_PASSWORD_IS_EMPTY );
-            }
-            if ( post.password !== params.password ) { // Wrong password
-                return this.error( E.ANONYMOUS_WRONG_PASSWORD );
-            }
-            // Okay.
-            // The post is owned by anonymous and correct password was given.
-            
-        }
-        else if ( this.isAdmin() ) {
-            // Okay.
-            // Admin can edit.
-        }
-        else if ( post.uid === this.loginUid ) {
-            // Okay.
-            // The post is owned by user and the user is editing.
-        }
-        else {
-            // Wrong.
-            // This is an error. Failed to verify.
-            return this.error( E.NOT_YOUR_POST );
-        }
-         
-        Object.assign( post, params );  // added by gem, merge post and params. sanitizePostData might return default values merged with incomplete param fields. 
-        const id = post.id;             // post is already merged in param.
-        return await super.update(this.sanitizePostData(post), id);
-    }
-    
-    // async delete() {
-    //     return 'i am delete';
-    // }
-    
-    // async search_category() {    
-    
-    // }
-    
-    
-    
+
     /**
-    * Validates data if applicable to firebase database
-    * 
-    * @param data Data to validate
-    */
+     * 
+     * Edits a post.
+     * 
+     */
+    async edit() {
+        const params: POST_DATA = this.params;
+        if (_.isEmpty(params.id)) return this.error(E.NO_DOCUMENT_ID);
+        const post: POST_DATA = await super.get(params.id);
+
+        const permission = this.permission(params, post);
+        if (permission) return permission;
+
+        Object.assign( post, params );  // added by gem, merge post and params. sanitizePostData might return default values merged with incomplete param fields. 
+        let id = post.id;             // post is already merged in param.
+        return await super.update(this.sanitizePostData(post), id);
+
+        // const id = params.id;
+        // return await super.update(this.sanitizePostData(params), id);
+    }
+
+    /**
+     * 
+     * Deletes a post.
+     * 
+     */
+    async delete() {
+        
+        const params: POST_PERMISSION = this.params;
+        if (_.isEmpty(params.id)) return this.error(E.NO_DOCUMENT_ID);
+        const post: POST_DATA = await super.get(params.id);
+        
+        const permission = this.permission(params, post);
+        if (permission) return permission;
+
+        const re = await super.delete( params.id ); // delete
+        if (this.isErrorObject(re)) return re; // if error on delete?
+
+
+        const increase = await this.increase(COLLECTIONS.CATEGORIES, post.categoryId, 'numberOfPosts', -1); // decrease no of posts.
+        if (this.isErrorObject(increase)) return increase; // if error on decrease?
+
+        return re;
+    }
+
+
+
+    /**
+     * Returns null if there is no problem.
+     *
+     * Validates data if applicable to firebase database
+     * 
+     * @param data Data to validate
+     */
     validatePostData(data: POST_DATA): ROUTER_RESPONSE {
-        
-        if ( _.isEmpty( data.categoryId ) ) return this.error( E.NO_CATEGORY_ID );
-        
+
+        if (_.isEmpty(data.categoryId)) return this.error(E.NO_CATEGORY_ID);
+
         // const typeCheck = this.typeChecker( data, this.defaultPostData );
         // if ( typeCheck ) return typeCheck;
         
         // console.log( data );
-        
-        
+
+
         // if (this.checkDocumentIDFormat(data.id)) return this.error(this.checkDocumentIDFormat(data.id)); 
-        
+
         /** @todo Make shorter code for field type checking. */
         // Type checking -> Must be string
         // if (! _.isString( data.id ) ) return this.error( E.MUST_BE_A_STRING, { value: 'Post ID' } );
@@ -151,35 +142,40 @@ export class PostRouter extends Post {
         // if (! _.isString( data.city ) ) return this.error( E.MUST_BE_A_STRING, { value: 'Post city' } );
         // if (! _.isString( data.address ) ) return this.error( E.MUST_BE_A_STRING, { value: 'Post address' } );
         // if (! _.isString( data.zipCode ) ) return this.error( E.MUST_BE_A_STRING, { value: 'Post zip code' } );
-        
+
         // Type Checking -> Must be number
         // if (! _.isNumber( data.noOfComments ) ) return this.error( E.MUST_BE_A_NUMBER, { value: 'Post noOfComments' } );        
         // if (! _.isNumber( data.noOfLikes ) ) return this.error( E.MUST_BE_A_NUMBER, { value: 'Post noOfLikes' } );        
         // if (! _.isNumber( data.noOfDislikes ) ) return this.error( E.MUST_BE_A_NUMBER, { value: 'Post noOfDislikes'} );        
         // if (! _.isNumber( data.noOfViews ) ) return this.error( E.MUST_BE_A_NUMBER, { value: 'Post noOfViews' } );        
         // if (! _.isNumber( data.reminder ) ) return this.error( E.MUST_BE_A_NUMBER, { value: 'Post reminder' } );        
-        
+
         // if (! _.isBoolean(data.private)) return this.error( E.MUST_BE_A_BOOLEAN, { value: 'Post data private' } );
-        
-        return <any>false;
+
+        return null;
     }
-    
+
     /**
-    * Validates request information of complete
-    * 
-    * @param data data to validate
-    * 
-    * 
-    */
+     * 
+     * 
+     * Validates request information of complete
+     * 
+     * @param data data to validate
+     * 
+     * @returns null if there is no problem. Otherwise `Router Response Error Object`
+     * 
+     * 
+     * 
+     */
     validatePostRequest(data): ROUTER_RESPONSE {
         
         if (data.uid !== void 0 || data.postId !== void 0) {
             if (this.checkUIDFormat(data.uid)) return this.error(this.checkUIDFormat(data.uid));
             if (this.checkDocumentIDFormat(data.postId)) return this.error(this.checkDocumentIDFormat(data.postId));
         }
-        
-        return <any>false;
+
+        return null;
     }
-    
-    
+
+
 }

@@ -79,7 +79,7 @@ export class CategoryRouter extends Category {
     * 
     * @param data Data to validate
     * 
-    * @reutrn false on success.
+     * @returns null if there is no problem. Otherwise `Router Response Error Object`
     */
     validateCategoryData(data: CATEGORY): ROUTER_RESPONSE {
 
@@ -100,7 +100,7 @@ export class CategoryRouter extends Category {
         // Array Validation
         if (!_.isArray(data.moderators)) return this.error(E.MUST_BE_AN_ARRAY);
 
-        return <any>false;
+        return null;
     }
 
 

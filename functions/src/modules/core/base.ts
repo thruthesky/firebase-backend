@@ -1,3 +1,16 @@
+/**
+ * 
+ * @file base.ts
+ * 
+ * @desc Base is the foundation class
+ *          - Which mostly holds the information, settings, variables, library methods
+ *          - To serve the backend.
+ * 
+ * @desc It must not contain any code that is depending on a module.
+ * 
+ * 
+ */
+
 import * as admin from 'firebase-admin';
 import * as _ from 'lodash';
 
@@ -5,12 +18,8 @@ import { COLLECTION_PREFIX } from './../../settings/settings';
 
 import * as E from './../core/error';
 
-
 import { ROUTER_RESPONSE, Anonymous, COLLECTIONS, SYSTEM_SETTINGS } from './../core/defines';
 import { Library } from './../library/library';
-
-
-
 
 import { Hooks } from './../../hooks';
 import { USER_DATA } from '../user/user';
@@ -235,7 +244,8 @@ export class Base {
     }
 
     /**
-     * returns a promise of firestore snapshot
+     * Returns a Promise of FirestoreSnapshot based on the document ID of the collection.
+     * 
      * @param collectionName collection name
      * @param documentID document id
      * 
@@ -244,28 +254,6 @@ export class Base {
     getDocument(collectionName, documentID): Promise<admin.firestore.DocumentSnapshot> {
         return this.db.collection(collectionName).doc(documentID).get();
     }
-
-
-
-    // /**
-    //  * Returns user data or backend error object.
-    //  * @desc This is a simple way to get user data.
-    //  * @param uid User uid
-    //  * @return A resolved promise of User document data object or `backend error object`
-    //  * 
-    //  * @todo move this to `user.ts` class.
-    //  */
-    // async getUserDocument(uid): Promise<USER_DATA> {
-    //     return await this.getDocument(this.collectionUsers, uid)
-    //         .then(doc => {
-    //             if (doc.exists) {
-    //                 const data = doc.data();
-    //                 return this.hook('base.getUserDocument_then', data);
-    //             }
-    //             else return this.error(E.USER_ID_NOT_EXISTS_IN_USER_COLLECTION, { id: uid });
-    //         })
-    //         .catch(e => this.error(e));
-    // }
 
 
 
@@ -282,6 +270,7 @@ export class Base {
                     const data = doc.data();
                     return this.hook('base.getSettings_then', data);
                 }
+                
                 else return this.error(E.DOCUMENT_ID_DOES_NOT_EXISTS_FOR_GET_SETTINGS_DOCUMENT);
             })
             .catch(e => this.error(e));
@@ -325,8 +314,12 @@ export class Base {
 
 
     /**
-     * Returns false if there is no error. Otherwise, error code will be returned.
+     * 
+     * Checks `uid` format
+     * 
      * @param uid User uid
+     * 
+     * @returns null if there is no problem. Otherwise `Router Response Error Object`
      */
     checkUIDFormat(uid) {
 
@@ -334,14 +327,14 @@ export class Base {
         if (uid.length > 128) return this.error(E.UID_TOO_LONG);
         if (uid.indexOf('/') !== -1) return this.error(E.UID_CANNOT_CONTAIN_SLASH);
 
-        return false;
+        return null;
     }
 
     /**
      * 
      * Checks if the Document ID is in right format.
      * 
-     * Returns false if there is no error. Otherwise, error code will be returned.
+     * 
      * 
      * @since 2018-03-01. We cannot create methods of all entity.
      *      - And it is even in wrong place.
@@ -349,13 +342,15 @@ export class Base {
      *          Hence, method name changes from `checkPostIDFormat` to `checkDocumentIDFormat`
      * 
      * @param documentID Document ID
+     * @returns null if there is no problem. Otherwise `Router Response Error Object`
+     * 
      * @todo Unit test
      */
     checkDocumentIDFormat(documentID) {
         if ( _.isEmpty( documentID ) ) return this.error( E.NO_DOCUMENT_ID );
         if (documentID.length > 128) return this.error( E.DOCUMENT_ID_TOO_LONG );
         if (documentID.indexOf('/') !== -1) return this.error( E.DOCUMENT_ID_CANNOT_CONTAIN_SLASH );
-        return false;
+        return null;
     }
 
 
@@ -398,6 +393,18 @@ export class Base {
 
 
 
+    /**
+     * 
+     * Checks if the two object has same types of properties.
+     * 
+     * 
+     * @returns
+     *          - null there is no problem on type checking.
+     *          - `Router Response Error` Object if there is any error.
+     * 
+     * 
+     * @todo test.
+     */
     typeChecker( objectA, objectB ): ROUTER_RESPONSE {
         for( const i of Object( objectA ).keys() ) {
             if ( objectB[i] ) {
@@ -406,7 +413,7 @@ export class Base {
                 }
             }
         }
-        return <any>false;
+        return null;
     }
 
 }
