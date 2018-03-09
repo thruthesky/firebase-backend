@@ -242,11 +242,10 @@ async exists(documentID: string, collectionName?: string): Promise<boolean> {
 * 
 * @return A Promise of
 *          - Document ID if successfully deleted.
-*          - null if docuemnt ID is empty.
 *          - ErrorObject. note: it is a promise that is being returned.
 */
 async delete(documentID): Promise<any> {
-    if (!documentID) return null;
+    if (!documentID) return this.error(E.NO_DOCUMENT_ID);
     
     documentID = this.hook('document.delete_before', documentID);
     return await this.collection.doc(documentID).delete()
