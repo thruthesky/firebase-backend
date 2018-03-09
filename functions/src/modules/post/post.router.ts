@@ -20,7 +20,7 @@ export class PostRouter extends Post {
     * @author gem
     */
     async create(): Promise<ROUTER_RESPONSE> {
-
+        
         let data: POST_DATA = this.hook('post.create', this.params);
         data = this.sanitizePostData(data);
         const validate = this.validatePostData(data);
@@ -60,6 +60,13 @@ export class PostRouter extends Post {
         // return 'I am get';
     }
     
+    /** 
+    * Updates post from firebase based on documentID
+    * @desc - 
+    *       - Anonymous can edit password-protected anonymous post.
+    *       - Users can edit or delete his own post only.
+    *       - Users cannot touch other user's post. but can comment.
+    */
     async edit() {
         const params:POST_DATA = this.params;
         if ( _.isEmpty( params.id ) ) return this.error(E.NO_DOCUMENT_ID);
@@ -81,7 +88,7 @@ export class PostRouter extends Post {
             }
             // Okay.
             // The post is owned by anonymous and correct password was given.
-
+            
         }
         else if ( this.isAdmin() ) {
             // Okay.
@@ -96,9 +103,10 @@ export class PostRouter extends Post {
             // This is an error. Failed to verify.
             return this.error( E.NOT_YOUR_POST );
         }
-
-        const id = params.id;
-        return await super.update(this.sanitizePostData(params), id);
+         
+        Object.assign( post, params );  // added by gem, merge post and params. sanitizePostData might return default values merged with incomplete param fields. 
+        const id = post.id;             // post is already merged in param.
+        return await super.update(this.sanitizePostData(post), id);
     }
     
     // async delete() {
@@ -117,12 +125,12 @@ export class PostRouter extends Post {
     * @param data Data to validate
     */
     validatePostData(data: POST_DATA): ROUTER_RESPONSE {
-
+        
         if ( _.isEmpty( data.categoryId ) ) return this.error( E.NO_CATEGORY_ID );
-
+        
         // const typeCheck = this.typeChecker( data, this.defaultPostData );
         // if ( typeCheck ) return typeCheck;
-
+        
         // console.log( data );
         
         
@@ -164,7 +172,7 @@ export class PostRouter extends Post {
     * 
     */
     validatePostRequest(data): ROUTER_RESPONSE {
-
+        
         if (data.uid !== void 0 || data.postId !== void 0) {
             if (this.checkUIDFormat(data.uid)) return this.error(this.checkUIDFormat(data.uid));
             if (this.checkDocumentIDFormat(data.postId)) return this.error(this.checkDocumentIDFormat(data.postId));
