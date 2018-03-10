@@ -70,8 +70,6 @@ describe('[ post-create.ts ]', () => {
             expect(post.displayName).to.be.equal(Anonymous.displayName);
             expect(post.title).to.be.equal(title);
 
-
-
         });
     });
 
