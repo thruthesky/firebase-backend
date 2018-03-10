@@ -4,41 +4,6 @@ import { COLLECTIONS } from '../core/core';
 // import * as _ from 'lodash';
 
 
-
-export interface MODERATOR_ROLES {
-    read?: boolean;
-    edit?: boolean;
-    delete?: boolean;
-    copy?: boolean;
-    move?: boolean;
-    reminder?: boolean; // moderator can change the remdiner or stick posts.
-}
-
-export interface CATEGORY {
-    id: string;
-    name?: string; // to display.
-    description?: string; // to display as long description.
-    header?: string;
-    footer?: string;
-    numberOfPostsPerPage?: number;
-    numberOfPagesOnNavigation?: number;
-    moderators?: Array<string>;
-    moderatorRoles?: MODERATOR_ROLES;
-    allowAttachment?: boolean;
-    levelOnList?: number; // if set to 0, Anonymous can list
-    levelOnRead?: number; // if set to 0, Anonymous can read
-    levelOnWrite?: number;  // if set to 1, Only member can create/edit/delete. Anonymous cannot.
-    disableDeleteWithDependant?: boolean; // if set to true, author cannot edit/delete when there is any comments.
-    headerOnList?: string;
-    footerOnList?: string;
-    headerOnWrite?: string;
-    footerOnWriter?: string;
-    headerOnView?: string;
-    footerOnView?: string;
-    numberOfPosts?: number;
-    numberOfComment?: number;
-}
-
 /**
 * @Attention All the validity, permission check must be done before this class.
 */

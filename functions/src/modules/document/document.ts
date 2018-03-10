@@ -170,7 +170,7 @@ async update(data, documentID: string, collectionName?: string): Promise<any> {
 async get(documentID: string, collectionName?: string): Promise<any> {
     // console.log("--- get() ==> documentID: ", documentID, "collectionName: ", collectionName);
     // console.log( new Error( documentID) );
-    if (!documentID) return this.error(E.NO_DOCUMENT_ID);
+    if (!documentID) return this.error(E.NO_DOCUMENT_ID, documentID); // document id is empty.
     documentID = this.hook('document.get_before', documentID);
     
     let collectionRef;

@@ -317,7 +317,21 @@ You can use, `db`, `collection`, `params` and all other code.
 
 * `category.create`
 * `category.update`
-* `category.list`
+* `category.get`
+* `category.gets`
+ * Gets all categories at once.
+ * You can give option to load only a few properties.
+ 
+````
+await route({ route: 'category.gets', properties: [ 'id', 'name', 'description', 'created', 'wrong-properties' ] });
+````
+ * `properties` is an array of string. The propertis that don't exist in db will be `undefined`.
+
+
+
+ * No need to do `observable` or `realtime update` on client side.
+    Get all the categories at once and save it on a list variable.
+    If you want update/delete a category, do it and update only that category from the list variable.
 * `category.delete`
 * `post.create`
 * `post.edit`

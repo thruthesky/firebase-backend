@@ -4,9 +4,9 @@
 import * as chai from 'chai';
 // import * as _ from 'lodash';
 const expect = chai.expect;
-import { Base, E } from './../../../modules/core/core';
+import { Base, E, CATEGORY } from './../../../modules/core/core';
 import { route, adminEmail } from './../init';
-import { CATEGORY } from '../../../modules/post/category';
+
 
 
 

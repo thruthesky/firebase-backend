@@ -6,7 +6,7 @@ const expect = chai.expect;
 
 import { Document } from '../../../modules/document/document';
 
-import { Base, E } from './../../../modules/core/core';
+import { E } from './../../../modules/core/core';
 
 
 

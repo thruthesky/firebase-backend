@@ -1,7 +1,7 @@
 ﻿// import { FIREBASE_DO_NOT_ACCEPT_UNDEFINED } from './../core/error';
 
-import { ROUTER_RESPONSE, E } from '../core/core';
-import { Category, CATEGORY } from './category';
+import { ROUTER_RESPONSE, E, CATEGORY } from '../core/core';
+import { Category } from './category';
 import * as _ from 'lodash';
 // import { POST_DATA } from './post';
 
@@ -24,11 +24,11 @@ export class CategoryRouter extends Category {
      *       - Category ID will be returned on success.
      *  
      */
-    async create(): Promise<ROUTER_RESPONSE> {
+    async create(): Promise<any> {
 
         if (!this.isAdmin()) return this.error(E.PERMISSION_DENIED_ADMIN_ONLY);
 
-        
+
         const category: CATEGORY = this.hook('category.router.create', this.params);
 
         if (_.isEmpty(category.id)) return this.error(E.NO_CATEGORY_ID);
@@ -39,7 +39,7 @@ export class CategoryRouter extends Category {
 
         // console.log("re: ", re);
 
-        if (await this.exists( category.id )) return this.error(E.CATEGORY_ALREADY_EXISTS, { id: category.id });
+        if (await this.exists(category.id)) return this.error(E.CATEGORY_ALREADY_EXISTS, { id: category.id });
 
         return await super.set(category, this.params.id);
     }
@@ -52,8 +52,51 @@ export class CategoryRouter extends Category {
      * 
      * 
      */
-    async get(): Promise<ROUTER_RESPONSE> {
+    async get(): Promise<any> {
         return await super.get(this.params.id);
+    }
+
+    /**
+     * 
+     * 
+     * 
+     */
+    async gets(): Promise<any> {
+
+
+        /// Get all the categories.
+        const re: any = await this.collection.get()
+            .then(snapshot => {
+                const _cats = [];
+                snapshot.forEach(doc => {
+                    const data = doc.data();
+                    data['id'] = doc.id;
+                    _cats.push(data);
+                });
+                return _cats;
+            })
+            .catch(e => this.error(e));
+
+        /// If any error
+        if (this.isErrorObject(re)) return re;
+
+
+        /// If the request wants selected properties only.
+        if (this.param('properties')) {
+            const properties = this.param('properties');
+            const returnData: any = [];
+            for (const category of re) {
+                const docData = {};
+                for (const property of properties) {
+                    docData[property] = category[property];
+                }
+                returnData.push(docData);
+            }
+            return returnData;
+        }
+        /// Or return whole categories.
+        else return re;
+
     }
 
     // async delete(): Promise<ROUTER_RESPONSE> {

@@ -3,9 +3,8 @@
  */
 import * as chai from 'chai';
 const expect = chai.expect;
-import { Base, E, Anonymous } from './../../../modules/core/core';
+import { Base, E, Anonymous, CATEGORY } from './../../../modules/core/core';
 import { route, adminEmail } from './../init';
-import { CATEGORY } from '../../../modules/post/category';
 
 const categoryId = "test-" + (new Date).getTime();
 

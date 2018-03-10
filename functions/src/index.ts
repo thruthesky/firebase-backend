@@ -23,7 +23,8 @@ admin.initializeApp(functions.config().firebase);
 //     credential: admin.credential.cert(<any>serviceAccount)
 // });
 
-Base.admin = admin;
+Base.admin = admin.app();
+
 
 export const api = functions.https.onRequest((request, response) => {
     cors(request, response, async () => {
