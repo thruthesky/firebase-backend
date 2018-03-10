@@ -173,8 +173,6 @@ async get(documentID: string, collectionName?: string): Promise<any> {
     if (!documentID) return this.error(E.NO_DOCUMENT_ID);
     documentID = this.hook('document.get_before', documentID);
     
-    
-    
     let collectionRef;
     if (collectionName) {
         collectionRef = this.db.collection(this.collectionNameWithPrefix(collectionName));
