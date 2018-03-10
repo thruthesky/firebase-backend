@@ -99,6 +99,7 @@ export const NO_CATEGORY_ID = -40460; es[NO_CATEGORY_ID] = 'No Category ID';
 export const WRONG_CATEGORY_ID = -40462; es[WRONG_CATEGORY_ID] = 'Wrong Category ID. The Category may not exists. categoryId: "#categoryId"';
 export const POST_CATEGORY_DOES_NOT_EXIST = -40464; es[POST_CATEGORY_DOES_NOT_EXIST] = 'Post category does not exists. categoryId: #categoryId';
 
+export const CATEGORY_CANNOT_BE_DELETED_SINCE_IT_HAS_POST = -40466; es[CATEGORY_CANNOT_BE_DELETED_SINCE_IT_HAS_POST] = 'Category cannot be deleted because it has posts. categoryId: #categoryId';
 
 // Firebase errors.
 

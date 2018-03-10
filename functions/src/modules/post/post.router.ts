@@ -19,7 +19,7 @@ export class PostRouter extends Post {
     * 
     * @author gem
     */
-    async create(): Promise<ROUTER_RESPONSE> {
+    async create(): Promise<any> {
         const data: POST_DATA = this.hook('post.router.create', this.sanitizePostData(this.params));
         if (_.isEmpty(data.categoryId)) return this.error(E.NO_CATEGORY_ID);
         if (await this.exists(data.categoryId, COLLECTIONS.CATEGORIES)) {
@@ -40,7 +40,7 @@ export class PostRouter extends Post {
     * 
     * 
     */
-    async get(): Promise<ROUTER_RESPONSE> {
+    async get(): Promise<any> {
         return await super.get(this.hook('post.router.get', this.param('id')));
     }
 
@@ -50,7 +50,7 @@ export class PostRouter extends Post {
      * Edits a post.
      * 
      */
-    async edit() {
+    async edit(): Promise<any> {
         const params: POST_DATA = this.hook('post.router.edit', this.params);
         const id = params.id;
 
@@ -70,7 +70,7 @@ export class PostRouter extends Post {
      * Deletes a post.
      * 
      */
-    async delete() {
+    async delete(): Promise<any> {
         
         const params: POST_PERMISSION = this.params;
         // if (_.isEmpty(params.id)) return this.error(E.NO_DOCUMENT_ID);

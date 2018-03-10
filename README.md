@@ -6,6 +6,9 @@ And yet, we didn't decide it what to call.
 
 # TODO List
 
+* when email exists ( google login ), firebase error message is not converted.
+
+
 
 * Options to use `Firebase Authentication Default UID` as uid instead of email for security reason.
  * email as uid is good to develop but not good for security.

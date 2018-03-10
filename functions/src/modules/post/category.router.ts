@@ -99,9 +99,16 @@ export class CategoryRouter extends Category {
 
     }
 
-    // async delete(): Promise<ROUTER_RESPONSE> {
-    //     return await super.delete(this.params.id);
-    // }
+    async delete(): Promise<any> {
+        if (!this.isAdmin()) return this.error(E.PERMISSION_DENIED_ADMIN_ONLY);
+        const category: CATEGORY = await super.get(this.params.id);
+        if ( this.isErrorObject(category) ) {
+            if ( category['code'] === E.DOCUMENT_ID_DOES_NOT_EXISTS_FOR_GET ) category['code'] = E.WRONG_CATEGORY_ID; // change to proper error code.
+            return category;
+        }
+        if ( category.numberOfPosts === 0 ) return await super.delete(this.params.id);
+        else return this.error( E.CATEGORY_CANNOT_BE_DELETED_SINCE_IT_HAS_POST, { categoryId: category.id} );
+    }
 
     /**
      * @return Same as `Document.update()`
@@ -109,7 +116,7 @@ export class CategoryRouter extends Category {
      *      - Document ID( Category ID ) will be returned on success.
      * 
      */
-    async update(): Promise<ROUTER_RESPONSE> {
+    async update(): Promise<any> {
         if (!this.isAdmin()) return this.error(E.PERMISSION_DENIED_ADMIN_ONLY);
         const category = this.hook('category.router.update', this.params);
         return await super.update(category, category.id);
