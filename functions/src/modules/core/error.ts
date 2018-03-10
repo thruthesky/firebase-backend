@@ -8,7 +8,7 @@ export const NO_ADMIN_EMAIL = -400100; es[NO_ADMIN_EMAIL] = "Please input admin 
 /// Users
 export const TEST = -11; es[TEST] = 'Test Error';
 export const UNKNOWN = -12; es[UNKNOWN] = 'Unknown erorr. #info';
-export const PERMISSION_DENIED_ADMIN_ONLY = -10; es[PERMISSION_DENIED_ADMIN_ONLY] = 'Permission denied. Only administrators are allowed.';
+export const PERMISSION_DENIED_ADMIN_ONLY = -10; es[PERMISSION_DENIED_ADMIN_ONLY] = 'Permission denied. Only administrators are allowed. Your uid is: #loginUid';
 
 // export const UNHANDLED = -10; es[UNHANDLED] = 'Unhandled error message must have suggestion on which error is to be handled.'
 export const NO_EMAIL = -50; es[NO_EMAIL] = 'No email address.';

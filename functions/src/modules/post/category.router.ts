@@ -100,7 +100,7 @@ export class CategoryRouter extends Category {
     }
 
     async delete(): Promise<any> {
-        if (!this.isAdmin()) return this.error(E.PERMISSION_DENIED_ADMIN_ONLY);
+        if (!this.isAdmin()) return this.error(E.PERMISSION_DENIED_ADMIN_ONLY, {loginUid: this.loginUid});
         const category: CATEGORY = await super.get(this.params.id);
         if ( this.isErrorObject(category) ) {
             if ( category['code'] === E.DOCUMENT_ID_DOES_NOT_EXISTS_FOR_GET ) category['code'] = E.WRONG_CATEGORY_ID; // change to proper error code.
