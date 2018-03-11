@@ -1,6 +1,6 @@
 ﻿// import { FIREBASE_DO_NOT_ACCEPT_UNDEFINED } from './../core/error';
 
-import { ROUTER_RESPONSE, E, CATEGORY } from '../core/core';
+import { E, CATEGORY } from '../core/core';
 import { Category } from './category';
 import { Library as _ } from './../library/library';
 
@@ -27,18 +27,11 @@ export class CategoryRouter extends Category {
      */
     async create(): Promise<any> {
 
-        if (!this.isAdmin()) return this.error(E.PERMISSION_DENIED_ADMIN_ONLY);
-
+        if (!this.isAdmin()) return this.error(E.PERMISSION_DENIED_ADMIN_ONLY, { loginUid: this.loginUid });
 
         const category: CATEGORY = this.hook('category.router.create', this.params);
 
         if (_.isEmpty(category.id)) return this.error(E.NO_CATEGORY_ID);
-
-        // const validate = this.validateCategoryData(re);
-        // if ( validate ) return validate;
-
-
-        // console.log("re: ", re);
 
         if (await this.exists(category.id)) return this.error(E.CATEGORY_ALREADY_EXISTS, { id: category.id });
 
@@ -99,6 +92,7 @@ export class CategoryRouter extends Category {
         else return re;
 
     }
+    
 
     async delete(): Promise<any> {
         if (!this.isAdmin()) return this.error(E.PERMISSION_DENIED_ADMIN_ONLY, {loginUid: this.loginUid});
@@ -118,7 +112,7 @@ export class CategoryRouter extends Category {
      * 
      */
     async update(): Promise<any> {
-        if (!this.isAdmin()) return this.error(E.PERMISSION_DENIED_ADMIN_ONLY);
+        if (!this.isAdmin()) return this.error(E.PERMISSION_DENIED_ADMIN_ONLY, { loginUid: this.loginUid });
         const category = this.hook('category.router.update', this.params);
         return await super.update(category, category.id);
     }

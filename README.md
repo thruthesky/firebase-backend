@@ -4,6 +4,20 @@ This is a serverless and headless backend to build a cms with client end javascr
 And yet, we didn't decide it what to call.
 
 
+# Documentation
+
+* [ Developers Documentation ](https://docs.google.com/document/d/1ncYWftCEXJBJkATExfGM2S4dzerrI_7PA_DjWjNdEmQ/edit#heading=h.998hdpy23ci9)
+
+## Security
+* [Security - Rules - Permission](https://docs.google.com/document/d/1ncYWftCEXJBJkATExfGM2S4dzerrI_7PA_DjWjNdEmQ/edit#heading=h.h0e4dxtluyww)
+
+## Resources
+
+* See [Firebase CMS Sample App](https://github.com/thruthesky/firebase-cms-app) to know how it works.
+* See [Firebase CMS Client SDK](https://github.com/thruthesky/firebase-cms) to use `Firebase Backend`.
+
+
+
 # TODO List
 
 * Remove lodash on backend and froendend.
@@ -70,14 +84,11 @@ Blog Plugin
 Shopping Mall Plugin
 
 
-# Resources
-
-* See [Firebase CMS Sample App](https://github.com/thruthesky/firebase-cms-app) to know how it works.
-* See [Firebase CMS Client SDK](https://github.com/thruthesky/firebase-cms) to use `Firebase Backend`.
-
 
 
 # Developer
+
+
 
 ## Resources
 

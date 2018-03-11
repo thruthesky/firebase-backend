@@ -382,7 +382,7 @@ export class Base {
             }
         }
 
-        /** Remove `idToken`, `route` */
+        /** Remove `idToken`, `route`, `password` */
         if ( obj && obj['idToken'] !== void 0 ) delete obj['idToken'];
         if ( obj && obj['route'] !== void 0 ) delete obj['route'];
 

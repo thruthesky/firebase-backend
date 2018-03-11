@@ -15,6 +15,7 @@ export const COLLECTIONS = {
     USERS: 'users',
     SETTINGS: 'settings',
     POSTS: 'posts',
+    POST_PASSWORDS: 'post-passwords',
     CATEGORIES: 'categories',
     COMMENTS : 'comments'
 };
@@ -54,6 +55,8 @@ export interface MODERATOR_ROLES {
  * Feel free to extends properties.
  */
 export interface CATEGORY {
+    route?: string; // This should not be saved into docuemnt.
+    idToken?: string; // This should not be saved into docuemnt.
     id: string;
     name?: string; // to display.
     description?: string; // to display as long description.
@@ -91,6 +94,8 @@ export interface CATEGORY {
 * 
 */
 export interface POST {
+    route?: string; // This should not be saved into docuemnt.
+    idToken?: string; // This should not be saved into docuemnt.
     id?: string;                    // Document ID. This is needed only on accessing. It does not need to be saved.
     uid: string;                    // author
     title?: string;
@@ -100,7 +105,8 @@ export interface POST {
     tags?: string;                  // Tags to search
     displayName?: string;
     email?: string;
-    password?: string;              // Anonymous need to put a password to update/delete.
+    password?: string;              // @WARNING. password must be saved in `post-passwords` collection.
+                                    // Anonymous need to put a password to update/delete.
     phoneNumber?: string;
     country?: string;
     province?: string;

@@ -22,12 +22,12 @@ describe('[ library.ts ]', () => {
         it("True input", () => { e(build(true)).to.be.null; });
         it("Number input", () => { e(build(123)).to.be.null; });
         it("Empty object input", () => { e(build({})).to.be.null; });
-    
+
         it("Query string test", () => { e(build({ a: 'Apple' })).to.be.equal('a=Apple'); });
         it("Query string test", () => { e(build({ a: 'A', b: 'B' })).to.be.equal('a=A&b=B'); });
         it("Query string test", () => { e(build({ a: 'A', 1: '123' })).to.be.equal('1=123&a=A'); });
         it("Query string test", () => { e(build({ a: 'A', u: undefined })).to.be.equal('a=A&u=undefined'); });
-    
+
     });
 
     describe('segment', () => {
@@ -38,8 +38,8 @@ describe('[ library.ts ]', () => {
         it('true', () => e(segment(<any>true)).to.be.null);
         it('number', () => e(segment(<any>123)).to.be.null);
         it('object', () => e(segment(<any>{})).to.be.null);
-        it('separator', () => e(segment('','')).to.be.null);
-        it('separator', () => e(segment('a b c','')).to.be.null);
+        it('separator', () => e(segment('', '')).to.be.null);
+        it('separator', () => e(segment('a b c', '')).to.be.null);
         it('Expect success', () => e(segment('a, b, c')).to.be.equal('a,'));
         it('Expect success', () => e(segment('a, b, c', ',')).to.be.equal('a'));
         it('Expect success', () => e(segment('a, b, c', ',', 1)).to.be.equal(' b'));

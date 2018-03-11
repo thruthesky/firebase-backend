@@ -5,7 +5,7 @@
  */
 
 export class Library {
-    
+
     /**
      * Returns http query string.
      * @param params Object to build as http query string
@@ -13,12 +13,12 @@ export class Library {
      *      - http query string
      *      - Or null if the input is emtpy or not object.
      */
-    static httpBuildQuery(params) : string | null {
+    static httpBuildQuery(params): string | null {
 
-        if ( Library.isEmpty( params ) ) return null; //
-        
+        if (Library.isEmpty(params)) return null; //
+
         const keys = Object.keys(params);
-        if ( keys.length === 0 ) return null; //
+        if (keys.length === 0) return null; //
 
         const esc = encodeURIComponent;
         const query = keys
@@ -46,12 +46,12 @@ export class Library {
      *      return this.library.segment( this.param('route'), '.', 0 );
      * 
      */
-    static segment( str:string, separator:string = ' ', n:number = 0 ): string {
-        if ( typeof str !== 'string' ) return null;
-        if ( typeof separator !== 'string' || ! separator ) return null;
-        if ( str ) {
-            const re = str.split( separator );
-            if ( re[n] !== void 0 && re[n] ) return re[n];
+    static segment(str: string, separator: string = ' ', n: number = 0): string {
+        if (typeof str !== 'string') return null;
+        if (typeof separator !== 'string' || !separator) return null;
+        if (str) {
+            const re = str.split(separator);
+            if (re[n] !== void 0 && re[n]) return re[n];
         }
         return null;
     }
@@ -71,12 +71,12 @@ export class Library {
      * 
      *      - otherwise return false.
      */
-    static isEmpty( what ): boolean {
-        if ( ! what ) return true; // for number, string, boolean, any falsy.
-        if ( typeof what === 'object' ) {
+    static isEmpty(what): boolean {
+        if (!what) return true; // for number, string, boolean, any falsy.
+        if (typeof what === 'object') {
             return Object.keys(what).length === 0;
         }
-        if ( Array.isArray( what ) ) {
+        if (Array.isArray(what)) {
             return what.length === 0;
         }
         return false;
@@ -87,19 +87,25 @@ export class Library {
      * @param a Object a
      * @param b Object b
      */
-    static isEqual( a, b ): boolean {
-        if ( typeof a === 'object' && typeof b === 'object' ) {
-            const aKeys = Object.keys( a );
-            const bKeys = Object.keys( b );
-            if ( aKeys.length !== bKeys.length ) return false;
-            return aKeys.findIndex( (v, i) => v !== bKeys[i] ) === -1;
+    static isEqual(a, b): boolean {
+        if (typeof a === 'object' && typeof b === 'object') {
+            const aKeys = Object.keys(a);
+            const bKeys = Object.keys(b);
+            if (aKeys.length !== bKeys.length) return false;
+            return aKeys.findIndex((v, i) => v !== bKeys[i]) === -1;
         }
-        else if ( Array.isArray(a) && Array.isArray(b) ) {
-            if ( a.length !== b.length ) return false;
-            return a.findIndex( (v, i) => v === b[i] ) === -1;
+        else if (Array.isArray(a) && Array.isArray(b)) {
+            if (a.length !== b.length) return false;
+            return a.findIndex((v, i) => v === b[i]) === -1;
         }
         else {
             return a === b;
         }
     }
+
+    static isString(str) {
+        return typeof str === 'string';
+    }
 }
+
+

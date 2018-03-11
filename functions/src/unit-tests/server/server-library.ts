@@ -1,5 +1,5 @@
 
-import { Library } from './../../modules/library/library';
+import { Library as _ } from './../../modules/library/library';
 const apiUrl = "https://us-central1-thruthesky-firebase-backend.cloudfunctions.net/api";
 
 
@@ -13,9 +13,9 @@ export async function route(obj, debug = false) {
     data['json'] = true;
     data['body'] = obj;
 
-    const $lib = new Library();
+    
     if (debug) {
-        console.log("Debug Url: " + apiUrl + '?' + $lib.httpBuildQuery(obj));
+        console.log("Debug Url: " + apiUrl + '?' + _.httpBuildQuery(obj));
     }
 
     const re = await rpn(data).catch(e => e);

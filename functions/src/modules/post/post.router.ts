@@ -2,7 +2,7 @@
 * @author Gem
 */
 import * as E from '../core/error';
-import { ROUTER_RESPONSE, COLLECTIONS, POST, POST_PERMISSION } from '../core/core';
+import { COLLECTIONS, POST, POST_PERMISSION } from '../core/core';
 // import { Base } from '../core/base';
 import { Post } from './post';
 import { Library as _ } from './../library/library';
@@ -92,75 +92,7 @@ export class PostRouter extends Post {
     }
 
 
-
-    // /**
-    //  * Returns null if there is no problem.
-    //  *
-    //  * Validates data if applicable to firebase database
-    //  * 
-    //  * @param data Data to validate
-    //  */
-    // validatePostData(data: POST_DATA): ROUTER_RESPONSE {
-
-    //     if (_.isEmpty(data.categoryId)) return this.error(E.NO_CATEGORY_ID);
-
-    //     // const typeCheck = this.typeChecker( data, this.defaultPostData );
-    //     // if ( typeCheck ) return typeCheck;
-        
-    //     // console.log( data );
-
-
-    //     // if (this.checkDocumentIDFormat(data.id)) return this.error(this.checkDocumentIDFormat(data.id)); 
-
-    //     /** @todo Make shorter code for field type checking. */
-    //     // Type checking -> Must be string
-    //     // if (! _.isString( data.id ) ) return this.error( E.MUST_BE_A_STRING, { value: 'Post ID' } );
-    //     // if (! _.isString( data.uid ) ) return this.error( E.MUST_BE_A_STRING, { value: 'Post UID' } );
-    //     // if (! _.isString( data.title ) ) return this.error( E.MUST_BE_A_STRING, { value: 'Post title' } );
-    //     // if (! _.isString( data.content ) ) return this.error( E.MUST_BE_A_STRING, { value: 'Post content' } );
-    //     // if (! _.isString( data.categoryId ) ) return this.error( E.MUST_BE_A_STRING, { value: 'Post categoryID' } );
-    //     // if (! _.isString( data.displayName ) ) return this.error( E.MUST_BE_A_STRING, { value: 'Post displayName' } );
-    //     // if (! _.isString( data.email ) ) return this.error( E.MUST_BE_A_STRING, { value: 'Post email' } );
-    //     // if (! _.isString( data.phoneNumber ) ) return this.error( E.MUST_BE_A_STRING, { value: 'Post phone number' } );
-    //     // if (! _.isString( data.country ) ) return this.error( E.MUST_BE_A_STRING, { value: 'Post country' } );
-    //     // if (! _.isString( data.province ) ) return this.error( E.MUST_BE_A_STRING, { value: 'Post province' } );
-    //     // if (! _.isString( data.city ) ) return this.error( E.MUST_BE_A_STRING, { value: 'Post city' } );
-    //     // if (! _.isString( data.address ) ) return this.error( E.MUST_BE_A_STRING, { value: 'Post address' } );
-    //     // if (! _.isString( data.zipCode ) ) return this.error( E.MUST_BE_A_STRING, { value: 'Post zip code' } );
-
-    //     // Type Checking -> Must be number
-    //     // if (! _.isNumber( data.noOfComments ) ) return this.error( E.MUST_BE_A_NUMBER, { value: 'Post noOfComments' } );        
-    //     // if (! _.isNumber( data.noOfLikes ) ) return this.error( E.MUST_BE_A_NUMBER, { value: 'Post noOfLikes' } );        
-    //     // if (! _.isNumber( data.noOfDislikes ) ) return this.error( E.MUST_BE_A_NUMBER, { value: 'Post noOfDislikes'} );        
-    //     // if (! _.isNumber( data.noOfViews ) ) return this.error( E.MUST_BE_A_NUMBER, { value: 'Post noOfViews' } );        
-    //     // if (! _.isNumber( data.reminder ) ) return this.error( E.MUST_BE_A_NUMBER, { value: 'Post reminder' } );        
-
-    //     // if (! _.isBoolean(data.private)) return this.error( E.MUST_BE_A_BOOLEAN, { value: 'Post data private' } );
-
-    //     return null;
-    // }
-
-    /**
-     * 
-     * 
-     * Validates request information of complete
-     * 
-     * @param data data to validate
-     * 
-     * @returns null if there is no problem. Otherwise `Router Response Error Object`
-     * 
-     * 
-     * 
-     */
-    // validatePostRequest(data): ROUTER_RESPONSE {
-        
-    //     if (data.uid !== void 0 || data.postId !== void 0) {
-    //         if (this.checkUIDFormat(data.uid)) return this.error(this.checkUIDFormat(data.uid));
-    //         if (this.checkDocumentIDFormat(data.postId)) return this.error(this.checkDocumentIDFormat(data.postId));
-    //     }
-
-    //     return null;
-    // }
-
+    
+    
 
 }

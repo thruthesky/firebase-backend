@@ -6,7 +6,7 @@ const expect = chai.expect;
 import { Base, COLLECTIONS, E } from './../../../modules/core/core';
 import { route, adminEmail } from './../init';
 
-const $base = new Base( COLLECTIONS.CATEGORIES );
+// const $base = new Base( COLLECTIONS.CATEGORIES );
 
 const categoryId = "test-" + (new Date).getTime();
 let postId;
