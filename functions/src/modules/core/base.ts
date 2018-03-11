@@ -384,8 +384,9 @@ export class Base {
             }
         }
 
-        /** Remove `idToken` */
+        /** Remove `idToken`, `route` */
         if ( obj && obj['idToken'] !== void 0 ) delete obj['idToken'];
+        if ( obj && obj['route'] !== void 0 ) delete obj['route'];
 
         return this.hook('sanitizeData', obj);
         

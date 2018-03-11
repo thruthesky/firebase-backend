@@ -36,13 +36,13 @@ describe("[ system.ts ]", () => {
 
 
     it("Expect success", async () => {
-        const re = await route({ route: 'system.install', adminEmail: 'thruthesky@gmail.com' });
+        const re = await route({ route: 'system.install', adminEmail: 'thruthesky@naver.com' });
         // console.log(re);
         expect(re.code).to.be.equal(0);
     });
 
     it("Check if admin", async() => {
-        const re = await route( { route: 'system.version', uid: 'thruthesky@gmail.com'} );
+        const re = await route( { route: 'system.version', uid: 'thruthesky@naver.com'} );
         expect(re.role).to.be.equal('admin');
     });
 

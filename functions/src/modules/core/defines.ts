@@ -79,3 +79,47 @@ export interface CATEGORY {
     created: any;
     updated: any;
 }
+
+
+/**
+* POST data to create/update/delete.
+* 
+* @desc You can update more.
+* 
+* 
+*/
+export interface POST {
+    id?: string;                    // Document ID. This is needed only on accessing. It does not need to be saved.
+    uid: string;                    // author
+    title?: string;
+    content?: string;
+    categoryId?: string;
+    displayName?: string;
+    email?: string;
+    password?: string;              // Anonymous need to put a password to update/delete.
+    phoneNumber?: string;
+    country?: string;
+    province?: string;
+    city?: string;
+    address?: string;
+    zipCode?: string;
+    files?: Array<string>;
+    numberOfComments?: number;
+    numberOfLikes?: number;
+    numberOfDislikes?: number;
+    numberOfViews?: number;
+    private?: boolean;
+    reminder?: number; // higher number will be listed on top.
+}
+
+export interface POST_PERMISSION {
+    id?: string;
+    password?: string;
+}
+
+
+export interface GET_POST {
+    uid?: string;               // to see if who is the owner.
+    postId?: string;
+    category?: string;
+}

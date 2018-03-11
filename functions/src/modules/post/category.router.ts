@@ -106,7 +106,7 @@ export class CategoryRouter extends Category {
             if ( category['code'] === E.DOCUMENT_ID_DOES_NOT_EXISTS_FOR_GET ) category['code'] = E.WRONG_CATEGORY_ID; // change to proper error code.
             return category;
         }
-        if ( category.numberOfPosts === 0 ) return await super.delete(this.params.id);
+        if ( !category.numberOfPosts ) return await super.delete(this.params.id);
         else return this.error( E.CATEGORY_CANNOT_BE_DELETED_SINCE_IT_HAS_POST, { categoryId: category.id} );
     }
 

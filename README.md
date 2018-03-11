@@ -7,6 +7,7 @@ And yet, we didn't decide it what to call.
 # TODO List
 
 * when email exists ( google login ), firebase error message is not converted.
+* When user registers with email/password, the user's displayName should be updated into `Authentication`.
 
 
 
@@ -106,8 +107,8 @@ Shopping Mall Plugin
     It initiates `Firebase Admin SDK` and test the project directly `api` that connect to `Firebase`
 
 ````
-$ node_modules/.bin/mocha --watch --compilers ts:ts-node/register -t 99999 src/unit-tests/api/others/*
-$ node_modules/.bin/mocha --watch --compilers ts:ts-node/register -t 99999 src/unit-tests/api/with-id-token/user-verify-with-id-token.ts
+$ mocha --watch --compilers ts:ts-node/register -t 99999 src/unit-tests/api/others/*
+$ mocha --watch --compilers ts:ts-node/register -t 99999 src/unit-tests/api/with-id-token/user-verify-with-id-token.ts
 ````
 
 #### Firebase Functions Test
@@ -119,10 +120,10 @@ $ node_modules/.bin/mocha --watch --compilers ts:ts-node/register -t 99999 src/u
 
 
 ````
-$ ./node_modules/.bin/mocha --compilers ts:ts-node/register --watch -t 100000  src/unit-tests/server/* // All tests
-$ ./node_modules/.bin/mocha src/unit-tests/server/user-register-update.ts --compilers ts:ts-node/register --watch -t 100000 // Use TypeScript to test.
-$ /node_modules/.bin/mocha lib/unit-test/server/router.js --watch -t 100000
-$ ./node_modules/.bin/mocha lib/unit-test/server/user-register-update.js --watch -t 100000
+$ mocha --compilers ts:ts-node/register --watch -t 100000  src/unit-tests/server/* // All tests
+$ mocha src/unit-tests/server/user-register-update.ts --compilers ts:ts-node/register --watch -t 100000 // Use TypeScript to test.
+$ mocha lib/unit-test/server/router.js --watch -t 100000
+$ mocha lib/unit-test/server/user-register-update.js --watch -t 100000
 ````
 ##### In Windows
 You need to point into mocha js file.

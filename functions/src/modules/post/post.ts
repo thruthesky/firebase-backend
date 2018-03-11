@@ -1,54 +1,10 @@
 ﻿import { Anonymous, ROUTER_RESPONSE } from './../core/defines';
 // import * as admin from 'firebase-admin';
 import { Document } from './../document/document';
-import { COLLECTIONS, E } from '../core/core';
+import { COLLECTIONS, E, POST, POST_PERMISSION } from '../core/core';
 import * as _ from 'lodash';
 
 
-
-
-/**
-* POST data to create/update/delete.
-* 
-* @desc You can update more.
-* 
-* 
-*/
-export interface POST_DATA {
-    id?: string;                    // Document ID. This is needed only on accessing. It does not need to be saved.
-    uid: string;                    // author
-    title?: string;
-    content?: string;
-    categoryId?: string;
-    displayName?: string;
-    email?: string;
-    password?: string;              // Anonymous need to put a password to update/delete.
-    phoneNumber?: string;
-    country?: string;
-    province?: string;
-    city?: string;
-    address?: string;
-    zipCode?: string;
-    files?: Array<string>;
-    numberOfComments?: number;
-    numberOfLikes?: number;
-    numberOfDislikes?: number;
-    numberOfViews?: number;
-    private?: boolean;
-    reminder?: number; // higher number will be listed on top.
-}
-
-export interface POST_PERMISSION {
-    id?: string;
-    password?: string;
-}
-
-
-export interface GET_POST {
-    uid?: string;               // to see if who is the owner.
-    postId?: string;
-    category?: string;
-}
 
 /**
 * @Attention All the validity, permission check must be done before this class.
@@ -99,7 +55,7 @@ export class Post extends Document {
     * @author gem
     * 
     */
-    sanitizePostData(data: POST_DATA): POST_DATA {
+    sanitizePostData(data: POST): POST {
         // data = Object.assign(this.defaultPostData, data);
         
         if ( data.id !== void 0 ) delete data.id; // delete `id` if ever there exists.
@@ -130,7 +86,7 @@ export class Post extends Document {
      *      - `ROUTE_RESPONSE` object if there is error.
      *      - null if there is no error.
      */
-    permission( params: POST_PERMISSION, post: POST_DATA ): ROUTER_RESPONSE {
+    permission( params: POST_PERMISSION, post: POST ): ROUTER_RESPONSE {
 
         if ( this.isAnonymous() ) { // Logged in as anonymous.
             if ( post.uid !== Anonymous.uid ) { // Owned by a user. Not anonymous.

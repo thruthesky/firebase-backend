@@ -2,9 +2,9 @@
 * @author Gem
 */
 import * as E from '../core/error';
-import { ROUTER_RESPONSE, COLLECTIONS } from '../core/core';
+import { ROUTER_RESPONSE, COLLECTIONS, POST, POST_PERMISSION } from '../core/core';
 // import { Base } from '../core/base';
-import { Post, POST_DATA, POST_PERMISSION } from './post';
+import { Post } from './post';
 import * as _ from 'lodash';
 
 
@@ -20,7 +20,7 @@ export class PostRouter extends Post {
     * @author gem
     */
     async create(): Promise<any> {
-        const data: POST_DATA = this.hook('post.router.create', this.sanitizePostData(this.params));
+        const data: POST = this.hook('post.router.create', this.sanitizePostData(this.params));
         if (_.isEmpty(data.categoryId)) return this.error(E.NO_CATEGORY_ID);
         if (await this.exists(data.categoryId, COLLECTIONS.CATEGORIES)) {
             const re = await super.set(data);
@@ -51,10 +51,10 @@ export class PostRouter extends Post {
      * 
      */
     async edit(): Promise<any> {
-        const params: POST_DATA = this.hook('post.router.edit', this.params);
+        const params: POST = this.hook('post.router.edit', this.params);
         const id = params.id;
 
-        const post: POST_DATA = await super.get(id); // get post
+        const post: POST = await super.get(id); // get post
         if ( this.isErrorObject(post) ) return post;
 
         delete params.id; // delete id. no need to save.
@@ -74,7 +74,7 @@ export class PostRouter extends Post {
         
         const params: POST_PERMISSION = this.params;
         // if (_.isEmpty(params.id)) return this.error(E.NO_DOCUMENT_ID);
-        const post: POST_DATA = await super.get(params.id);
+        const post: POST = await super.get(params.id);
         if ( this.isErrorObject(post) ) return post;
         
         const permission = this.permission(params, post);
