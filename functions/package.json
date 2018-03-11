@@ -14,14 +14,12 @@
   "dependencies": {
     "cors": "^2.8.4",
     "firebase-admin": "~5.8.1",
-    "firebase-functions": "^0.8.1",
-    "lodash": "^4.17.5"
+    "firebase-functions": "^0.8.1"
   },
   "devDependencies": {
     "@google-cloud/functions-emulator": "^1.0.0-beta.2",
     "@types/chai": "^4.1.2",
     "@types/cors": "^2.8.3",
-    "@types/lodash": "^4.14.104",
     "@types/mocha": "^2.2.48",
     "@types/request": "^2.47.0",
     "@types/request-promise-native": "^1.0.13",
