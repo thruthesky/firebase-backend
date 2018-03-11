@@ -12,14 +12,13 @@
  */
 
 import * as admin from 'firebase-admin';
-import * as _ from 'lodash';
 
 import { COLLECTION_PREFIX } from './../../settings/settings';
 
 import * as E from './../core/error';
 
 import { ROUTER_RESPONSE, Anonymous, COLLECTIONS, SYSTEM_SETTINGS } from './../core/defines';
-import { Library } from './../library/library';
+import { Library as _ } from './../library/library';
 
 import { Hooks } from './../../hooks';
 import { USER_DATA } from '../user/user';
@@ -62,14 +61,13 @@ export class Base {
      */
     static loginUser: USER_DATA = null;
 
-    library: Library;
+    
 
     collectionName: string = null;
 
     constructor(collectionName = '') {
         this.collectionName = collectionName;
         // console.log("collectionName: ", this.collectionName);
-        this.library = new Library();
 
 
     }
@@ -200,7 +198,7 @@ export class Base {
      * @return class name
      */
     get routeClassName() {
-        return this.library.segment(this.param('route'), '.', 0);
+        return _.segment(this.param('route'), '.', 0);
     }
 
     /**
@@ -210,7 +208,7 @@ export class Base {
      * 
      */
     get routeMethodName() {
-        return this.library.segment(this.param('route'), '.', 1);
+        return _.segment(this.param('route'), '.', 1);
     }
 
     /**

@@ -5,7 +5,8 @@ import * as E from '../core/error';
 import { ROUTER_RESPONSE, COLLECTIONS, POST, POST_PERMISSION } from '../core/core';
 // import { Base } from '../core/base';
 import { Post } from './post';
-import * as _ from 'lodash';
+import { Library as _ } from './../library/library';
+
 
 
 export class PostRouter extends Post {

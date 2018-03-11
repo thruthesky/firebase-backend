@@ -2,7 +2,6 @@
  * @author jaeho
  */
 import * as chai from 'chai';
-// import * as _ from 'lodash';
 const expect = chai.expect;
 import { Base, COLLECTIONS } from './../../../modules/core/core';
 import { route, adminEmail } from './../init';

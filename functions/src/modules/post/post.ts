@@ -2,7 +2,8 @@
 // import * as admin from 'firebase-admin';
 import { Document } from './../document/document';
 import { COLLECTIONS, E, POST, POST_PERMISSION } from '../core/core';
-import * as _ from 'lodash';
+
+import { Library as _ } from './../library/library';
 
 
 

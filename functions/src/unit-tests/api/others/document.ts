@@ -1,9 +1,9 @@
 import * as chai from 'chai';
 const expect = chai.expect;
-import * as _ from 'lodash';
 import { Base } from './../../../modules/core/core';
 import { Document } from './../../../modules/document/document';
 
+import { Library as _ } from './../../../modules/library/library';
 
 
 

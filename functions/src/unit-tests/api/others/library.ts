@@ -1,16 +1,17 @@
-import { Library } from './../../../modules/library/library';
+import { Library as _ } from './../../../modules/library/library';
 
 import * as chai from 'chai';
 const e = chai.expect;
 
 
 
-const build = (new Library).httpBuildQuery;
-const segment = (new Library).segment;
+const build = _.httpBuildQuery;
+const segment = _.segment;
 
 
 
-describe('Library', () => {
+
+describe('[ library.ts ]', () => {
 
     describe('httpBuildQuery', () => {
 

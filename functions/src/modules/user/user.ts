@@ -1,11 +1,11 @@
 
 // import * as admin from 'firebase-admin';
-import * as _ from 'lodash';
 import { E } from '../core/core';
 import { Base } from './../core/base';
 import { Document } from './../document/document';
 import { COLLECTIONS, Anonymous } from './../core/defines';
 
+import { Library as _ } from './../library/library';
 
 
 

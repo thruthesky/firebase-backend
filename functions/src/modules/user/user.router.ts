@@ -1,11 +1,11 @@
 // import * as admin from 'firebase-admin';
 // import { Request, Response } from 'express';
 import * as E from '../core/error';
-import * as _ from 'lodash';
 import { Base } from './../core/base';
 import { User, USER_DATA, USER_REGISTER } from './user';
 import { ROUTER_RESPONSE } from '../core/core';
 
+import { Library as _ } from './../library/library';
 
 export class UserRouter extends User {
     constructor() {

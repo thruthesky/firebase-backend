@@ -2,7 +2,8 @@
 
 import { ROUTER_RESPONSE, E, CATEGORY } from '../core/core';
 import { Category } from './category';
-import * as _ from 'lodash';
+import { Library as _ } from './../library/library';
+
 // import { POST_DATA } from './post';
 
 /**

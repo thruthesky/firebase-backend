@@ -1,8 +1,7 @@
-import * as _ from 'lodash';
+
 
 export class Library {
-
-
+    
     /**
      * Returns http query string.
      * @param params Object to build as http query string
@@ -10,9 +9,9 @@ export class Library {
      *      - http query string
      *      - Or null if the input is emtpy or not object.
      */
-    httpBuildQuery(params) : string | null {
+    static httpBuildQuery(params) : string | null {
 
-        if ( _.isEmpty( params ) ) return null; //
+        if ( Library.isEmpty( params ) ) return null; //
         
         const keys = Object.keys(params);
         if ( keys.length === 0 ) return null; //
@@ -43,7 +42,7 @@ export class Library {
      *      return this.library.segment( this.param('route'), '.', 0 );
      * 
      */
-    segment( str:string, separator:string = ' ', n:number = 0 ): string {
+    static segment( str:string, separator:string = ' ', n:number = 0 ): string {
         if ( typeof str !== 'string' ) return null;
         if ( typeof separator !== 'string' || ! separator ) return null;
         if ( str ) {
@@ -53,4 +52,50 @@ export class Library {
         return null;
     }
 
+
+    /**
+     * 
+     * Returns true if the input `what` is falsy or empty or no data.
+     * 
+     * @returns
+     *      - true if the input `what` is
+     *          - boolean and it's false,
+     *          - number with 0.
+     *          - string with empty. ( if it has any vlaue like blank, then it's not empty. )
+     *          - object with no key.
+     *          - array with 0 length.
+     * 
+     *      - otherwise return false.
+     */
+    static isEmpty( what ): boolean {
+        if ( ! what ) return true; // for number, string, boolean, any falsy.
+        if ( typeof what === 'object' ) {
+            return Object.keys(what).length === 0;
+        }
+        if ( Array.isArray( what ) ) {
+            return what.length === 0;
+        }
+        return false;
+    }
+
+    /**
+     * Returns true if the input `a` and `b` are identical.
+     * @param a Object a
+     * @param b Object b
+     */
+    static isEqual( a, b ): boolean {
+        if ( typeof a === 'object' && typeof b === 'object' ) {
+            const aKeys = Object.keys( a );
+            const bKeys = Object.keys( b );
+            if ( aKeys.length !== bKeys.length ) return false;
+            return aKeys.findIndex( (v, i) => v !== bKeys[i] ) === -1;
+        }
+        else if ( Array.isArray(a) && Array.isArray(b) ) {
+            if ( a.length !== b.length ) return false;
+            return a.findIndex( (v, i) => v === b[i] ) === -1;
+        }
+        else {
+            return a === b;
+        }
+    }
 }
