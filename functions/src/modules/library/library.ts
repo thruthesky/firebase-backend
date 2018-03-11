@@ -1,4 +1,8 @@
-
+/**
+ * 
+ * @file library.ts
+ * 
+ */
 
 export class Library {
     
