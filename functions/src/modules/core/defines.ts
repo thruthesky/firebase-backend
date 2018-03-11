@@ -57,6 +57,8 @@ export interface CATEGORY {
     id: string;
     name?: string; // to display.
     description?: string; // to display as long description.
+    subcategories?: string; // separated by comma.
+    tags?: string; // Allowable tags separated by comma. If it is set, only this tags are allowed. otherwise, any tags can be put in the post.
     header?: string;
     footer?: string;
     numberOfPostsPerPage?: number;
@@ -94,6 +96,8 @@ export interface POST {
     title?: string;
     content?: string;
     categoryId?: string;
+    subcategory?: string;           // Sub category to categorize in detail.
+    tags?: string;                  // Tags to search
     displayName?: string;
     email?: string;
     password?: string;              // Anonymous need to put a password to update/delete.

@@ -6,6 +6,8 @@ And yet, we didn't decide it what to call.
 
 # TODO List
 
+* Remove lodash on backend and froendend.
+
 * when email exists ( google login ), firebase error message is not converted.
 * When user registers with email/password, the user's displayName should be updated into `Authentication`.
 
